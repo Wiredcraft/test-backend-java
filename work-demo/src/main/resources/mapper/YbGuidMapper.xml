@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhangyongxin.demo.mapper.YbGuidMapper" >
+  <resultMap id="BaseResultMap" type="com.zhangyongxin.demo.model.YbGuid" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="is_delete" property="isDelete" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="create_user_id" property="createUserId" jdbcType="VARCHAR" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="update_user_id" property="updateUserId" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+    <result column="cover" property="cover" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <update id="logicalDeleteByPrimaryKey" parameterType="YbGuid">
+    update yb_guid set is_delete = 1,update_user_id=#{updateUserId} where id =#{id}
+  </update>
+
+  <select id="queryList" parameterType="YbGuid" resultMap="BaseResultMap">
+    select id,title,type,cover from yb_guid where is_delete =0
+    <if test="@com.zhangyongxin.demo.util.Ognl@isNotEmpty(title)">
+      and title like concat('%',#{title},'%')
+    </if>
+    <if test="type != null">
+      and type = #{type}
+    </if>
+  </select>
+
+</mapper>

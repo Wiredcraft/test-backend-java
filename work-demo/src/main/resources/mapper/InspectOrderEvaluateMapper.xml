@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhangyongxin.demo.mapper.InspectOrderEvaluateMapper">
+  <resultMap id="BaseResultMap" type="com.zhangyongxin.demo.model.InspectOrderEvaluate">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="order_id" jdbcType="INTEGER" property="orderId" />
+    <result column="inspect_user_id" jdbcType="INTEGER" property="inspectUserId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId" />
+  </resultMap>
+
+  <resultMap id="ExpandResultMap" type="com.zhangyongxin.demo.model.InspectOrderEvaluateExpand">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="order_id" jdbcType="INTEGER" property="orderId" />
+    <result column="inspect_user_id" jdbcType="INTEGER" property="inspectUserId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="realname" jdbcType="VARCHAR" property="realName" />
+    <result column="street" jdbcType="VARCHAR" property="street" />
+
+  </resultMap>
+
+  <update id="logicalDeleteByPrimaryKey" parameterType="InspectOrderEvaluate">
+    update inspect_order_evaluate set is_delete = 1,update_user_id=#{updateUserId} where id =#{id}
+  </update>
+
+  <select id="queryList" parameterType="InspectOrderEvaluate" resultMap="ExpandResultMap">
+    select a.id,a.order_id,a.inspect_user_id,a.content,a.create_date,b.realname,c.street
+    from inspect_order_evaluate a
+    left join user_info b on a.create_user_id = b.username
+    left join inspect_order c on a.order_id = c.id
+    where a.is_delete =0
+    <if test="orderId != null">
+      and a.order_id = #{orderId}
+    </if>
+    <if test="inspectUserId != null">
+      and a.inspect_user_id = #{inspectUserId}
+    </if>
+  </select>
+
+  <select id="queryLastEvaluteByUserId" parameterType="Integer" resultMap="ExpandResultMap">
+    select a.id,a.order_id,a.inspect_user_id,a.content,a.create_date,b.realname,c.street
+    from inspect_order_evaluate a
+    left join user_info b on a.create_user_id = b.username
+    left join inspect_order c on a.order_id = c.id
+    where a.is_delete =0
+    and a.inspect_user_id = #{inspectUserId}
+    limit 1
+  </select>
+</mapper>

@@ -2,15 +2,15 @@
 * 使用lombok插件
 * 使用ehcache
 * 刷入mysql.sql
-* api文档：`http://127.0.0.1:8888/snail/swagger-ui.html`
-* helloWorld : `http://127.0.0.1:8888/snail/hello/admin`
+* api文档：`http://127.0.0.1:8080/demo/swagger-ui.html`
+* helloWorld : `http://127.0.0.1:8080/demo/test/hello`
 * 所有数据接口均返回Result，如：
 
     ```json
       {
         "code": 200,
         "message": "SUCCESS",
-        "data": "admin"
+        "data": "Hello World!"
       }
     ```
 

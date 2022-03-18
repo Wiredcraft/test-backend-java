@@ -31,6 +31,7 @@ import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.BeanNameViewResolver;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -46,7 +47,7 @@ import java.util.List;
 @Configuration
 @Slf4j
 public class WebMvcConfig implements WebMvcConfigurer {
-    @Autowired(required = false)
+    @Resource
     private UserLoginInterceptor userLoginInterceptor;
 
     //跨域支持

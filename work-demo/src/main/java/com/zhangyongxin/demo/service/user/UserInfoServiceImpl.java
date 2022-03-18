@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
+
 /**
  * Created by dinggh on 18/6/30.
  */
@@ -13,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(timeout = 5,rollbackFor = Exception.class)
 public class UserInfoServiceImpl implements UserInfoService {
 
-    @Autowired(required = false)
+    @Resource
     private UserInfoMapper userInfoMapper;
     @Override
     public int addOne(UserInfo userInfo) {

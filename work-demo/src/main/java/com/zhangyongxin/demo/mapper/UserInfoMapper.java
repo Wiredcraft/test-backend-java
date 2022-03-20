@@ -1,6 +1,6 @@
 package com.zhangyongxin.demo.mapper;
 
-import com.zhangyongxin.demo.model.UserInfo;
+import com.zhangyongxin.demo.model.user.UserInfo;
 import tk.mybatis.mapper.common.Mapper;
 
 /**

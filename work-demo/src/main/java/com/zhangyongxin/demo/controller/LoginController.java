@@ -2,7 +2,9 @@ package com.zhangyongxin.demo.controller;
 
 import com.zhangyongxin.demo.common.Result;
 import com.zhangyongxin.demo.common.ResultGenerator;
-import com.zhangyongxin.demo.model.UserInfo;
+import com.zhangyongxin.demo.controller.base.BaseController;
+import com.zhangyongxin.demo.model.user.LoginUserParam;
+import com.zhangyongxin.demo.model.user.UserInfo;
 import com.zhangyongxin.demo.service.user.UserInfoService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +32,7 @@ import static com.zhangyongxin.demo.common.Constant.SESSION_USER;
 @RestController
 @RequestMapping("")
 @Slf4j
-public class LoginController {
+public class LoginController extends BaseController {
     @Resource
     private AuthenticationManager authenticationManager;
     @Autowired
@@ -38,15 +40,15 @@ public class LoginController {
 
     @PostMapping("/login")
     @ApiOperation(value = "用户登录", notes = "用户登录")
-    public Result login(@RequestBody UserInfo user, HttpServletRequest request) {
+    public Result<UserInfo> login(@RequestBody LoginUserParam loginUserParam, HttpServletRequest request) {
         UserInfo userInfo = new UserInfo();
         if (null != authenticationManager) {
             try {
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(loginUserParam.getUsername(), loginUserParam.getPassword());
                 authenticationManager.authenticate(authentication);
                 HttpSession session = request.getSession();
-                userInfo = userInfoService.findByName(user.getUsername());
-                userInfo.setPassword(null);
+                userInfo = userInfoService.findByName(loginUserParam.getUsername());
+                userInfo.setPassword("****");
                 session.setAttribute(SESSION_USER, userInfo);
             } catch (BadCredentialsException e) {
                 return ResultGenerator.genFailResult("用户名或密码错误");
@@ -57,10 +59,9 @@ public class LoginController {
 
     @PostMapping("/doLogout")
     @ApiOperation(value = "用户登出", notes = "用户登出")
-    public Result logout(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        session.removeAttribute(SESSION_USER);
-        return ResultGenerator.genSuccessResult();
+    public Result<Boolean> logout(HttpServletRequest request) {
+        this.logout();
+        return ResultGenerator.genSuccessResult(true);
     }
 
 

@@ -1,7 +1,7 @@
 package com.zhangyongxin.demo.config;
 
 import com.zhangyongxin.demo.common.DemoThreadCache;
-import com.zhangyongxin.demo.model.UserInfo;
+import com.zhangyongxin.demo.model.user.UserInfo;
 import org.apache.http.auth.AuthenticationException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -24,7 +24,7 @@ import static com.zhangyongxin.demo.common.Constant.SESSION_USER;
 public class UserLoginInterceptor extends HandlerInterceptorAdapter {
 
     public List<String> getExcludePath() {
-        return Arrays.asList("/login");
+        return Arrays.asList("/login", "/user/insert");
     }
 
     @Override
@@ -32,7 +32,7 @@ public class UserLoginInterceptor extends HandlerInterceptorAdapter {
         HttpSession session = request.getSession();
         UserInfo userInfo = (UserInfo) session.getAttribute(SESSION_USER);
         if (null == userInfo) {
-            throw new AuthenticationException("对不起，您没有访问权限");
+            throw new AuthenticationException("sorry, can not access, please login.");
         }
         DemoThreadCache.setUserName(userInfo.getUsername());
         return super.preHandle(request, response, handler);

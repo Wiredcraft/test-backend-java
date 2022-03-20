@@ -10,10 +10,10 @@ import java.io.Serializable;
  */
 
 @ToString
-public class Result implements Serializable {
+public class Result<T> implements Serializable {
     private int code;
     private String message;
-    private Object data;
+    private T data;
 
     public Result() {
     }
@@ -23,13 +23,13 @@ public class Result implements Serializable {
         this.message = message;
     }
 
-    public Result(int code, String message, Object data) {
+    public Result(int code, String message, T data) {
         this.code = code;
         this.message = message;
         this.data = data;
     }
 
-    public Result(Object data) {
+    public Result(T data) {
         this.data = data;
         this.code = 200;
         this.message = "SUCCESS";
@@ -57,7 +57,7 @@ public class Result implements Serializable {
         return data;
     }
 
-    public Result setData(Object data) {
+    public Result setData(T data) {
         this.data = data;
         return this;
     }

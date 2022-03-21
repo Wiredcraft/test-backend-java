@@ -1,0 +1,12 @@
+/logs/
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+/target/
+!.mvn/wrapper/maven-wrapper.jar
+/work-demo/logs/
+/work-demo/.mvn/
+/out/

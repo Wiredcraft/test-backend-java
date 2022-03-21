@@ -9,7 +9,7 @@
 	<packaging>jar</packaging>
 
 	<name>work-demo</name>
-	<description>zhangyongxin home decoration wehat application server side</description>
+	<description>zhangyongxin demo project application</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -161,26 +161,6 @@
             <version>1.11</version>
         </dependency>
 		<dependency>
-			<groupId>com.github.sd4324530</groupId>
-			<artifactId>fastweixin</artifactId>
-			<version>1.3.12</version>
-		</dependency>
-		<dependency>
-			<groupId>com.aliyun</groupId>
-			<artifactId>aliyun-java-sdk-core</artifactId>
-			<version>3.7.1</version>
-		</dependency>
-		<dependency>
-			<groupId>com.aliyun</groupId>
-			<artifactId>aliyun-java-sdk-dysmsapi</artifactId>
-			<version>1.1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.github.wxpay</groupId>
-			<artifactId>wxpay-sdk</artifactId>
-			<version>0.0.3</version>
-		</dependency>
-		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>1.3.2</version>
@@ -191,19 +171,14 @@
 			<version>1.1.3</version>
 		</dependency>
 		<dependency>
-			<groupId>cn.afterturn</groupId>
-			<artifactId>easypoi-base</artifactId>
-			<version>3.0.3</version>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.5</version>
 		</dependency>
 		<dependency>
-			<groupId>cn.afterturn</groupId>
-			<artifactId>easypoi-web</artifactId>
-			<version>3.0.3</version>
-		</dependency>
-		<dependency>
-			<groupId>cn.afterturn</groupId>
-			<artifactId>easypoi-annotation</artifactId>
-			<version>3.0.3</version>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.12</version>
 		</dependency>
 	</dependencies>
 

@@ -1,10 +1,11 @@
 package com.zhangyongxin.demo.model.user;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "user_info")
-public class UserInfo {
+public class UserInfo implements Serializable {
 
     private static final long serialVersionUID = 1295303214364309178L;
 

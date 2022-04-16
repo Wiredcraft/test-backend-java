@@ -1,0 +1,14 @@
+# DataSource Config
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.66.136:3306/system_user
+    username: root
+    password: Password321
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 让mybatis-plus打印sql
+  mapper-locations: classpath:/mapper/*Mapper.xml
+
+spring.mvc.pathmatch.matching-strategy: ant_path_matcher

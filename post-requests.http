@@ -1,0 +1,32 @@
+### create user
+POST http://localhost:8080/user/create
+Content-Type: application/json
+token: 'sample token'
+
+{
+  "userId": "U004",
+  "name": "wang1",
+  "dob": "1992-08-03",
+  "address": "shanghai jingan",
+  "description": "beautiful girl"
+}
+
+
+### update user
+PUT http://localhost:8080/user/update
+Content-Type: application/json
+token: 'sample token'
+
+{
+  "userId": "U004",
+  "dob": "1992-08-05"
+}
+
+### delete user
+DELETE http://localhost:8080/user/delete
+Content-Type: application/json
+token: 'sample token'
+
+{
+  "userId": "U004"
+}

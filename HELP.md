@@ -1,3 +1,88 @@
+# Wiredcraft Back-end Test Project
+
+This service provides user management feature.
+
+## API
+
+### User management
+
+#### Query user
+
+```
+GET /api/v1/users/{id}
+```
+**Path Variables**
+- id — String, user ID, **required**.
+
+#### Create user
+
+```
+POST /api/v1/users/
+Content-Type: application/json
+
+{
+    "name":"jerrychin",
+    "dob":"2022-01-01",
+    "address": "your address",
+    "description": "your description"
+}
+```
+
+**Request Payload**
+- name — String, username, **required**, max 64 chars.
+- dob — String, date of birth in `yyyy-MM-dd` format, optional,
+- address — String, user address, optional, max 255 chars.
+- description — String, user address, optional, max 255 chars.
+
+```
+{
+    "id": "3a52917893c14b18b2d7645fd7815886",
+    "name":"jerrychin",
+    "dob":"2022-01-01",
+    "address": "your address",
+    "description": "your description",
+    "createdAt": "2022-05-07 0:0:0"
+}
+```
+
+**Response Payload**
+- id - unique user ID.
+- name — see above.
+- dob — see above.
+- address — see above.
+- description — see above.
+- createdAt — String, user created time in `yyyy-MM-dd hh:mm:ss` format, **required**.
+
+#### Update user
+
+```
+POST /api/v1/users/{id}
+Content-Type: application/json
+
+{
+    "name":"jerrychin",
+    "dob":"2022-01-01",
+    "address": "your address",
+    "description": "your description"
+}
+```
+**Path Variables**
+- id — String, user ID, **required**.
+
+**Request Payload**
+Same as above.
+
+**Response Payload**
+Same as above.
+
+#### Delete user
+
+```
+DELETE /api/v1/users/{id}
+```
+**Path Variables**
+- id — String, user ID, **required**.
+
 ## 本地运行
 
 ## 0. 前置依赖

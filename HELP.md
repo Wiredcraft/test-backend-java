@@ -35,5 +35,5 @@ docker exec -it mysql-server /bin/bash
 如果启动异常则可以通过以下指令获取 MySQL 启动日志：
 
 ```shell
-docker logs mysql-server /bin/bash
+docker logs mysql-server
 ```

@@ -1,34 +1,39 @@
-# Read Me First
-The following was discovered as part of building this project:
+## 本地运行
 
-* The original package name 'io.github.jerrychin.test-backend-java' is invalid and this project uses 'io.github.jerrychin.testbackendjava' instead.
+## 前置依赖
 
-# Getting Started
+本地运行前请先安装 [Docker](https://www.docker.com/products/docker-desktop/)。
 
-### Reference Documentation
-For further reference, please consider the following sections:
+## 启动数据库
 
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.6.7/maven-plugin/reference/html/)
-* [Create an OCI image](https://docs.spring.io/spring-boot/docs/2.6.7/maven-plugin/reference/html/#build-image)
-* [Spring Data JPA](https://docs.spring.io/spring-boot/docs/2.6.7/reference/htmlsingle/#boot-features-jpa-and-spring-data)
-* [Spring Web](https://docs.spring.io/spring-boot/docs/2.6.7/reference/htmlsingle/#boot-features-developing-web-applications)
-* [Spring Boot DevTools](https://docs.spring.io/spring-boot/docs/2.6.7/reference/htmlsingle/#using-boot-devtools)
-* [Spring Security](https://docs.spring.io/spring-boot/docs/2.6.7/reference/htmlsingle/#boot-features-security)
-* [Spring Boot Actuator](https://docs.spring.io/spring-boot/docs/2.6.7/reference/htmlsingle/#production-ready)
-* [Spring Data Neo4j](https://docs.spring.io/spring-boot/docs/2.6.7/reference/htmlsingle/#boot-features-neo4j)
+本服务依赖 MySQL 数据库，用于存储用户数据。
 
-### Guides
-The following guides illustrate how to use some features concretely:
+简单起见，本服务使用 Docker 运行 MySQL 数据库，启动命令为：
 
-* [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
-* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
-* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
-* [Building REST services with Spring](https://spring.io/guides/tutorials/bookmarks/)
-* [Securing a Web Application](https://spring.io/guides/gs/securing-web/)
-* [Spring Boot and OAuth2](https://spring.io/guides/tutorials/spring-boot-oauth2/)
-* [Authenticating a User with LDAP](https://spring.io/guides/gs/authenticating-ldap/)
-* [Accessing data with MySQL](https://spring.io/guides/gs/accessing-data-mysql/)
-* [Building a RESTful Web Service with Spring Boot Actuator](https://spring.io/guides/gs/actuator-service/)
-* [Accessing Data with Neo4j](https://spring.io/guides/gs/accessing-data-neo4j/)
+```shell
+docker run --name mysql-server -p3306:3306 -e MYSQL_ROOT_PASSWORD='?2bW$PlGaY@7JKU#xY' -e MYSQL_DATABASE=user_service -e MYSQL_USER=user_service -e MYSQL_PASSWORD='^Mdh2jsk6sh#k2$' -d mysql:8
+```
 
+上述命令后台启动了一个 8.0 版本的 MySQL 数据库实例，实例信息如下：
+
+| 属性    | 值         |
+|-------|-----------|
+| 数据库版本 | MySQL 8.0 |
+| 主机地址  | 127.0.0.1 |
+| 端口    | 3306      |
+| 数据库名称   | user_service       |
+| 用户名     | user_service       |
+| 用户密码    | ^Mdh2jsk6sh#k2$    |
+| root 密码 | ?2bW$PlGaY@7JKU#xY |
+
+通过下述指令可以进入容器，以便了解 MySQL 实例情况：
+
+```shell
+docker exec -it mysql-server /bin/bash
+```
+
+如果启动异常则可以通过以下指令获取 MySQL 启动日志：
+
+```shell
+docker logs mysql-server /bin/bash
+```

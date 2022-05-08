@@ -35,9 +35,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-				.and()
+		http.csrf().disable()
 				.authorizeRequests()
+
+				// permit static resources for all
+				.antMatchers("/static/**", "/index.html", "/profile.html",
+						"/signin.html", "/signup.html").permitAll()
 
 				// permit swagger access for all
 				.antMatchers("/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs").permitAll()
@@ -47,6 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.anyRequest().authenticated()
 				.and()
 				.formLogin()
+				.loginPage("/signin.html")
 				.permitAll();
 	}
 

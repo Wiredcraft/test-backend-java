@@ -9,10 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 @Api(tags="Authentication")
@@ -42,7 +39,7 @@ public class AuthController {
         }
 
         if (accountService.existsUserByAccount(accountDTO.getAccount())) {
-            throw new RestApiException(HttpStatus.BAD_REQUEST, "account existed, please login.");
+            throw new RestApiException(HttpStatus.BAD_REQUEST, "account existed, please sign in.");
         }
 
         Long accountId = accountService.saveAccount(accountDTO);

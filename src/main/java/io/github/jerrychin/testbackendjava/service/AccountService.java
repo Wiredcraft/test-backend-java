@@ -21,11 +21,13 @@ public class AccountService {
     }
 
     @Transactional
-    public void saveAccount(AccountDTO accountDTO) {
+    public Long saveAccount(AccountDTO accountDTO) {
         Account account = new Account();
         account.setAccount(accountDTO.getAccount());
         account.setPassword(encoder.encode(accountDTO.getPassword()));
-        repository.save(account);
+        account = repository.save(account);
+
+        return account.getId();
     }
 
     public boolean existsUserByAccount(String account) {

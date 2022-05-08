@@ -1,8 +1,10 @@
 package io.github.jerrychin.testbackendjava.controller;
 
 import io.github.jerrychin.testbackendjava.dto.AccountDTO;
+import io.github.jerrychin.testbackendjava.dto.UserDTO;
 import io.github.jerrychin.testbackendjava.exception.RestApiException;
 import io.github.jerrychin.testbackendjava.service.AccountService;
+import io.github.jerrychin.testbackendjava.service.ProfileService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
@@ -18,10 +20,12 @@ import javax.transaction.Transactional;
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
-    private final AccountService service;
+    private final AccountService accountService;
+    private final ProfileService profileService;
 
-    public AuthController(AccountService service) {
-        this.service = service;
+    public AuthController(AccountService accountService, ProfileService profileService) {
+        this.accountService = accountService;
+        this.profileService = profileService;
     }
 
     @ApiOperation("User Signup")
@@ -37,10 +41,11 @@ public class AuthController {
             throw new RestApiException(HttpStatus.BAD_REQUEST, "password is required.");
         }
 
-        if (service.existsUserByAccount(accountDTO.getAccount())) {
+        if (accountService.existsUserByAccount(accountDTO.getAccount())) {
             throw new RestApiException(HttpStatus.BAD_REQUEST, "account existed, please login.");
         }
 
-        service.saveAccount(accountDTO);
+        Long accountId = accountService.saveAccount(accountDTO);
+        profileService.createProfile(accountId, new UserDTO());
     }
 }

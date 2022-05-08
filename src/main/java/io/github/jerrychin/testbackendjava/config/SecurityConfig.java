@@ -38,6 +38,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 				.and()
 				.authorizeRequests()
+
+				// permit swagger access for all
+				.antMatchers("/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs").permitAll()
+
+				// permit auth related access for all
 				.antMatchers("/api/v1/auth/**", "/error").permitAll()
 				.anyRequest().authenticated()
 				.and()

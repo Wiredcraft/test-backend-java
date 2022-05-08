@@ -1,6 +1,7 @@
 package io.github.jerrychin.testbackendjava.service;
 
 import io.github.jerrychin.testbackendjava.dto.UserDTO;
+import io.github.jerrychin.testbackendjava.dto.UserVO;
 import io.github.jerrychin.testbackendjava.entity.User;
 import io.github.jerrychin.testbackendjava.exception.RestApiException;
 import io.github.jerrychin.testbackendjava.mapper.UserMapper;
@@ -23,16 +24,26 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
-    public UserDTO getUser(String id) {
-        return userMapper.userToUserDTO(repository.findById(id).orElseThrow(() ->
+    public UserVO getUser(String id) {
+        return userMapper.userToUserVO(repository.findById(id).orElseThrow(() ->
                 new RestApiException(HttpStatus.BAD_REQUEST, "user not found! id " + id)));
     }
 
-    public UserDTO saveUser(UserDTO userDTO) {
-        User entity = userMapper.userDTOtoUser(userDTO);
-        entity.setCreatedAt(LocalDateTime.now());
-        return userMapper.userToUserDTO(repository.save(entity));
+    public UserVO createUser(UserDTO userDTO) {
+        User user = userMapper.userDTOtoUser(userDTO);
+        user.setCreatedAt(LocalDateTime.now());
+        return userMapper.userToUserVO(repository.save(user));
     }
+
+    public UserVO updateUser(String id, UserDTO userDTO) {
+        User user = repository.findById(id).orElseThrow(() ->
+                new RestApiException(HttpStatus.BAD_REQUEST, "user not found! id " + id));
+
+        userMapper.updateUserWithUserDTO(userDTO, user);
+        return userMapper.userToUserVO(repository.save(user));
+    }
+
+
 
     public void deleteUser(String id) {
         repository.deleteById(id);

@@ -2,6 +2,7 @@ package io.github.jerrychin.testbackendjava.controller;
 
 
 import io.github.jerrychin.testbackendjava.dto.UserDTO;
+import io.github.jerrychin.testbackendjava.dto.UserVO;
 import io.github.jerrychin.testbackendjava.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -18,18 +19,18 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public UserDTO getUser(@PathVariable String id) {
+    public UserVO getUser(@PathVariable String id) {
         return userService.getUser(id);
     }
 
     @PostMapping("")
-    public UserDTO createUser(@RequestBody UserDTO userDTO) {
-        return userService.saveUser(userDTO);
+    public UserVO createUser(@RequestBody UserDTO userDTO) {
+        return userService.createUser(userDTO);
     }
 
     @PutMapping("/{id}")
-    public UserDTO updateUser(@RequestBody UserDTO userDTO) {
-       return userService.saveUser(userDTO);
+    public UserVO updateUser(@PathVariable String id, @RequestBody UserDTO userDTO) {
+       return userService.updateUser(id, userDTO);
     }
 
     @DeleteMapping("/{id}")

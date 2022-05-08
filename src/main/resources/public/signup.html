@@ -79,6 +79,10 @@
                         @click.native.prevent="handleSignup"
                 ><span style="font-size: 1.5em">Sign up</span></el-button>
             </el-form-item>
+
+            <el-form-item>
+                <el-button type="text" @click.native.prevent="signin">Sign in</el-button>
+            </el-form-item>
         </el-form>
 
     </div>
@@ -119,6 +123,10 @@
         }
       },
       methods: {
+        signin() {
+          console.log("signin")
+          window.location.href = "./signin.html"
+        },
         checkCapslock({ shiftKey, key } = {}) {
           if (key && key.length === 1) {
             if (shiftKey && (key >= 'a' && key <= 'z') || !shiftKey && (key >= 'A' && key <= 'Z')) {

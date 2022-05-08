@@ -7,7 +7,7 @@ import java.time.LocalDate;
 public class UserDTO {
 
     /**
-     * unique user name.
+     * user name, like Jerry Chin.
      */
     private String name;
 

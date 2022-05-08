@@ -37,6 +37,11 @@ public class User {
 
     private String description;
 
+    /**
+     * associated account id.
+     */
+    private Long accountId;
+
     public String getId() {
         return id;
     }
@@ -83,5 +88,13 @@ public class User {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Long getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(Long accountId) {
+        this.accountId = accountId;
     }
 }

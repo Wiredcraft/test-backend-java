@@ -33,8 +33,8 @@ public interface UserMapper {
     }
 
     default Coordinate extractUserCoordinate(User user) {
-        if(user.getLatitude() != null && user.getLongitude() != null) {
-            return new Coordinate(user.getLatitude(), user.getLongitude());
+        if(user.getLongitude() != null && user.getLatitude() != null) {
+            return new Coordinate(user.getLongitude(), user.getLatitude());
         }
 
         return null;

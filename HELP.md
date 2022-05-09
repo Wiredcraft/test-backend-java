@@ -26,6 +26,10 @@ The following accounts are provided for demo, you can try to sign in with anyone
 
 They share the same password `123456`.
 
+## Online API Docs
+
+[http://15.165.161.56/swagger-ui/index.html](http://15.165.161.56/swagger-ui/index.html)
+
 ## Tech stack
 
 ### First about backend
@@ -56,13 +60,28 @@ The secret and token expire time are configurable via `application.properties` f
 
 - [SpringFox](https://springfox.github.io/springfox/)
 
-### First about frond-end
+### Then about frond-end
+
+Instead of installing npm, I try to use HTML pages to write the frontend demo, keep myself concentrate on the backend part.
 
 - [Vue.js](https://vuejs.org/) 
 - [Element](https://element.eleme.cn/#/zh-CN)
 
+## Design ideas & Implications
 
+The requirements are somewhat discrete, so I decided to design and develop an application that meets these requirements,
+more importantly it's actually usable!
 
+### Model design
+
+[https://www.processon.com/diagraming/61df965a07912973ef20f7af](https://www.processon.com/diagraming/61df965a07912973ef20f7af)
+
+### Architecture design
+[https://www.processon.com/diagraming/6278bdc91e0853075333dbfe](https://www.processon.com/diagraming/6278bdc91e0853075333dbfe)
+
+### Implications
+
+The actual implementation may differ from the requirements.
 
 ## Running in local environment
 
@@ -126,4 +145,5 @@ But it only works in HTTPS, therefor, for this demo, you have to input your coor
 
 **About security.**
 
-It's typical a bad idea to store credential in VCS, again this is only for demo purpose.
+1. It's typical a bad idea to store credential in VCS, again this is only for demo purpose.
+2. HTTPS will be required for actual application.

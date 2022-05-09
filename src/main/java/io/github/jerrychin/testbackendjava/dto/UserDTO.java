@@ -2,12 +2,13 @@ package io.github.jerrychin.testbackendjava.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class UserDTO {
 
     /**
-     * user name, like Jerry Chin.
+     * name, like Jerry Chin.
      */
     private String name;
 
@@ -23,6 +24,10 @@ public class UserDTO {
     private String address;
 
     private String description;
+
+    private BigDecimal longitude;
+
+    private BigDecimal latitude;
 
     public String getName() {
         return name;
@@ -54,5 +59,21 @@ public class UserDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public BigDecimal getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(BigDecimal longitude) {
+        this.longitude = longitude;
+    }
+
+    public BigDecimal getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(BigDecimal latitude) {
+        this.latitude = latitude;
     }
 }

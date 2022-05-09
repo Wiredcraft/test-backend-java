@@ -2,6 +2,7 @@ package io.github.jerrychin.testbackendjava.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -9,11 +10,8 @@ public class UserVO {
 
     private String id;
 
-    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-    private LocalDateTime createdAt;
-
     /**
-     * user name.
+     * name.
      */
     private String name;
 
@@ -29,6 +27,13 @@ public class UserVO {
     private String address;
 
     private String description;
+
+    private BigDecimal longitude;
+
+    private BigDecimal latitude;
+
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    private LocalDateTime createdAt;
 
     public String getId() {
         return id;
@@ -76,5 +81,21 @@ public class UserVO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public BigDecimal getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(BigDecimal longitude) {
+        this.longitude = longitude;
+    }
+
+    public BigDecimal getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(BigDecimal latitude) {
+        this.latitude = latitude;
     }
 }

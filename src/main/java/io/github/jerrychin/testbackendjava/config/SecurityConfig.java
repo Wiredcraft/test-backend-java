@@ -34,6 +34,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 				// permit auth related access for all
 				.antMatchers("/api/v1/auth/**", "/error").permitAll()
+
+				// permit access to some people apis
+				.antMatchers("/api/v1/people", "/api/v1/people/{id}/profile").permitAll()
 				.anyRequest().authenticated()
 				.and()
 				.sessionManagement()

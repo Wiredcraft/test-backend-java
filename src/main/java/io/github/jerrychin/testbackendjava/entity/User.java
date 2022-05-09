@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -41,6 +42,10 @@ public class User {
      * associated account id.
      */
     private Long accountId;
+
+    private BigDecimal longitude;
+
+    private BigDecimal latitude;
 
     public String getId() {
         return id;
@@ -96,5 +101,21 @@ public class User {
 
     public void setAccountId(Long accountId) {
         this.accountId = accountId;
+    }
+
+    public BigDecimal getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(BigDecimal longitude) {
+        this.longitude = longitude;
+    }
+
+    public BigDecimal getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(BigDecimal latitude) {
+        this.latitude = latitude;
     }
 }

@@ -13,7 +13,7 @@ public class UserVO {
     private LocalDateTime createdAt;
 
     /**
-     * unique user name.
+     * user name.
      */
     private String name;
 

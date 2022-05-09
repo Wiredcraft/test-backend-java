@@ -42,6 +42,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				// permit access to some people apis
 				.antMatchers("/api/v1/people", "/api/v1/people/{id}/profile").permitAll()
 
+				// permit access to user apis
+				.antMatchers("/api/v1/users/**").permitAll()
+
 				// all other requests are required to be authenticated.
 				.anyRequest().authenticated()
 				.and()

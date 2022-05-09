@@ -12,6 +12,20 @@ This application let you make friends with people nearby, it has the following f
 
 What is even cooler is that we let you see people nearby as guest!
 
+## Online demo
+
+I've set up a online demo at [http://15.165.161.56/index.html](http://15.165.161.56/index.html)
+
+The following accounts are provided for demo, you can try to sign in with anyone of them or create your own:
+- steve
+- jerry
+- alan
+- james
+- joshua
+- richard
+
+They share the same password `123456`.
+
 ## Tech stack
 
 ### First about backend

@@ -139,6 +139,7 @@ You are free to explore the demo on [http://localhost/index.html](http://localho
 
 ## Caveats & Security
 
+**About Coordinates**
 Most modern browser has a rich set of API, you get coordinates data by calling JS.
 
 But it only works in HTTPS, therefor, for this demo, you have to input your coordinates manually.
@@ -147,3 +148,7 @@ But it only works in HTTPS, therefor, for this demo, you have to input your coor
 
 1. It's typical a bad idea to store credential in VCS, again this is only for demo purpose.
 2. HTTPS will be required for actual application.
+
+**About Lombok**
+
+IDEA CE version seems having issue with lombok, so it's not used in this application.

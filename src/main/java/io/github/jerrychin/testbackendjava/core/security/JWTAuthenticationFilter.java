@@ -68,7 +68,13 @@ public class JWTAuthenticationFilter extends AbstractAuthenticationProcessingFil
 		return getAuthenticationManager().authenticate(new JWTTokenAuthentication(jwtToken));
 	}
 
-	// the token is in the form "Bearer token, we need to remove Bearer word and get only the token
+	/**
+	 *
+	 * the token is in the form "Bearer token, we need to remove Bearer word and get only the token.
+	 *
+	 * @param bearToken the token from authorization header.
+	 * @return token.
+	 */
 	private String extractJwtToken(String bearToken) {
 		if (StringUtils.isBlank(bearToken)) {
 			throw new BadCredentialsException("JWT Token does not begin with Bearer String");

@@ -11,6 +11,9 @@ import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
+/**
+ * Swagger API Docs Configuration
+ */
 @Configuration
 @EnableOpenApi
 public class SwaggerConfig {
@@ -20,6 +23,8 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.OAS_30)
                 .apiInfo(apiInfo()).enable(true)
                 .select()
+
+                // only scan APIs found in the following package
                 .apis(RequestHandlerSelectors.basePackage("io.github.jerrychin"))
                 .paths(PathSelectors.any())
                 .build();

@@ -18,6 +18,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+	/**
+	 * Handle JWT authentication.
+	 */
 	@Autowired
 	private JWTAuthenticationFilter jwtAuthenticationFilter;
 
@@ -38,15 +41,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 				// permit access to some people apis
 				.antMatchers("/api/v1/people", "/api/v1/people/{id}/profile").permitAll()
+
+				// all other requests are required to be authenticated.
 				.anyRequest().authenticated()
 				.and()
+
+				// we're using JWT token, so no session is required.
 				.sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
+
+				// form login is not needed in our case.
 				.formLogin().disable()
 				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 	}
 
+	/**
+	 * Register our request logging filter.
+	 */
 	@Bean
 	public SecurityAwareRequestLoggingFilter requestLoggingFilter() {
 		SecurityAwareRequestLoggingFilter loggingFilter = new SecurityAwareRequestLoggingFilter();

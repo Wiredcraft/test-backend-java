@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Exception handler, converts exception to JSON response.
+ */
 @ControllerAdvice
 public class WebExceptionHandler {
     private final static Logger log = LoggerFactory.getLogger(WebExceptionHandler.class);

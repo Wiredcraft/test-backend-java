@@ -105,7 +105,7 @@ public class PeopleService {
         };
     }
 
-    private Coordinate extractCurrentCoordinate(FindPeopleDTO findPeopleDTO) {
+    Coordinate extractCurrentCoordinate(FindPeopleDTO findPeopleDTO) {
         if(Boolean.TRUE.equals(findPeopleDTO.getNearby()) && findPeopleDTO.getCurrentAccountId() != null) {
 
            User user = userRepository.findUserByAccountId(findPeopleDTO.getCurrentAccountId())

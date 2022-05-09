@@ -73,7 +73,6 @@ The requirements are somewhat discrete, so I decided to design and develop an ap
 more importantly it's actually usable!
 
 ### Model design
-
 [https://www.processon.com/diagraming/61df965a07912973ef20f7af](https://www.processon.com/diagraming/61df965a07912973ef20f7af)
 
 ### Architecture design
@@ -99,25 +98,25 @@ You can quickly start a MySQL database instance by executing the following comma
 docker run --name mysql-server -p3306:3306 -e MYSQL_ROOT_PASSWORD='?2bW$PlGaY@7JKU#xY' -e MYSQL_DATABASE=user_service -e MYSQL_USER=user_service -e MYSQL_PASSWORD='^Mdh2jsk6sh#k2$' -d mysql:8
 ```
 
-上述命令后台启动了一个 8.0 版本的 MySQL 数据库实例，实例信息如下：
+The above command will start a MySQL 8.0 database instance, the instance infomation is as follows:
 
-| 属性    | 值         |
-|-------|-----------|
-| 数据库版本 | MySQL 8.0 |
-| 主机地址  | 127.0.0.1 |
-| 端口    | 3306      |
-| 数据库名称   | user_service       |
-| 用户名     | user_service       |
-| 用户密码    | ^Mdh2jsk6sh#k2$    |
-| root 密码 | ?2bW$PlGaY@7JKU#xY |
+| Property      | Value              |
+|---------------|--------------------|
+| Version       | MySQL 8.0          |
+| Host          | 127.0.0.1          |
+| Port          | 3306               |
+| Database name | user_service       |
+| Username      | user_service       |
+| Password      | ^Mdh2jsk6sh#k2$    |
+| root Password | ?2bW$PlGaY@7JKU#xY |
 
-通过下述指令可以进入容器，以便了解 MySQL 实例情况：
+Use following command to enter MySQL container to inspect MySQL status:
 
 ```shell
 docker exec -it mysql-server /bin/bash
 ```
 
-如果启动异常则可以通过以下指令获取 MySQL 启动日志：
+If there's any problem, you can check out MySQL running log by issuing：
 
 ```shell
 docker logs mysql-server

@@ -9,6 +9,7 @@ import io.github.jerrychin.testbackendjava.mapper.UserMapper;
 import io.github.jerrychin.testbackendjava.repository.PeopleRelationRepository;
 import io.github.jerrychin.testbackendjava.repository.UserRepository;
 import io.github.jerrychin.testbackendjava.util.Coordinate;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -93,7 +94,12 @@ public class PeopleService {
             }
 
             // in case distance data is missing
-            return o1.getName().compareTo(o2.getName());
+            if (StringUtils.isNotBlank(o1.getName()) && StringUtils.isNotBlank(o2.getName())) {
+                return o1.getName().compareTo(o2.getName());
+            }
+
+            // in case name is also missing.
+            return 0;
         };
     }
 

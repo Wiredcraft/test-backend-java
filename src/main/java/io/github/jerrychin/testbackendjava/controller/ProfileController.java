@@ -25,13 +25,13 @@ public class ProfileController {
     }
 
     @ApiOperation("Get Profile")
-    @GetMapping("/")
+    @GetMapping("")
     public UserVO getProfile(@ApiIgnore @AuthenticationPrincipal Account account) {
         return profileService.getProfile(account.getId());
     }
 
     @ApiOperation("Update Profile")
-    @PutMapping("/")
+    @PutMapping("")
     public UserVO updateProfile(@ApiIgnore @AuthenticationPrincipal Account account, @RequestBody UserDTO userDTO) {
        return profileService.updateProfile(account.getId(), userDTO);
     }

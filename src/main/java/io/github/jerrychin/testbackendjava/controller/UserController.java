@@ -8,7 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-@Api(tags="User Profile Management")
+@Api(tags="User Management")
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/users")
@@ -20,25 +20,25 @@ public class UserController {
         this.userService = userService;
     }
 
-    @ApiOperation("Get Profile")
+    @ApiOperation("Get User")
     @GetMapping("/{id}")
     public UserVO getUser(@PathVariable String id) {
         return userService.getUser(id);
     }
 
-    @ApiOperation("Create Profile")
+    @ApiOperation("Create User")
     @PostMapping("")
     public UserVO createUser(@RequestBody UserDTO userDTO) {
         return userService.createUser(userDTO);
     }
 
-    @ApiOperation("Update Profile")
+    @ApiOperation("Update User")
     @PutMapping("/{id}")
     public UserVO updateUser(@PathVariable String id, @RequestBody UserDTO userDTO) {
        return userService.updateUser(id, userDTO);
     }
 
-    @ApiOperation("Delete Profile")
+    @ApiOperation("Delete User")
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable String id) {
         userService.deleteUser(id);

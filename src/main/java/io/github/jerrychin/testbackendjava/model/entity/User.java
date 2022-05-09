@@ -10,6 +10,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+/**
+ * User, also used as Profile (it would be better to create new table).
+ */
 @Entity
 @Table(name = "user")
 public class User {

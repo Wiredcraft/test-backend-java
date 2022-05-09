@@ -81,15 +81,12 @@ public class AccountService {
         return new AccessTokenDTO(token);
     }
 
-    public Account findAccount(Long accountId) {
-        return repository.findById(accountId).orElseThrow(() ->
-                new RestApiException(HttpStatus.BAD_REQUEST, "account not found!"));
-    }
-
     public Account findAccount(String account) {
         return repository.findAccountByAccount(account).orElseThrow(() ->
                 new RestApiException(HttpStatus.BAD_REQUEST, "account not found!"));
     }
 
-
+    public PasswordEncoder encoder() {
+        return encoder;
+    }
 }

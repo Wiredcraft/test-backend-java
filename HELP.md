@@ -1,99 +1,66 @@
 # Wiredcraft Back-end Test Project
 
-This service provides user management feature.
+## What is this about?
 
-## API
+This application let you make friends with people nearby, it has the following features:
 
-### User management
+- See people nearby  (location required)
+- Follow someone you're interested in.
+- Unfollow someone you're no longer interested.
+- Update your profile.
+- Sign in & sign up.
 
-#### Query user
+What is even cooler is that we let you see people nearby as guest!
 
-```
-GET /api/v1/users/{id}
-```
-**Path Variables**
-- id — String, user ID, **required**.
+## Tech stack
 
-#### Create user
+### First about backend
 
-```
-POST /api/v1/users/
-Content-Type: application/json
+**Persistence**
+- Database is MySQL 8.0.
+- [Docker](https://docker.com/) is for quickly setting up database.
+- [Flyway](https://flywaydb.org/documentation/getstarted/firststeps/maven) for database versioning.
 
-{
-    "name":"jerrychin",
-    "dob":"2022-01-01",
-    "address": "your address",
-    "description": "your description"
-}
-```
+**Web framework**
+- [Spring Boot](https://spring.io/projects/spring-boot), provides nice auto configuration features.
+- Spring Web, absolute must-have.
+- [Spring Data JPA](https://spring.io/projects/spring-data-jpa), nice persistence power, requires minimum configuration.
 
-**Request Payload**
-- name — String, username, **required**, max 64 chars.
-- dob — String, date of birth in `yyyy-MM-dd` format, optional,
-- address — String, user address, optional, max 255 chars.
-- description — String, user address, optional, max 255 chars.
+**Authentication & Authorization**
 
-```
-{
-    "id": "3a52917893c14b18b2d7645fd7815886",
-    "name":"jerrychin",
-    "dob":"2022-01-01",
-    "address": "your address",
-    "description": "your description",
-    "createdAt": "2022-05-07 0:0:0"
-}
-```
+We support modern JWT token authentication with HS265 algorithm for better security guarantee.
 
-**Response Payload**
-- id - unique user ID.
-- name — see above.
-- dob — see above.
-- address — see above.
-- description — see above.
-- createdAt — String, user created time in `yyyy-MM-dd hh:mm:ss` format, **required**.
+The secret and token expire time are configurable via `application.properties` file:
 
-#### Update user
+- `security.access-token.expire-hours` Token Expire Time in hours, default is 24 hours.
+- `security.access-token.secret` Secret for HS265, default is I&PYEkqGenob9H$zdwm7$TH6D9i@w&rc
 
-```
-POST /api/v1/users/{id}
-Content-Type: application/json
+- [Spring Security](https://spring.io/projects/spring-security)
+- [Auth0 JWT](https://github.com/auth0/java-jwt)
 
-{
-    "name":"jerrychin",
-    "dob":"2022-01-01",
-    "address": "your address",
-    "description": "your description"
-}
-```
-**Path Variables**
-- id — String, user ID, **required**.
+**API Docs**
 
-**Request Payload**
-Same as above.
+- [SpringFox](https://springfox.github.io/springfox/)
 
-**Response Payload**
-Same as above.
+### First about frond-end
 
-#### Delete user
+- [Vue.js](https://vuejs.org/) 
+- [Element](https://element.eleme.cn/#/zh-CN)
 
-```
-DELETE /api/v1/users/{id}
-```
-**Path Variables**
-- id — String, user ID, **required**.
 
-## 本地运行
 
-## 0. 前置依赖
 
-本地运行前请先安装 [Docker](https://www.docker.com/products/docker-desktop/)。
+## Running in local environment
 
-## 1. 启动数据库
+### 0. Prerequisites
 
-本服务依赖 MySQL 数据库，用于存储用户数据。
+Please install [Docker](https://www.docker.com/products/docker-desktop/) first on your local machine, this is the only prerequisite.
 
-简单起见，本服务使用 Docker 运行 MySQL 数据库，启动命令为：
+### 1. Start MySQL
+
+This application requires MySQL database for user data persistence.
+
+You can quickly start a MySQL database instance by executing the following command:
 
 ```shell
 docker run --name mysql-server -p3306:3306 -e MYSQL_ROOT_PASSWORD='?2bW$PlGaY@7JKU#xY' -e MYSQL_DATABASE=user_service -e MYSQL_USER=user_service -e MYSQL_PASSWORD='^Mdh2jsk6sh#k2$' -d mysql:8
@@ -123,35 +90,26 @@ docker exec -it mysql-server /bin/bash
 docker logs mysql-server
 ```
 
-## 3. 启动应用
+### 3. Boot Application
 
-使用 Idea 或者 Maven 方式启动应用
+Please use your favorite IDE or Maven to boot this application.
 
-## 4. 测试接口是否符合预期
+### 4. API Docs
 
-**查询指定用户的信息**
-```shell
-curl http://localhost/api/v1/users/{id}
-```
+This API uses Swagger for API documentations, the docs is at [http://localhost/swagger-ui/index.html#/](http://localhost/swagger-ui/index.html#/)
 
-**创建用户信息**
-```shell
-curl --header "Content-Type: application/json" \
-  --request POST \
-  --data '{"name":"jerrychin", "dob":"2022-01-01", "address": "address", "description": "description" }' \
-  http://localhost/api/v1/users
-```
+### 5. Demo
 
-**更新用户信息**
-```shell
-curl --header "Content-Type: application/json" \
-  --request PUT \
-  --data '{"name":"jerrychi2", "dob":"2022-01-02", "address": "new address", "description": "new description" }' \
-  http://localhost/api/v1/users/{id}
-```
+For better experience, this application provides a small demo based on Vue.js & Element.io.
 
-**删除用户信息**
-```shell
-curl --request DELETE \
-  http://localhost/api/v1/users/{id}
-```
+You are free to explore the demo on [http://localhost/index.html](http://localhost/index.html)
+
+## Caveats & Security
+
+Most modern browser has a rich set of API, you get coordinates data by calling JS.
+
+But it only works in HTTPS, therefor, for this demo, you have to input your coordinates manually.
+
+**About security.**
+
+It's typical a bad idea to store credential in VCS, again this is only for demo purpose.

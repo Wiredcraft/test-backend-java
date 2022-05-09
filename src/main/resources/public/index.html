@@ -78,7 +78,7 @@
                                 <el-avatar icon="el-icon-user-solid"></el-avatar>
                             </td>
                             <td>
-                                <el-button type="text">{{ user.name }}</el-button>
+                                <el-button type="text" @click="viewProfile(user)">{{ user.name }}</el-button>
                             </td>
                             <td v-if="user.distanceInMeters > 0">
                                 <el-tag effect="plain">{{ user.distanceInMeters }} meters away</el-tag>
@@ -105,7 +105,7 @@
                                 <el-avatar icon="el-icon-user-solid"></el-avatar>
                             </td>
                             <td>
-                                <el-button type="text">{{ user.name }}</el-button>
+                                <el-button type="text" @click="viewProfile(user)">{{ user.name }}</el-button>
                             </td>
                             <td v-if="user.distanceInMeters > 0">
                                 <el-tag effect="plain">{{ user.distanceInMeters }} meters away</el-tag>

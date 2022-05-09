@@ -6,6 +6,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "account")
 public class Account {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -44,5 +45,11 @@ public class Account {
         this.password = password;
     }
 
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id=" + id +
+                '}';
+    }
 
 }

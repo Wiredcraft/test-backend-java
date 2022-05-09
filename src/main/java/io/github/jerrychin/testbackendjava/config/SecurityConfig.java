@@ -1,6 +1,8 @@
 package io.github.jerrychin.testbackendjava.config;
 
+import io.github.jerrychin.testbackendjava.core.security.SecurityAwareRequestLoggingFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -8,7 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import io.github.jerrychin.testbackendjava.core.security.JWTAuthenticationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 
 /**
  * Security related configuration.
@@ -44,5 +45,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.and()
 				.formLogin().disable()
 				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+	}
+
+	@Bean
+	public SecurityAwareRequestLoggingFilter requestLoggingFilter() {
+		SecurityAwareRequestLoggingFilter loggingFilter = new SecurityAwareRequestLoggingFilter();
+		loggingFilter.setIncludeClientInfo(true);
+		loggingFilter.setIncludeQueryString(true);
+
+		// logging payload as well
+		loggingFilter.setIncludePayload(true);
+		loggingFilter.setMaxPayloadLength(64000);
+		return loggingFilter;
 	}
 }

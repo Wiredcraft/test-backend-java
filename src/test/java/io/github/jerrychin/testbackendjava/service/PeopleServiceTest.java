@@ -2,22 +2,29 @@ package io.github.jerrychin.testbackendjava.service;
 
 import io.github.jerrychin.testbackendjava.SampleBaseTestCase;
 import io.github.jerrychin.testbackendjava.model.dto.AccountIdDTO;
+import io.github.jerrychin.testbackendjava.model.dto.FindPeopleDTO;
 import io.github.jerrychin.testbackendjava.model.entity.PeopleRelation;
+import io.github.jerrychin.testbackendjava.model.entity.User;
 import io.github.jerrychin.testbackendjava.model.vo.PeopleVO;
 import io.github.jerrychin.testbackendjava.mapper.UserMapper;
 import io.github.jerrychin.testbackendjava.repository.PeopleRelationRepository;
 import io.github.jerrychin.testbackendjava.repository.UserRepository;
+import io.github.jerrychin.testbackendjava.util.Coordinate;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatcher;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class PeopleServiceTest extends SampleBaseTestCase {
     @Mock private UserMapper userMapper;
@@ -98,6 +105,27 @@ public class PeopleServiceTest extends SampleBaseTestCase {
                 peopleRelation.getFollowingAccountId().equals(accountIdDTO.getAccountId()) &&
                 peopleRelation.getCreatedAt() != null
         ));
+    }
+
+    @Test
+    public void whenExtractCurrentCoordinate_thenFetchFromProfile() {
+
+        FindPeopleDTO findPeopleDTO = new FindPeopleDTO();
+
+        findPeopleDTO.setCurrentAccountId(1L);
+        findPeopleDTO.setNearby(true);
+
+        User user = new User();
+        user.setLongitude(new BigDecimal("123.456"));
+        user.setLatitude(new BigDecimal("789.123"));
+        when(userRepository.findUserByAccountId(findPeopleDTO.getCurrentAccountId())).thenReturn(Optional.of(user));
+
+        Coordinate coordinate = peopleService.extractCurrentCoordinate(findPeopleDTO);
+
+        assertThat(coordinate).isNotNull();
+
+        assertThat(coordinate.longitude).isEqualTo(user.getLongitude());
+        assertThat(coordinate.latitude).isEqualTo(user.getLatitude());
     }
 
 }

@@ -5,8 +5,8 @@ import java.math.BigDecimal;
 public class Coordinate {
 	private static final double EARTH_RADIUS_IN_KM = 6371;
 
-	private final BigDecimal longitude;
-	private final BigDecimal latitude;
+	public final BigDecimal longitude;
+	public final BigDecimal latitude;
 
 	public Coordinate(final BigDecimal longitude, final BigDecimal latitude) {
 		this.longitude = longitude;

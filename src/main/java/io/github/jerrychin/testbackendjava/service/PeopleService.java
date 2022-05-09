@@ -25,6 +25,7 @@ public class PeopleService {
     private static final Logger log = LoggerFactory.getLogger(PeopleService.class);
 
     private final UserMapper userMapper;
+
     private final UserRepository userRepository;
 
     private final PeopleRelationRepository relationRepository;
@@ -39,9 +40,10 @@ public class PeopleService {
     public List<PeopleVO> listPeople(FindPeopleDTO findPeopleDTO) {
         final Set<Long> followingAccountIdSet;
 
+        // find current user's following accounts, empty if not sign in.
         if(findPeopleDTO.getCurrentAccountId() != null) {
-            followingAccountIdSet = relationRepository.findPeopleRelationByCurrentAccountId(
-                            findPeopleDTO.getCurrentAccountId()).stream()
+            followingAccountIdSet = relationRepository
+                    .findPeopleRelationByCurrentAccountId(findPeopleDTO.getCurrentAccountId()).stream()
                     .map(PeopleRelation::getFollowingAccountId).collect(Collectors.toSet());
         } else {
             followingAccountIdSet = Collections.emptySet();
@@ -49,16 +51,16 @@ public class PeopleService {
 
         Coordinate currentCoordinate = extractCurrentCoordinate(findPeopleDTO);
 
-        return StreamSupport.stream(userRepository.findAll().spliterator(), false).filter(
-               user -> !Objects.equals(user.getAccountId(), findPeopleDTO.getCurrentAccountId())).map(user -> {
+        return StreamSupport.stream(userRepository.findAll().spliterator(), false)
+                .filter(user -> !Objects.equals(user.getAccountId(), findPeopleDTO.getCurrentAccountId()))
+                .map(user -> {
+                    PeopleVO peopleVO = userMapper.userToPeopleVO(user, currentCoordinate);
+                    if(findPeopleDTO.getCurrentAccountId() != null) {
+                        peopleVO.setFollowed(followingAccountIdSet.contains(user.getAccountId()));
+                    }
 
-            PeopleVO peopleVO = userMapper.userToPeopleVO(user, currentCoordinate);
-            if(findPeopleDTO.getCurrentAccountId() != null) {
-                peopleVO.setFollowed(followingAccountIdSet.contains(user.getAccountId()));
-            }
-
-            return peopleVO;
-        }).sorted(sortByDistanceAndName()).collect(Collectors.toList());
+                    return peopleVO;
+                }).sorted(sortByDistanceAndName()).collect(Collectors.toList());
     }
 
     public List<PeopleVO> listFollowers(FindPeopleDTO findPeopleDTO) {
@@ -85,7 +87,7 @@ public class PeopleService {
                 .sorted(sortByDistanceAndName()).collect(Collectors.toList());
     }
 
-    private Comparator<PeopleVO> sortByDistanceAndName() {
+    Comparator<PeopleVO> sortByDistanceAndName() {
         return (o1, o2) -> {
 
             // Prefer sorting by distance
@@ -109,8 +111,8 @@ public class PeopleService {
            User user = userRepository.findUserByAccountId(findPeopleDTO.getCurrentAccountId())
                     .orElseThrow(IllegalArgumentException::new);
 
-            if(user.getLatitude() != null && user.getLongitude() != null) {
-                return new Coordinate(user.getLatitude(), user.getLongitude());
+            if(user.getLongitude() != null && user.getLatitude() != null) {
+                return new Coordinate(user.getLongitude(), user.getLatitude());
             }
         }
 

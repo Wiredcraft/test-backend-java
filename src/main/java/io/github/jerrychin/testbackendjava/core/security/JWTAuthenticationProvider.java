@@ -1,7 +1,7 @@
 package io.github.jerrychin.testbackendjava.core.security;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
-import io.github.jerrychin.testbackendjava.entity.Account;
+import io.github.jerrychin.testbackendjava.model.entity.Account;
 import io.github.jerrychin.testbackendjava.service.AccountService;
 import io.github.jerrychin.testbackendjava.service.JWTService;
 import org.slf4j.Logger;

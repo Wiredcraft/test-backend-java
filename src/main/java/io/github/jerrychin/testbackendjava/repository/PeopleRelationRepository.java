@@ -1,6 +1,6 @@
 package io.github.jerrychin.testbackendjava.repository;
 
-import io.github.jerrychin.testbackendjava.entity.PeopleRelation;
+import io.github.jerrychin.testbackendjava.model.entity.PeopleRelation;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

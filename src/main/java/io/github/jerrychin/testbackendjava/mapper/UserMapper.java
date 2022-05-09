@@ -1,9 +1,9 @@
 package io.github.jerrychin.testbackendjava.mapper;
 
-import io.github.jerrychin.testbackendjava.dto.PeopleVO;
-import io.github.jerrychin.testbackendjava.dto.UserDTO;
-import io.github.jerrychin.testbackendjava.dto.UserVO;
-import io.github.jerrychin.testbackendjava.entity.User;
+import io.github.jerrychin.testbackendjava.model.vo.PeopleVO;
+import io.github.jerrychin.testbackendjava.model.dto.UserDTO;
+import io.github.jerrychin.testbackendjava.model.vo.UserVO;
+import io.github.jerrychin.testbackendjava.model.entity.User;
 import io.github.jerrychin.testbackendjava.util.Coordinate;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;

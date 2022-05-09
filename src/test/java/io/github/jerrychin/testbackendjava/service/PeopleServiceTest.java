@@ -1,7 +1,7 @@
 package io.github.jerrychin.testbackendjava.service;
 
 import io.github.jerrychin.testbackendjava.SampleBaseTestCase;
-import io.github.jerrychin.testbackendjava.dto.PeopleVO;
+import io.github.jerrychin.testbackendjava.model.vo.PeopleVO;
 import io.github.jerrychin.testbackendjava.mapper.UserMapper;
 import io.github.jerrychin.testbackendjava.repository.PeopleRelationRepository;
 import io.github.jerrychin.testbackendjava.repository.UserRepository;

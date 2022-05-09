@@ -1,24 +1,34 @@
-package io.github.jerrychin.testbackendjava.dto;
+package io.github.jerrychin.testbackendjava.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class UserVO {
+@Entity
+@Table(name = "user")
+public class User {
 
+    @Id
+    @GenericGenerator(name = "user_id", strategy = "io.github.jerrychin.testbackendjava.generator.UserIdGenerator")
+    @GeneratedValue(generator = "user_id")
     private String id;
 
+    private LocalDateTime createdAt;
+
     /**
-     * name.
+     * unique user name.
      */
     private String name;
 
     /**
      * date of birth.
      */
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dob;
 
     /**
@@ -28,12 +38,14 @@ public class UserVO {
 
     private String description;
 
+    /**
+     * associated account id.
+     */
+    private Long accountId;
+
     private BigDecimal longitude;
 
     private BigDecimal latitude;
-
-    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-    private LocalDateTime createdAt;
 
     public String getId() {
         return id;
@@ -81,6 +93,14 @@ public class UserVO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Long getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(Long accountId) {
+        this.accountId = accountId;
     }
 
     public BigDecimal getLongitude() {

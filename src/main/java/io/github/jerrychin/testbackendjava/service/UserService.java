@@ -1,8 +1,8 @@
 package io.github.jerrychin.testbackendjava.service;
 
-import io.github.jerrychin.testbackendjava.dto.UserDTO;
-import io.github.jerrychin.testbackendjava.dto.UserVO;
-import io.github.jerrychin.testbackendjava.entity.User;
+import io.github.jerrychin.testbackendjava.model.dto.UserDTO;
+import io.github.jerrychin.testbackendjava.model.vo.UserVO;
+import io.github.jerrychin.testbackendjava.model.entity.User;
 import io.github.jerrychin.testbackendjava.exception.RestApiException;
 import io.github.jerrychin.testbackendjava.mapper.UserMapper;
 import io.github.jerrychin.testbackendjava.repository.UserRepository;

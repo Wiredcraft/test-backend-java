@@ -1,4 +1,4 @@
-package io.github.jerrychin.testbackendjava.entity;
+package io.github.jerrychin.testbackendjava.model.entity;
 
 
 import javax.persistence.*;

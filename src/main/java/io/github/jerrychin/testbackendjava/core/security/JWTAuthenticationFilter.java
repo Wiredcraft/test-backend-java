@@ -1,7 +1,7 @@
 package io.github.jerrychin.testbackendjava.core.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.jerrychin.testbackendjava.dto.Response;
+import io.github.jerrychin.testbackendjava.model.vo.ResponseVO;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -40,7 +40,7 @@ public class JWTAuthenticationFilter extends AbstractAuthenticationProcessingFil
 		this.setAuthenticationFailureHandler((request, response, exception) -> {
 			response.addHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
 			response.setStatus(HttpStatus.UNAUTHORIZED.value());
-			objectMapper.writeValue(response.getWriter(), new Response(exception.getMessage()));
+			objectMapper.writeValue(response.getWriter(), new ResponseVO(exception.getMessage()));
 		});
 	}
 

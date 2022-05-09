@@ -1,9 +1,9 @@
-package io.github.jerrychin.testbackendjava.dto;
+package io.github.jerrychin.testbackendjava.model.vo;
 
-public class Response {
+public class ResponseVO {
     private final String message;
 
-    public Response(String message) {
+    public ResponseVO(String message) {
         this.message = message;
     }
 

@@ -1,9 +1,9 @@
 package io.github.jerrychin.testbackendjava.controller;
 
 
-import io.github.jerrychin.testbackendjava.dto.UserDTO;
-import io.github.jerrychin.testbackendjava.dto.UserVO;
-import io.github.jerrychin.testbackendjava.entity.Account;
+import io.github.jerrychin.testbackendjava.model.dto.UserDTO;
+import io.github.jerrychin.testbackendjava.model.vo.UserVO;
+import io.github.jerrychin.testbackendjava.model.entity.Account;
 import io.github.jerrychin.testbackendjava.service.ProfileService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

@@ -1,10 +1,10 @@
 package io.github.jerrychin.testbackendjava.service;
 
-import io.github.jerrychin.testbackendjava.dto.FindPeopleDTO;
-import io.github.jerrychin.testbackendjava.dto.PeopleVO;
-import io.github.jerrychin.testbackendjava.dto.AccountIdDTO;
-import io.github.jerrychin.testbackendjava.entity.PeopleRelation;
-import io.github.jerrychin.testbackendjava.entity.User;
+import io.github.jerrychin.testbackendjava.model.dto.FindPeopleDTO;
+import io.github.jerrychin.testbackendjava.model.vo.PeopleVO;
+import io.github.jerrychin.testbackendjava.model.dto.AccountIdDTO;
+import io.github.jerrychin.testbackendjava.model.entity.PeopleRelation;
+import io.github.jerrychin.testbackendjava.model.entity.User;
 import io.github.jerrychin.testbackendjava.mapper.UserMapper;
 import io.github.jerrychin.testbackendjava.repository.PeopleRelationRepository;
 import io.github.jerrychin.testbackendjava.repository.UserRepository;

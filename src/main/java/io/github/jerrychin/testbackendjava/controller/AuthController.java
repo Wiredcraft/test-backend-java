@@ -1,8 +1,8 @@
 package io.github.jerrychin.testbackendjava.controller;
 
-import io.github.jerrychin.testbackendjava.dto.AccessTokenDTO;
-import io.github.jerrychin.testbackendjava.dto.AccountDTO;
-import io.github.jerrychin.testbackendjava.dto.UserDTO;
+import io.github.jerrychin.testbackendjava.model.dto.AccessTokenDTO;
+import io.github.jerrychin.testbackendjava.model.dto.AccountDTO;
+import io.github.jerrychin.testbackendjava.model.dto.UserDTO;
 import io.github.jerrychin.testbackendjava.exception.RestApiException;
 import io.github.jerrychin.testbackendjava.service.AccountService;
 import io.github.jerrychin.testbackendjava.service.ProfileService;

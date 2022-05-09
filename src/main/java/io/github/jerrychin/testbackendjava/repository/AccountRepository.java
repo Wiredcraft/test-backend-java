@@ -1,7 +1,6 @@
 package io.github.jerrychin.testbackendjava.repository;
 
-import io.github.jerrychin.testbackendjava.entity.Account;
-import io.github.jerrychin.testbackendjava.entity.User;
+import io.github.jerrychin.testbackendjava.model.entity.Account;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;

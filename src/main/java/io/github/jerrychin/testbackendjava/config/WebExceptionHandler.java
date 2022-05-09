@@ -1,6 +1,6 @@
 package io.github.jerrychin.testbackendjava.config;
 
-import io.github.jerrychin.testbackendjava.dto.Response;
+import io.github.jerrychin.testbackendjava.model.vo.ResponseVO;
 import io.github.jerrychin.testbackendjava.exception.RestApiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,14 +21,14 @@ public class WebExceptionHandler {
     @ExceptionHandler(RestApiException.class)
     public ResponseEntity<Object> handleRestApiException(RestApiException exception) {
         HttpStatus httpStatus = exception.getHttpStatus();
-        Response response = new Response(exception.getMessage());
+        ResponseVO response = new ResponseVO(exception.getMessage());
         return new ResponseEntity<>(response, httpStatus);
     }
 
     @ExceptionHandler(Throwable.class)
     public ResponseEntity<Object> handle(HttpServletRequest request, Throwable throwable) {
         log.error("{} {}", request.getMethod(), request.getRequestURI(), throwable);
-        Response response = new Response(throwable.getMessage());
+        ResponseVO response = new ResponseVO(throwable.getMessage());
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

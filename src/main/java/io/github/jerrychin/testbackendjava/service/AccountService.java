@@ -1,8 +1,8 @@
 package io.github.jerrychin.testbackendjava.service;
 
-import io.github.jerrychin.testbackendjava.dto.AccessTokenDTO;
-import io.github.jerrychin.testbackendjava.dto.AccountDTO;
-import io.github.jerrychin.testbackendjava.entity.Account;
+import io.github.jerrychin.testbackendjava.model.dto.AccessTokenDTO;
+import io.github.jerrychin.testbackendjava.model.dto.AccountDTO;
+import io.github.jerrychin.testbackendjava.model.entity.Account;
 import io.github.jerrychin.testbackendjava.exception.RestApiException;
 import io.github.jerrychin.testbackendjava.repository.AccountRepository;
 import org.slf4j.Logger;

@@ -1,4 +1,4 @@
-package io.github.jerrychin.testbackendjava.dto;
+package io.github.jerrychin.testbackendjava.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

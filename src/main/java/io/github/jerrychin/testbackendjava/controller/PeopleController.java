@@ -1,9 +1,12 @@
 package io.github.jerrychin.testbackendjava.controller;
 
 
-import io.github.jerrychin.testbackendjava.dto.*;
-import io.github.jerrychin.testbackendjava.entity.Account;
+import io.github.jerrychin.testbackendjava.model.dto.AccountIdDTO;
+import io.github.jerrychin.testbackendjava.model.dto.FindPeopleDTO;
+import io.github.jerrychin.testbackendjava.model.entity.Account;
 import io.github.jerrychin.testbackendjava.exception.RestApiException;
+import io.github.jerrychin.testbackendjava.model.vo.PeopleVO;
+import io.github.jerrychin.testbackendjava.model.vo.UserVO;
 import io.github.jerrychin.testbackendjava.service.PeopleService;
 import io.github.jerrychin.testbackendjava.service.ProfileService;
 import io.swagger.annotations.Api;
@@ -68,7 +71,7 @@ public class PeopleController {
     @ApiOperation("Find my following.")
     @GetMapping("/following")
     public List<PeopleVO> listFollowing(@ApiIgnore @AuthenticationPrincipal Account account,
-                               @RequestParam(defaultValue = "true") Boolean nearby) {
+                                        @RequestParam(defaultValue = "true") Boolean nearby) {
 
 
         FindPeopleDTO findPeopleDTO = new FindPeopleDTO();

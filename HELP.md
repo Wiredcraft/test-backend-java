@@ -81,6 +81,60 @@ more importantly it's actually usable!
 ### Architecture design
 [https://www.processon.com/view/link/6278d7631efad40df02dd906](https://www.processon.com/view/link/6278d7631efad40df02dd906)
 
+
+### Challenges
+
+#### a complete user auth strategy
+
+This strategy used by this application is stateless JWT token based strategy.
+
+1. First, user sign in with username and password.
+2. If authenticated successfully, an access token will be issued with limit valid time.
+3. Subsequent requests can be made with this access token until it becomes expired.
+
+#### a complete logging strategy
+
+We can implement a filter to intercept all requests and log them, luckily we don't have to do it from scratch.
+
+Spring provides `AbstractRequestLoggingFilter` class, I can easily implement my logging strategy by simply extending it, 
+and pass request message to SLJ4J.
+
+#### followers/following list
+
+We need a table X for storing this kind of relationship, noting who follows who.
+
+```sql
+create table people_relation
+(
+    id                   bigint   not null,
+    current_account_id bigint   not null,
+    created_at           datetime null,
+    following_account_id  bigint   not null,
+    constraint people_relation_pk
+        primary key (id)
+)
+    comment 'store following and follower relationships between people.';
+```
+
+Find current user's followers:
+```sql
+select current_account_id from people_relation where following_account_id = ?
+```
+
+Find current user's following:
+```sql
+select following_account_id from people_relation where current_account_id = ?
+```
+
+#### return the nearby friends
+
+the core algorithm is how to calculate the distance between two coordinates.
+
+This algorithm is relatively common, can be found at: [https://stackoverflow.com/questions/365826/calculate-distance-between-2-gps-coordinates](https://stackoverflow.com/questions/365826/calculate-distance-between-2-gps-coordinates)
+
+My implementation is `Coordinate`.
+
+
 ### Implications
 
 The actual implementation may differ from the requirements.

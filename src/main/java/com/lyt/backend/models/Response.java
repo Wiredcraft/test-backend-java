@@ -1,9 +1,14 @@
 package com.lyt.backend.models;
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class Response {
+    @ApiModelProperty(required = true)
     private boolean succeed;
+    @ApiModelProperty(required = true, value = "Message of remote server given")
     private String message;
 
+    @ApiModelProperty(value = "User returned")
     private User data;
 
     public boolean isSucceed() {

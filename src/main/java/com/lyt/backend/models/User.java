@@ -1,6 +1,7 @@
 package com.lyt.backend.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
@@ -26,30 +27,36 @@ public class User {
     //now assume it's self-incrementing int
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @ApiModelProperty(required = true)
     private Integer id;
 
 
     @NotEmpty
     @Column(nullable = false)
     @ColumnDefault("''")
+    @ApiModelProperty(value = "Name of user", required = true)
     private String name;
 
     //private String password;
 
     @Column(nullable = false)
     @ColumnDefault("current_timestamp")
+    @ApiModelProperty(value = "Date of birth of user")
     private Date dob;
 
     @Column(nullable = false)
     @ColumnDefault("''")
+    @ApiModelProperty(value = "Address of user")
     private String address;
 
     @Column(nullable = false)
     @ColumnDefault("''")
+    @ApiModelProperty(value = "Description of user")
     private String description;
 
     @Column(nullable = false)
     @ColumnDefault("current_timestamp")
+    @ApiModelProperty(value = "Time the user was created", required = true)
     private Date createdAt;
 
     public Integer getId() {

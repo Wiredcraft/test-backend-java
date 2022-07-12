@@ -1,4 +1,4 @@
-package com.lyt.backend.utils;
+package com.lyt.backend.configurations;
 
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;

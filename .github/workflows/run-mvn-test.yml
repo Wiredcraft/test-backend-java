@@ -9,6 +9,6 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'adopt-hotspot'
-          node-version: '18'
+          java-version: '18'
       - name: Test with maven
         run: mvn test --file pom.xml

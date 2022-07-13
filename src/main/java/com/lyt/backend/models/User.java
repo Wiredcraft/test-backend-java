@@ -25,7 +25,7 @@ import java.util.Date;
 public class User {
     //now assume it's self-incrementing int
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ApiModelProperty(required = true)
     private Integer id;
 

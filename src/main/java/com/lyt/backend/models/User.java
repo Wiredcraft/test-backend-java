@@ -38,7 +38,7 @@ public class User {
 
     //private String password;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "timestamp")
     @ColumnDefault("current_timestamp")
     @ApiModelProperty(value = "Date of birth of user")
     private Date dob;
@@ -53,7 +53,7 @@ public class User {
     @ApiModelProperty(value = "Description of user")
     private String description;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "timestamp")
     @ColumnDefault("current_timestamp")
     @ApiModelProperty(value = "Time the user was created", required = true)
     private Date createdAt;

@@ -15,9 +15,9 @@ persistance用Spring data JPA
 测试框架选择JUnit4  
 如果需要mock就加个Mockito  
 CI选择Github Actions  
-部署选择阿里云/AWS
+部署选择AWS
 DB选择：用RDBMS就行，当然文档存储也不是不可以（以用户名为key，但这样就不允许重名)。  
-目前选择最熟悉的RDBMS(本地用sqlite，云上用Mysql/RDS，视厂商提供而定)。  
+目前选择最熟悉的RDBMS(本地用H2, AWS用RDS/Mysql)。  
 文档/API设计选择用swagger，这样可以把文档直接写在代码里面，用annotation表示，可以生成为html代码。   
 
 Entity设计:  

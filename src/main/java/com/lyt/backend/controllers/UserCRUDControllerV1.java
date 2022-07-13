@@ -190,4 +190,9 @@ public class UserCRUDControllerV1 {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @RequestMapping(value = "/health", method = {RequestMethod.GET})
+    public ResponseEntity health() {
+        return ResponseEntity.ok().build();
+    }
 }

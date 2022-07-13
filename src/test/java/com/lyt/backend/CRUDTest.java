@@ -1,11 +1,9 @@
 package com.lyt.backend;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lyt.backend.models.Response;
 import com.lyt.backend.models.User;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.junit.platform.commons.annotation.Testable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -13,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Date;
 
@@ -59,15 +58,14 @@ public class CRUDTest {
     @Test
     @Order(value = 1)
     public void testRetrieveAfterInsert() throws Exception {
-        mockMvc.perform(
+        Response response = om.readValue(mockMvc.perform(
                 get("/v1/users/2")
-        ).andDo(print()).andExpect(status().isOk()).andExpectAll(
-                jsonPath("$.data.name", String.class).value("李四"),
-                jsonPath("$.data.dob").value("1992-04-05T00:00:00.000+08:00"),
-                jsonPath("$.data.id").value(2),
-                jsonPath("$.data.address").value("北京市 昌平区 XXX XXX"),
-                jsonPath("$.data.description").value("123456789")
-        );
+        ).andDo(print()).andExpect(status().isOk()).andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8), Response.class);
+        Assertions.assertEquals(response.getData().getName(), "李四");
+        Assertions.assertEquals(response.getData().getDob(), Date.from(Instant.parse("1992-04-05T00:00:00.000+08:00")));
+        Assertions.assertEquals(response.getData().getId(), 2);
+        Assertions.assertEquals(response.getData().getAddress(), "北京市 昌平区 XXX XXX");
+        Assertions.assertEquals(response.getData().getDescription(), "123456789");
         mockMvc.perform(
                 get("/v1/users/3")
         ).andExpect(status().isNotFound());
@@ -86,15 +84,14 @@ public class CRUDTest {
         ).andDo(print()).andExpect(status().isCreated()).andExpect(
                 jsonPath("$.data.id").value(1)
         );
-        mockMvc.perform(
+        Response response = om.readValue(mockMvc.perform(
                 get("/v1/users/1")
-        ).andDo(print()).andExpect(status().isOk()).andExpectAll(
-                jsonPath("$.data.name", String.class).value("王五"),
-                jsonPath("$.data.dob").value("1993-02-09T00:00:00.000+08:00"),
-                jsonPath("$.data.id").value(1),
-                jsonPath("$.data.address").value("河南省 郑州市 郑东新区 XXXX"),
-                jsonPath("$.data.description").value("今天天气不行")
-        );
+        ).andDo(print()).andExpect(status().isOk()).andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8), Response.class);
+        Assertions.assertEquals(response.getData().getName(), "王五");
+        Assertions.assertEquals(response.getData().getDob(), Date.from(Instant.parse("1993-02-09T00:00:00.000+08:00")));
+        Assertions.assertEquals(response.getData().getId(), 1);
+        Assertions.assertEquals(response.getData().getAddress(), "河南省 郑州市 郑东新区 XXXX");
+        Assertions.assertEquals(response.getData().getDescription(), "今天天气不行");
         entityToUpdate.setId(10);
         mockMvc.perform(
                 post("/v1/users/update").contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsString(entityToUpdate))

@@ -1,19 +1,19 @@
-name: push-to-ecr
-on: [push]
-jobs:
-  build-and-push:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Build and Push to AWS ECR
-        uses: kciter/aws-ecr-action@v3
-        with:
-          access_key_id: ${{ secrets.AWS_ACCESSKEY_ID }}
-          secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          account_id: ${{ secrets.AWS_ACCOUNT_ID }}
-          repo: wiredcraft-homework
-          region: us-east-1
-          tags: latest,${{ github.sha }}
-          create_repo: false
-          image_scanning_configuration: true
-          set_repo_policy: false
+#name: push-to-ecr
+#on: [push]
+#jobs:
+#  build-and-push:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v3
+#      - name: Build and Push to AWS ECR
+#        uses: kciter/aws-ecr-action@v3
+#        with:
+#          access_key_id: ${{ secrets.AWS_ACCESSKEY_ID }}
+#          secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#          account_id: ${{ secrets.AWS_ACCOUNT_ID }}
+#          repo: wiredcraft-homework
+#          region: us-east-1
+#          tags: latest,${{ github.sha }}
+#          create_repo: false
+#          image_scanning_configuration: true
+#          set_repo_policy: false

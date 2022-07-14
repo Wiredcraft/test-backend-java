@@ -13,6 +13,7 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -52,7 +53,7 @@ public class TestUserInfoController {
     @Order(value = 2)
     @WithUserDetails("李四")
     public void testUpdateMyInfo2() throws Exception {
-        mockMvc.perform(post("/v1/user?address=北京市朝阳区XXX")).andDo(print())
+        mockMvc.perform(post("/v1/user?address=北京市朝阳区XXX&dateOfBirth=2022-02-24T00:00:00Z")).andDo(print())
                 .andExpect(status().isCreated());
     }
 
@@ -67,5 +68,6 @@ public class TestUserInfoController {
         Response response1 = om.readValue(mockMvc.perform(get("/v1/user/李四")).andExpect(status().isOk())
                 .andDo(print()).andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8), Response.class);
         Assertions.assertEquals(response1.getData().getAddress(), "北京市朝阳区XXX");
+        Assertions.assertEquals(response1.getData().getDob().toInstant(), Instant.parse("2022-02-24T08:00:00+08:00"));
     }
 }

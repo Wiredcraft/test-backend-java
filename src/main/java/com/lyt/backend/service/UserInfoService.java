@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 /**
  * Service to handle retrieving and updating user info.
  */
@@ -25,6 +27,7 @@ public class UserInfoService {
             userInfoDTO.setName(info.getName());
             userInfoDTO.setId(info.getId());
             userInfoDTO.setAddress(userPersonalInfo.getAddress());
+            userInfoDTO.setDob(userPersonalInfo.getDob());
             userInfoDTO.setDescription(userPersonalInfo.getDescription());
             userInfoDTO.setCreatedAt(userPersonalInfo.getCreatedAt());
             userInfoDTO.setUpdatedAt(userPersonalInfo.getUpdatedAt());
@@ -33,7 +36,7 @@ public class UserInfoService {
         }).orElseThrow(() -> new UsernameNotFoundException(userName));
     }
 
-    public void updateAddressAndDescription(String username, String newAddress, String newDescription) {
+    public void updateAddressAndDescriptionAndDob(String username, String newAddress, String newDescription, Date dateOfBirth) {
         userPasswordRepository.findByName(username).map(info -> {
             UserPersonalInfo userPersonalInfo = userInfoRepository.findById(info.getId()).get();
             if(newAddress != null) {
@@ -41,6 +44,9 @@ public class UserInfoService {
             }
             if(newDescription != null) {
                 userPersonalInfo.setDescription(newDescription);
+            }
+            if(dateOfBirth != null) {
+                userPersonalInfo.setDob(dateOfBirth);
             }
             userInfoRepository.save(userPersonalInfo);
             return userPersonalInfo;

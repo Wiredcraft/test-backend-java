@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.time.Instant;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/v1")
@@ -57,17 +60,23 @@ public class UserInfoControllerV1 {
             summary = "Update description and address of user",
             parameters = {
                     @Parameter(name = "description", in = ParameterIn.QUERY, description = "the description of user"),
-                    @Parameter(name = "address", in = ParameterIn.QUERY, description = "the address of user")
+                    @Parameter(name = "address", in = ParameterIn.QUERY, description = "the address of user"),
+                    @Parameter(name = "date of birth", in = ParameterIn.QUERY, description = "the date of birth of user",
+                            examples = {@ExampleObject(description = "2022-02-24T00:00:00Z")})
+
 
             },
             responses = {@ApiResponse(responseCode = "201", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Response.class))}),
                     @ApiResponse(responseCode = "401")}
     )
     @RequestMapping(value = "user", method = {RequestMethod.POST})
-    public ResponseEntity<Response> updateUser(@RequestParam(required = false) String address, @RequestParam(required = false) String description) {
+    public ResponseEntity<Response> updateUser(@RequestParam(required = false) String address,
+                                               @RequestParam(required = false) String description,
+                                               @RequestParam(required = false) String dateOfBirth) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (address != null || description != null) {
-            userInfoService.updateAddressAndDescription(userDetails.getUsername(), address, description);
+        if (address != null || description != null || dateOfBirth != null) {
+            userInfoService.updateAddressAndDescriptionAndDob(userDetails.getUsername(), address,
+                    description, dateOfBirth != null ? Date.from(Instant.parse(dateOfBirth)) : null);
         }
         return ResponseEntity.created(URI.create("./v1/users/"))
                 .body(Response.ofSucceed(ResponseMessage.SUCCEED_UPDATED_USER_INFO.message, null));

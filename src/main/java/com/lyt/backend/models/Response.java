@@ -9,7 +9,7 @@ public class Response {
     private String message;
 
     @ApiModelProperty(value = "User returned")
-    private User data;
+    private UserInfoDTO data;
 
     public boolean isSucceed() {
         return succeed;
@@ -20,7 +20,7 @@ public class Response {
         return message;
     }
 
-    public static  Response ofSucceed(String message, User data) {
+    public static  Response ofSucceed(String message, UserInfoDTO data) {
         Response response = new Response();
         response.message = message;
         response.succeed = true;
@@ -35,7 +35,7 @@ public class Response {
         return response;
     }
 
-    public User getData() {
+    public UserInfoDTO getData() {
         return data;
     }
 }

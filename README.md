@@ -1,5 +1,7 @@
 # Wiredcraft Back-end Developer Test
 
+[VISIT HERE FOR DOCS AND YOU CAN TEST API WITH SWAGGER](http://lb-wiredcraft-test-backend-1747272980.us-east-1.elb.amazonaws.com/swagger-ui/index.html)
+
 Make sure you read the whole document carefully and follow the guidelines in it.
 
 ## Context

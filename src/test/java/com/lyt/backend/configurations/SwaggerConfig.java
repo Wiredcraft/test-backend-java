@@ -1,7 +1,7 @@
 package com.lyt.backend.configurations;
 
 import com.fasterxml.classmate.TypeResolver;
-import com.lyt.backend.models.User;
+import com.lyt.backend.models.UserPersonalInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,18 +17,13 @@ import springfox.documentation.builders.ResponseBuilder;
 import springfox.documentation.oas.annotations.EnableOpenApi;
 import springfox.documentation.schema.Example;
 import springfox.documentation.schema.WildcardType;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.ApiKey;
-import springfox.documentation.service.AuthorizationScope;
-import springfox.documentation.service.SecurityReference;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger.web.*;
 
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.List;
 
 import static java.util.Collections.singletonList;
 import static springfox.documentation.schema.AlternateTypeRules.newRule;
@@ -41,7 +36,7 @@ import static springfox.documentation.schema.AlternateTypeRules.newRule;
 @EnableOpenApi
 public class SwaggerConfig {
     @Bean
-    public Docket petApi() {
+    public Docket api() {
         return new Docket(DocumentationType.OAS_30)
                 .enable(true)
                 .select()
@@ -121,9 +116,9 @@ public class SwaggerConfig {
                                         code("404").
                                         description("The user requested is not found").build()
                         ))
-                .securitySchemes(singletonList(apiKey()))
+                .securitySchemes(singletonList(basicAuthScheme()))
                 .securityContexts(singletonList(securityContext()))
-                .enableUrlTemplating(true)
+                //.enableUrlTemplating(true)
                 /*
                 .globalRequestParameters(
                         singletonList(new springfox.documentation.builders.RequestParameterBuilder()
@@ -134,7 +129,7 @@ public class SwaggerConfig {
                                 .query(q -> q.model(m -> m.scalarModel(ScalarType.STRING)))
                                 .build()))
                  */
-                .additionalModels(typeResolver.resolve(User.class));
+                .additionalModels(typeResolver.resolve(UserPersonalInfo.class));
     }
 
     private ApiInfo apiInfo() {
@@ -148,58 +143,20 @@ public class SwaggerConfig {
     @Autowired
     private TypeResolver typeResolver;
 
-    private ApiKey apiKey() {
-        return new ApiKey("mykey", "api_key", "header");
-    }
-
     private SecurityContext securityContext() {
         return SecurityContext.builder()
-                .securityReferences(defaultAuth())
-                .forPaths(PathSelectors.regex("/anyPath.*"))
+                .securityReferences(Arrays.asList(basicAuthReference()))
+                .forPaths(PathSelectors.ant("/v1/user"))
+                .forPaths(PathSelectors.ant("/"))
+
                 .build();
     }
 
-    List<SecurityReference> defaultAuth() {
-        AuthorizationScope authorizationScope
-                = new AuthorizationScope("global", "accessEverything");
-        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
-        authorizationScopes[0] = authorizationScope;
-        return singletonList(
-                new SecurityReference("mykey", authorizationScopes));
+    private SecurityScheme basicAuthScheme() {
+        return new BasicAuth("basicAuth");
     }
 
-    @Bean
-    SecurityConfiguration security() {
-        return SecurityConfigurationBuilder.builder()
-                .clientId("test-app-client-id")
-                .clientSecret("test-app-client-secret")
-                .realm("test-app-realm")
-                .appName("test-app")
-                .scopeSeparator(",")
-                .additionalQueryStringParams(null)
-                .useBasicAuthenticationWithAccessCodeGrant(false)
-                .enableCsrfSupport(false)
-                .build();
-    }
-
-    @Bean
-    UiConfiguration uiConfig() {
-        return UiConfigurationBuilder.builder()
-                .deepLinking(true)
-                .displayOperationId(false)
-                .defaultModelsExpandDepth(1)
-                .defaultModelExpandDepth(1)
-                .defaultModelRendering(ModelRendering.EXAMPLE)
-                .displayRequestDuration(false)
-                .docExpansion(DocExpansion.NONE)
-                .filter(false)
-                .maxDisplayedTags(null)
-                .operationsSorter(OperationsSorter.ALPHA)
-                .showExtensions(false)
-                .showCommonExtensions(false)
-                .tagsSorter(TagsSorter.ALPHA)
-                .supportedSubmitMethods(UiConfiguration.Constants.DEFAULT_SUBMIT_METHODS)
-                .validatorUrl(null)
-                .build();
+    private SecurityReference basicAuthReference() {
+        return new SecurityReference("basicAuth", new AuthorizationScope[0]);
     }
 }

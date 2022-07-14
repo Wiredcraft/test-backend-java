@@ -1,11 +1,12 @@
 package com.lyt.backend.models;
 
-import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
@@ -21,42 +22,31 @@ import java.util.Date;
  */
 @Entity
 @DynamicInsert
-@Table(name = "user_table")
-public class User {
+@Table(name = "user_personal_info_table")
+public class UserPersonalInfo {
     //now assume it's self-incrementing int
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ApiModelProperty(required = true)
     private Integer id;
-
-
-    @NotEmpty
-    @Column(nullable = false)
-    @ColumnDefault("''")
-    @ApiModelProperty(value = "Name of user", required = true)
-    private String name;
-
-    //private String password;
 
     @Column(nullable = false, columnDefinition = "timestamp")
     @ColumnDefault("current_timestamp")
-    @ApiModelProperty(value = "Date of birth of user")
     private Date dob;
 
     @Column(nullable = false)
     @ColumnDefault("''")
-    @ApiModelProperty(value = "Address of user")
     private String address;
 
     @Column(nullable = false)
     @ColumnDefault("''")
-    @ApiModelProperty(value = "Description of user")
     private String description;
 
     @Column(nullable = false, columnDefinition = "timestamp")
     @ColumnDefault("current_timestamp")
-    @ApiModelProperty(value = "Time the user was created", required = true)
     private Date createdAt;
+
+    @Column(nullable = false, columnDefinition = "timestamp")
+    @ColumnDefault("current_timestamp")
+    private Date updatedAt;
 
     public Integer getId() {
         return id;
@@ -64,14 +54,6 @@ public class User {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Date getDob() {
@@ -104,5 +86,13 @@ public class User {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false" scan="true" scanPeriod="5 minutes">
+
+    <property name="BASE_PATH" value="/opt/log/myUser"/>
+
+    <property name="INFO_FILE" value="${BASE_PATH}/info"/>
+    <property name="ERROR_FILE" value="${BASE_PATH}/error"/>
+
+    <property name="LOG_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} %X{remoteAddr} %X{hostname} [%thread] %-5level %logger{50} %X{traceId} %X{uuid} - %msg%n"/>
+    <property name="CHARSET" value="utf8"/>
+    <property name="MAX_FILE_SIZE" value="50MB"/>
+    <property name="MAX_HISTORY" value="60"/>
+    <property name="TOTAL_SIZE_CAP" value="20GB"/>
+    <property name="ROLL_FILE_PATTERN" value="%d{yyyy-MM-dd}-%i.log.gz"/>
+
+    <!-- console appender-->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>${CHARSET}</charset>
+        </encoder>
+    </appender>
+
+    <!-- info log appender-->
+    <appender name="infoFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>${CHARSET}</charset>
+        </encoder>
+        <file>${INFO_FILE}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${INFO_FILE}/${ROLL_FILE_PATTERN}</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+    </appender>
+
+    <!-- error log appender-->
+    <appender name="errorFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>${CHARSET}</charset>
+        </encoder>
+        <file>${ERROR_FILE}.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${ERROR_FILE}/${ROLL_FILE_PATTERN}</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="console"/>
+        <appender-ref ref="infoFile"/>
+        <appender-ref ref="errorFile"/>
+    </root>
+
+    <logger level="DEBUG" name="com.coffee" additivity="false">
+        <appender-ref ref="infoFile"/>
+        <appender-ref ref="errorFile"/>
+    </logger>
+
+    <logger level="INFO" name="org.springframework.boot" additivity="false">
+        <appender-ref ref="infoFile"/>
+    </logger>
+
+    <logger level="INFO" name="org.springframework.web" additivity="false">
+        <appender-ref ref="infoFile"/>
+    </logger>
+
+</configuration>

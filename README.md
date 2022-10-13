@@ -1,3 +1,28 @@
+# How to Run
+db type: mysql
+db user: root
+db password: 123456
+db name: wiredcraft
+db init sql:
+CREATE TABLE `user` (
+`id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'user ID',
+`name` varchar(20) COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'user name',
+`dob` date DEFAULT NULL COMMENT 'date of birth',
+`address` varchar(40) COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'user address',
+`description` varchar(40) COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'user description',
+`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'user created date',
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+# cmd
+mvn spring-boot:run -D"spring-boot.run.profiles"=dev
+
+# API DOC URL
+http://localhost:8080/api/swagger-ui.html
+
+
+
+
 # Wiredcraft Back-end Developer Test
 
 Make sure you read the whole document carefully and follow the guidelines in it.

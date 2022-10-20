@@ -1,5 +1,6 @@
 package com.wiredcraft.user.service;
 
+import com.wiredcraft.common.ServiceException;
 import com.wiredcraft.user.entity.UserInfo;
 import com.wiredcraft.user.model.UserInfoDTO;
 import com.wiredcraft.user.model.UserInfoVO;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -19,15 +21,15 @@ import java.util.UUID;
 public class UserInfoService {
     private final UserInfoRepository userInfoRepository;
 
-    public void createUser(UserInfoDTO userInfoDTO) {
+    public String createUser(UserInfoDTO userInfoDTO) {
         UserInfo userInfo = UserInfoDTO.convertUserInfo(userInfoDTO);
         userInfo.setUuid(UUID.randomUUID().toString());
-        userInfoRepository.save(userInfo);
+        return userInfoRepository.save(userInfo).getUuid();
     }
 
 
     public void updateUser(UserInfoDTO userInfoDTO) {
-        UserInfo userInfo = userInfoRepository.findByUuid(userInfoDTO.getAddress());
+        UserInfo userInfo = userInfoRepository.findByUuid(userInfoDTO.getUuid());
         userInfo.setAddress(userInfo.getAddress());
         userInfo.setName(userInfo.getName());
         userInfo.setDob(userInfo.getDob());
@@ -37,16 +39,20 @@ public class UserInfoService {
 
     public void deleteUser(String uuid) {
         UserInfo userInfo = userInfoRepository.findByUuid(uuid);
+        if (Objects.isNull(userInfo)) {
+            throw new ServiceException(-1, "user is not existed..");
+        }
         userInfo.setIsDeleted(true);
         userInfoRepository.save(userInfo);
     }
 
     public UserInfoVO queryByUuid(String uuid) {
         UserInfo userInfo = userInfoRepository.findByUuid(uuid);
+        if (Objects.isNull(userInfo)) {
+            throw new ServiceException(-1, "user is not existed..");
+        }
         return UserInfoVO.convertTOVo(userInfo);
     }
-
-
 
 
     public void saveUser() {

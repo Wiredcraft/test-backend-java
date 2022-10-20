@@ -16,5 +16,6 @@ spring:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5Dialect
     hibernate:
+      ddl-auto: update
       naming:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl

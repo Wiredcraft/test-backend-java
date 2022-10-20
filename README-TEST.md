@@ -3,8 +3,9 @@
 I am glad if you use mvn install in the first place because it's a maven project with children module. Plus, I build 
 the project by spring-boot framework, and I use jpa to operate database. I am sure you guys are good at this. Other than
 that, I supply test cases for api I supplied base `userInfoService`. And I chose H2 database as a test data source,so 
-you can run any case without extra config.
-
+you can run any case without extra config. 
+##tips
+you can find init sql script here. **src/main/resources/data.sql**
 ## how to run this application
 I guess the key point is that you need to replace your own mysql link,username and password. And I reaffirm that it's 
 the only thing you need to do or else you might fail to run this application. After that, Run Application you can see

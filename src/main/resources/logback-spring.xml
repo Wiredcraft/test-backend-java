@@ -47,4 +47,11 @@
         <appender-ref ref="SYSTEM_ERROR_FILE" />
         <appender-ref ref="SYSTEM_INFO_FILE" />
     </root>
+
+    <logger name="com.craig.user.mapper.UserFollowerMapper">
+        <level value="debug" />
+    </logger>
+    <logger name="com.craig.user.mapper.UserMapper">
+        <level value="debug" />
+    </logger>
 </configuration>

@@ -28,8 +28,9 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<UserDetailModel> getUserDetail(@PathVariable("userId") Long userId,
-            @RequestParam(value = "getFollower", required = false) Boolean getFollower) {
-        UserDetailModel model = userService.getUserDetail(userId, getFollower);
+            @RequestParam(value = "getFollower", required = false) Boolean getFollower,
+            @RequestParam(value = "getFollowing", required = false) Boolean getFollowing) {
+        UserDetailModel model = userService.getUserDetail(userId, getFollower, getFollowing);
         if (model == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }

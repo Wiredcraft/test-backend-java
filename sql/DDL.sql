@@ -16,7 +16,7 @@ CREATE TABLE
         PRIMARY KEY (`id`)
     ) COMMENT 'user table';
 
-CREATE TABLE t_user_following(
+CREATE TABLE t_user_follower(
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'primary key',
     `user_id` BIGINT UNSIGNED NOT NULL COMMENT 't_user.id',
     `follower_id` BIGINT UNSIGNED NOT NULL COMMENT 'follower_id reference to t_user.id',

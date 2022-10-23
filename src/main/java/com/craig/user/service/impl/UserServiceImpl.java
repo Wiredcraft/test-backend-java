@@ -8,15 +8,19 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.craig.user.entity.User;
-import com.craig.user.entity.dto.SimpleUserFollowerDto;
+import com.craig.user.entity.UserFollower;
+import com.craig.user.entity.dto.SimpleFollowerDto;
+import com.craig.user.entity.dto.SimpleFollowingDto;
+import com.craig.user.model.FollowerModel;
 import com.craig.user.model.PageResult;
 import com.craig.user.model.UserDetailModel;
-import com.craig.user.model.UserFollowerModel;
+import com.craig.user.model.SimpleUserModel;
 import com.craig.user.model.UserModel;
 import com.craig.user.model.UserQueryModel;
-import com.craig.user.repository.UserFollowingRepository;
+import com.craig.user.repository.UserFollowerRepository;
 import com.craig.user.repository.UserRepository;
 import com.craig.user.service.UserService;
 
@@ -30,10 +34,10 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private UserFollowingRepository userFollowingRepository;
+    private UserFollowerRepository userFollowerRepository;
 
     @Override
-    public UserDetailModel getUserDetail(Long userId, Boolean getFollower) {
+    public UserDetailModel getUserDetail(Long userId, Boolean getFollower, Boolean getFollowing) {
         User user = userRepository.getUser(userId);
         if (user == null) {
             log.warn("get null user, userId:", userId);
@@ -44,15 +48,46 @@ public class UserServiceImpl implements UserService {
         BeanUtils.copyProperties(user, detailModel);
 
         if (getFollower != null && getFollower) {
-            List<SimpleUserFollowerDto> followerDto = userFollowingRepository.getFollowers(userId);
-            detailModel.setFollowers(followerDto.stream().map(c -> {
-                UserFollowerModel followerModel = new UserFollowerModel();
-                BeanUtils.copyProperties(c, followerModel);
-                return followerModel;
-            }).collect(Collectors.toList()));
+            List<SimpleUserModel> followerModels = getFollowers(userId);
+            detailModel.setFollowers(followerModels);
+        }
+
+        if (getFollowing != null && getFollowing) {
+            List<SimpleUserModel> followingModels = getFollowings(userId);
+            detailModel.setFollowing(followingModels);
         }
 
         return detailModel;
+    }
+
+    @Override
+    public List<SimpleUserModel> getFollowings(Long userId) {
+        List<SimpleFollowingDto> followingDto = userFollowerRepository.getFollowings(userId);
+        if (CollectionUtils.isEmpty(followingDto)) {
+            return null;
+        }
+        List<SimpleUserModel> followingModels = followingDto.stream().map(c -> {
+            SimpleUserModel followerModel = new SimpleUserModel();
+            followerModel.setUserId(c.getFollowingId());
+            followerModel.setUserName(c.getFollowingName());
+            return followerModel;
+        }).collect(Collectors.toList());
+        return followingModels;
+    }
+
+    @Override
+    public List<SimpleUserModel> getFollowers(Long userId) {
+        List<SimpleFollowerDto> followerDto = userFollowerRepository.getFollowers(userId);
+        if (CollectionUtils.isEmpty(followerDto)) {
+            return null;
+        }
+        List<SimpleUserModel> followerModels = followerDto.stream().map(c -> {
+            SimpleUserModel followerModel = new SimpleUserModel();
+            followerModel.setUserId(c.getFollowerId());
+            followerModel.setUserName(c.getFollowerName());
+            return followerModel;
+        }).collect(Collectors.toList());
+        return followerModels;
     }
 
     @Override
@@ -116,6 +151,38 @@ public class UserServiceImpl implements UserService {
             return false;
         }
         userRepository.deleteUser(user);
+        return true;
+    }
+
+    @Override
+    public FollowerModel addFollowers(Long userId, Long followerId) {
+        User user = userRepository.getUser(userId);
+        if (user == null) {
+            return null;
+        }
+
+        UserFollower existRecord = userFollowerRepository.getRecord(userId, followerId);
+        if (existRecord != null) {
+            //deal with existRecord, for idempotent
+            FollowerModel model = new FollowerModel();
+            BeanUtils.copyProperties(existRecord, model);
+            return model;
+        }
+
+        UserFollower userFollower = userFollowerRepository.addUserFollower(userId, followerId);
+
+        FollowerModel model = new FollowerModel();
+        BeanUtils.copyProperties(userFollower, model);
+        return model;
+    }
+
+    @Override
+    public Boolean deleteFollower(Long userId, Long follwerId) {
+        UserFollower record = userFollowerRepository.getRecord(userId, follwerId);
+        if (record == null) {
+            return false;
+        }
+        userFollowerRepository.delete(record);
         return true;
     }
 

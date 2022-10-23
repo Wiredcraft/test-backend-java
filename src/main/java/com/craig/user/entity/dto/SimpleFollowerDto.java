@@ -1,9 +1,9 @@
-package com.craig.user.model;
+package com.craig.user.entity.dto;
 
 import lombok.Data;
 
 @Data
-public class UserFollowerModel {
+public class SimpleFollowerDto {
     private Long followerId;
 
     private String followerName;

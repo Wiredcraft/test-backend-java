@@ -9,8 +9,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 @Data
-@TableName("t_user_following")
-public class UserFollowing {
+@TableName("t_user_follower")
+public class UserFollower {
     @TableId(type = IdType.AUTO)
     private Long id;
 

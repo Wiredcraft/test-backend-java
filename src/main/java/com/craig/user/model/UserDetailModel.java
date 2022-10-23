@@ -11,5 +11,10 @@ public class UserDetailModel extends UserModel {
     /**
      * follwers
      */
-    List<UserFollowerModel> followers;
+    List<SimpleUserModel> followers;
+
+    /**
+     * following users
+     */
+    List<SimpleUserModel> following;
 }

@@ -68,7 +68,7 @@ public interface UserService {
     Boolean deleteUser(Long userId);
 
     /**
-     * add follwer to user
+     * add follwer to user's follwer list
      * @param userId user who is following
      * @param followerId the user who follower
      * @return

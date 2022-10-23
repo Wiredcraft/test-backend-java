@@ -14,8 +14,8 @@ public interface UserService {
      * get user detail mode
      * 
      * @param userId      user id
-     * @param getFollower is get follower, true get follower, false doesn't get
-     *                    follower
+     * @param getFollower set true get followers, false doesn't get
+     * @param getFollowing set true get followings, false doesn't get
      * @return user detail model
      */
     UserDetailModel getUserDetail(Long userId, Boolean getFollower, Boolean getFollowing);
@@ -82,4 +82,11 @@ public interface UserService {
      * @return
      */
     Boolean deleteFollower(Long userId, Long follwerId);
+
+    /**
+     * get the nearby users from the latest location when current user loggin
+     * @param userId current user id
+     * @return nearby users
+     */
+    List<SimpleUserModel> getNearbyUsers(Long userId);
 }

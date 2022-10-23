@@ -25,3 +25,10 @@ CREATE TABLE t_user_follower(
     `deleted` BIT NOT NULL DEFAULT 0 COMMENT 'logic delete flag, 0:exist,1:deleted',
     PRIMARY KEY (`id`)
 ) COMMENT 'user follower relation table';
+
+CREATE TABLE t_user_coordinate(  
+    `id` BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT 'primary Key',
+    `user_id` BIGINT UNSIGNED NOT NULL COMMENT 'user.id',
+    `last_coord` POINT NOT NULL COMMENT 'last login coordinate',
+    `log_time` DATETIME NOT NULL DEFAULT now() COMMENT 'log Time'
+) COMMENT 'user last login coordinate record';

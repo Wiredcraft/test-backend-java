@@ -10,3 +10,5 @@ spring:
     time-zone: GMT+8
   application:
     name: user-service
+# mybatis-plus:
+#   type-handlers-package: com.craig.user.handler

@@ -1,5 +1,6 @@
 package com.craig.user.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -19,6 +20,12 @@ public class UserModel {
     private Date dob;
 
     private String address;
+
+    @Schema(description = "address longitude", accessMode = AccessMode.WRITE_ONLY)
+    private BigDecimal addressLng;
+
+    @Schema(description = "address latitude", accessMode = AccessMode.WRITE_ONLY)
+    private BigDecimal addressLat;
 
     private String description;
 

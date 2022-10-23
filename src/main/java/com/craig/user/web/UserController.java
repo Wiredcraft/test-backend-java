@@ -1,5 +1,7 @@
 package com.craig.user.web;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.craig.user.model.PageResult;
+import com.craig.user.model.SimpleUserModel;
 import com.craig.user.model.UserDetailModel;
 import com.craig.user.model.UserModel;
 import com.craig.user.model.UserQueryModel;
@@ -113,5 +116,19 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    }
+
+    @GetMapping("/{userId}/nearby")
+    @Operation(summary = "Get nearby users", description = "logic delete user")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "get nearby user successfuly"),
+            @ApiResponse(responseCode = "404", description = "no nearby user", content = @Content(examples = {})) })
+    public ResponseEntity<List<SimpleUserModel>> getNearbyUser(@PathVariable("userId") Long userId) {
+        List<SimpleUserModel> results = userService.getNearbyUsers(userId);
+        if (results == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(results);
     }
 }

@@ -39,6 +39,11 @@ public class UserRepository extends ServiceImpl<UserMapper, User> {
         return this.baseMapper.selectPage(page, queryWrapper);
     }
 
+    public User addUser(User user) {
+        this.save(user);
+        return this.getById(user.getId());
+    }
+
     /**
      * update user, only 4 fields can be updated
      * @param user

@@ -1,6 +1,5 @@
 package com.craig.user.service.impl;
 
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,14 +11,16 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.craig.user.entity.User;
 import com.craig.user.entity.UserFollower;
+import com.craig.user.entity.dto.NearbyUserDto;
 import com.craig.user.entity.dto.SimpleFollowerDto;
 import com.craig.user.entity.dto.SimpleFollowingDto;
 import com.craig.user.model.FollowerModel;
 import com.craig.user.model.PageResult;
-import com.craig.user.model.UserDetailModel;
 import com.craig.user.model.SimpleUserModel;
+import com.craig.user.model.UserDetailModel;
 import com.craig.user.model.UserModel;
 import com.craig.user.model.UserQueryModel;
+import com.craig.user.repository.UserCoordinateRepository;
 import com.craig.user.repository.UserFollowerRepository;
 import com.craig.user.repository.UserRepository;
 import com.craig.user.service.UserService;
@@ -35,6 +36,11 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserFollowerRepository userFollowerRepository;
+
+    @Autowired
+    private UserCoordinateRepository userCoordinateRepository;
+
+    private final static int TOP_USER_LIST_COUNT = 10;
 
     @Override
     public UserDetailModel getUserDetail(Long userId, Boolean getFollower, Boolean getFollowing) {
@@ -116,12 +122,15 @@ public class UserServiceImpl implements UserService {
         newUser.setDescription(insertModel.getDescription());
         newUser.setDob(insertModel.getDob());
         newUser.setName(insertModel.getName());
-        newUser.setCreatedAt(new Date());
 
-        userRepository.save(newUser);
+        User addedUser = userRepository.addUser(newUser);
 
-        insertModel.setId(newUser.getId());
-        insertModel.setCreatedAt(newUser.getCreatedAt());
+        insertModel.setId(addedUser.getId());
+        insertModel.setCreatedAt(addedUser.getCreatedAt());
+
+        if(insertModel.getAddressLat() != null && insertModel.getAddressLng() !=null){
+            userCoordinateRepository.addCoord(addedUser.getId(), insertModel.getAddressLng(), insertModel.getAddressLat());
+        }
 
         return insertModel;
     }
@@ -140,6 +149,10 @@ public class UserServiceImpl implements UserService {
         user.setName(updateModel.getName());
 
         userRepository.update(user);
+
+        if (updateModel.getAddressLng() != null && updateModel.getAddressLat() != null) {
+            userCoordinateRepository.addCoordOrUpdate(updateModel.getId(), updateModel.getAddressLng(), updateModel.getAddressLat());
+        }
         return updateModel;
     }
 
@@ -163,7 +176,7 @@ public class UserServiceImpl implements UserService {
 
         UserFollower existRecord = userFollowerRepository.getRecord(userId, followerId);
         if (existRecord != null) {
-            //deal with existRecord, for idempotent
+            // deal with existRecord, for idempotent
             FollowerModel model = new FollowerModel();
             BeanUtils.copyProperties(existRecord, model);
             return model;
@@ -184,6 +197,21 @@ public class UserServiceImpl implements UserService {
         }
         userFollowerRepository.delete(record);
         return true;
+    }
+
+    @Override
+    public List<SimpleUserModel> getNearbyUsers(Long userId) {
+        List<NearbyUserDto> coordinates = userCoordinateRepository.getNearbyUsers(userId, TOP_USER_LIST_COUNT);
+        if(CollectionUtils.isEmpty(coordinates)){
+            return null;
+        }
+
+        return coordinates.stream().map(c->{
+            SimpleUserModel user = new SimpleUserModel();
+            user.setUserId(c.getUserId());
+            user.setUserName(c.getUserName());
+            return user;
+        }).collect(Collectors.toList());
     }
 
 }

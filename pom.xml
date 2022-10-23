@@ -56,10 +56,17 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- for mysql geo processing -->
 		<dependency>
 			<groupId>com.azavea.geotrellis</groupId>
 			<artifactId>geotrellis-vector_2.10</artifactId>
 			<version>0.10.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.11.0</version>
 		</dependency>
 	</dependencies>
 

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.Ordered;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.WebUtils;
 
@@ -22,6 +23,7 @@ import com.craig.user.filter.wrap.CachedBodyHttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Component
 public class LogFilter extends OncePerRequestFilter implements Ordered {
 
     private static List<String> notAllowedMethod;
@@ -31,12 +33,12 @@ public class LogFilter extends OncePerRequestFilter implements Ordered {
     static {
         notAllowedMethod = List.of("OPTIONS", "HEAD");
 
-        notAllowedUri = List.of("/v3/api-docs");
+        notAllowedUri = List.of("/v3/api-docs", "/swagger-ui/index.html", "/favicon.ico");
     }
 
-
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
         if (!needLog(request)) {
             filterChain.doFilter(request, response);
             return;
@@ -56,7 +58,6 @@ public class LogFilter extends OncePerRequestFilter implements Ordered {
             long duration = System.currentTimeMillis() - startTime;
             logResponse(response, path, request.getMethod(), duration);
         }
-        //updateResponse(response);
 
     }
 
@@ -66,7 +67,7 @@ public class LogFilter extends OncePerRequestFilter implements Ordered {
             while (headerNames.hasMoreElements()) {
                 String headerName = headerNames.nextElement();
                 String headerValue = request.getHeader(headerName);
-                if(headerValue != null && headerValue.contains("multipart/form-data")) {
+                if (headerValue != null && headerValue.contains("multipart/form-data")) {
                     return false;
                 }
             }
@@ -93,7 +94,8 @@ public class LogFilter extends OncePerRequestFilter implements Ordered {
                 logText.append(headerName + ":" + request.getHeader(headerName) + "\n");
             }
         }
-        if (StringUtils.isNotEmpty(request.getContentType()) && request.getContentType().toLowerCase().contains("application/json")) {
+        if (StringUtils.isNotEmpty(request.getContentType())
+                && request.getContentType().toLowerCase().contains("application/json")) {
             logText.append(getRequestBody(request) + "\n");
         }
         log.info(logText.toString());
@@ -111,7 +113,8 @@ public class LogFilter extends OncePerRequestFilter implements Ordered {
             logText.append(h + ":" + response.getHeader(h) + "\n");
         });
 
-        if (StringUtils.isNotEmpty(response.getContentType()) && response.getContentType().toLowerCase().contains("application/json")) {
+        if (StringUtils.isNotEmpty(response.getContentType())
+                && response.getContentType().toLowerCase().contains("application/json")) {
             logText.append(getResponseBody(response) + "\n");
         }
 
@@ -122,7 +125,7 @@ public class LogFilter extends OncePerRequestFilter implements Ordered {
         String requestBody = "";
         CachedBodyHttpServletRequest wrapper = WebUtils.getNativeRequest(request, CachedBodyHttpServletRequest.class);
         if (wrapper != null) {
-                requestBody = IOUtils.toString(wrapper.getCachedBody(), StandardCharsets.UTF_8.name());
+            requestBody = IOUtils.toString(wrapper.getCachedBody(), StandardCharsets.UTF_8.name());
 
         }
         return requestBody;
@@ -130,7 +133,8 @@ public class LogFilter extends OncePerRequestFilter implements Ordered {
 
     private String getResponseBody(HttpServletResponse response) {
         String responseBody = "";
-        CachedBodyHttpServletResponse wrapper = WebUtils.getNativeResponse(response, CachedBodyHttpServletResponse.class);
+        CachedBodyHttpServletResponse wrapper = WebUtils.getNativeResponse(response,
+                CachedBodyHttpServletResponse.class);
         if (wrapper != null) {
             try {
                 responseBody = IOUtils.toString(wrapper.getContent().getInputStream(), wrapper.getCharacterEncoding());
@@ -143,7 +147,7 @@ public class LogFilter extends OncePerRequestFilter implements Ordered {
 
     @Override
     public int getOrder() {
-        //确保在etagfilter之前执行，这样调用了etagfilter的地方就不会记录response
+        // make sure the filter can be applied as first one before other filters
         return Ordered.HIGHEST_PRECEDENCE;
     }
 }

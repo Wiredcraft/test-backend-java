@@ -10,7 +10,7 @@ import io.swagger.v3.oas.models.info.License;
 @Configuration
 public class SwaggerConfig {
   @Bean
-  public OpenAPI springShopOpenAPI() {
+  public OpenAPI openAPI() {
     return new OpenAPI()
         .info(new Info().title("User-service APIs")
             .description("A user-service for wiredcraft interview test")

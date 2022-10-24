@@ -1,5 +1,6 @@
 package com.craig.user.config;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -8,6 +9,7 @@ import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 
 @Configuration
+@MapperScan("com.craig.user.mapper")
 public class MybatisPlusConfig {
     /**
      * regist page interceptor to mybatis plus interceptor

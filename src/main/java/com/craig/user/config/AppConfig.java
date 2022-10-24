@@ -7,8 +7,8 @@ import com.craig.user.filter.LogFilter;
 
 @Configuration
 public class AppConfig {
-    @Bean
-    public LogFilter logFilter() {
-        return new LogFilter();
-    }
+    // @Bean
+    // public LogFilter logFilter() {
+    //     return new LogFilter();
+    // }
 }

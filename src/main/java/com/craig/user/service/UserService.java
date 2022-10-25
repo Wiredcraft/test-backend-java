@@ -2,7 +2,6 @@ package com.craig.user.service;
 
 import java.util.List;
 
-import com.craig.user.model.FollowerModel;
 import com.craig.user.model.PageResult;
 import com.craig.user.model.SimpleUserModel;
 import com.craig.user.model.UserDetailModel;
@@ -28,22 +27,6 @@ public interface UserService {
      * @return user detail model
      */
     UserDetailModel getUserByName(String userName, Boolean getFollower, Boolean getFollowing);
-
-    /**
-     * get user's following list
-     * 
-     * @param userId
-     * @return following's id and name
-     */
-    List<SimpleUserModel> getFollowings(Long userId);
-
-    /**
-     * get user's follower list
-     * 
-     * @param userId
-     * @return follower's id and name
-     */
-    List<SimpleUserModel> getFollowers(Long userId);
 
     /**
      * get user list
@@ -75,22 +58,6 @@ public interface UserService {
      * @param userId user id
      */
     Boolean deleteUser(Long userId);
-
-    /**
-     * add follwer to user's follwer list
-     * @param userId user who is following
-     * @param followerId the user who follower
-     * @return
-     */
-    FollowerModel addFollowers(Long userId, Long followerId);
-
-    /**
-     * delete the relation between user and follower
-     * @param userId
-     * @param follwerId
-     * @return
-     */
-    Boolean deleteFollower(Long userId, Long follwerId);
 
     /**
      * get the nearby users from the latest location when current user loggin

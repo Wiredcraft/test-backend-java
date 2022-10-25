@@ -1,4 +1,4 @@
--- Active: 1666680865331@@127.0.0.1@3306@user_center
+-- Active: 1666423863732@@127.0.0.1@3306@user_center
 CREATE DATABASE user_center;
 
 USE user_center;
@@ -35,4 +35,4 @@ CREATE TABLE t_user_coordinate(
 ) COMMENT 'user last login coordinate record';
 
 -- add a new user, pwd: admin
-INSERT INTO t_user(id,name,dob,address,description,created_at,updated_at,deleted,password) VALUES(1,'admin',NULL,NULL,'admin user','2022-10-25 15:05:25','2022-10-25 15:05:25',0,X'4341443231454343373142373633334341334246453031383832324632344331343345464641313530354630333046434346304533363935');
+INSERT INTO t_user(name,dob,address,description,created_at,updated_at,deleted,password) VALUES('admin',NULL,NULL,'admin user','2022-10-25 15:05:25','2022-10-25 15:05:25',0,X'4341443231454343373142373633334341334246453031383832324632344331343345464641313530354630333046434346304533363935');

@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.craig.user.model.FollowerModel;
 import com.craig.user.model.SimpleUserModel;
 import com.craig.user.model.UserDetailModel;
-import com.craig.user.service.UserService;
+import com.craig.user.service.FollowerService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
@@ -32,7 +32,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public class FollowController {
 
     @Autowired
-    private UserService userService;
+    private FollowerService followerService;
 
     @GetMapping("/followers")
     @Operation(summary = "Get follower", security = {
@@ -41,7 +41,7 @@ public class FollowController {
             @ApiResponse(responseCode = "200", description = "get followers successfuly"),
             @ApiResponse(responseCode = "404", description = "no followers", content = @Content(examples = {})) })
     public ResponseEntity<List<SimpleUserModel>> getFollowers(@PathVariable("userId") Long userId) {
-        List<SimpleUserModel> result = userService.getFollowers(userId);
+        List<SimpleUserModel> result = followerService.getFollowers(userId);
         if (result == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
         }
@@ -62,7 +62,7 @@ public class FollowController {
         UserDetailModel currentUser = (UserDetailModel) (token.getPrincipal());
 
         Long currentUserId = currentUser.getId();
-        FollowerModel result = userService.addFollowers(userId, currentUserId);
+        FollowerModel result = followerService.addFollowers(userId, currentUserId);
 
         if (result == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
@@ -87,7 +87,7 @@ public class FollowController {
         UserDetailModel currentUser = (UserDetailModel) (token.getPrincipal());
 
         Long currentUserId = currentUser.getId();
-        if (userService.deleteFollower(userId, currentUserId)) {
+        if (followerService.deleteFollower(userId, currentUserId)) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -100,7 +100,7 @@ public class FollowController {
             @ApiResponse(responseCode = "200", description = "get followings successfuly"),
             @ApiResponse(responseCode = "404", description = "no followings", content = @Content(examples = {})) })
     public ResponseEntity<List<SimpleUserModel>> getFollowings(@PathVariable("userId") Long userId) {
-        List<SimpleUserModel> result = userService.getFollowings(userId);
+        List<SimpleUserModel> result = followerService.getFollowings(userId);
         if (result == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
         }

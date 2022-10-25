@@ -3,6 +3,7 @@ package com.craig.user.service.impl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,13 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import com.craig.user.TestApplication;
 import com.craig.user.entity.User;
 import com.craig.user.model.LoginModel;
 import com.craig.user.model.LoginResultModel;
 import com.craig.user.repository.UserRepository;
 import com.craig.user.util.JwtTokenUtil;
 
-@SpringBootTest
+@SpringBootTest(classes = TestApplication.class)
 public class AuthServiceImplTest {
     @MockBean
     private UserRepository userRepository;
@@ -53,6 +55,7 @@ public class AuthServiceImplTest {
         assertNotNull(result);
         assertNotNull(result.getToken());
 
+        assertTrue(jwtTokenUtil.validate(result.getToken())); 
         //assert token, the id should be -1
         assertEquals(-1L, jwtTokenUtil.getUserId(result.getToken()));        
     }

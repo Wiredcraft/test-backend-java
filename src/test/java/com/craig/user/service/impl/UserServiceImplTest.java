@@ -1,13 +1,13 @@
 package com.craig.user.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doAnswer;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.mockito.Mockito;
+import org.mockito.internal.matchers.GreaterOrEqual;
 import org.mockito.invocation.InvocationOnMock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,19 +30,20 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.util.CollectionUtils;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.craig.user.TestApplication;
 import com.craig.user.entity.User;
-import com.craig.user.entity.UserFollower;
-import com.craig.user.model.FollowerModel;
+import com.craig.user.entity.dto.NearbyUserDto;
 import com.craig.user.model.PageResult;
+import com.craig.user.model.SimpleUserModel;
 import com.craig.user.model.UserDetailModel;
 import com.craig.user.model.UserModel;
 import com.craig.user.model.UserQueryModel;
 import com.craig.user.repository.UserCoordinateRepository;
-import com.craig.user.repository.UserFollowerRepository;
 import com.craig.user.repository.UserRepository;
+import com.craig.user.service.FollowerService;
 import com.craig.user.util.PasswordUtil;
 
-@SpringBootTest
+@SpringBootTest(classes = TestApplication.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UserServiceImplTest {
 
@@ -49,7 +51,7 @@ public class UserServiceImplTest {
     private UserRepository userRepository;
 
     @MockBean
-    private UserFollowerRepository userFollowerRepository;
+    private FollowerService followerService;
 
     @MockBean
     private UserCoordinateRepository userCoordinateRepository;
@@ -64,10 +66,6 @@ public class UserServiceImplTest {
     private static String password = "CAD21ECC71B7633CA3BFE018822F24C143EFFA1505F030FCCF0E3695";
 
     private static Long idSeed = 4L;
-
-    private static Map<Long, List<User>> mockFollowerDb = new HashMap<>();
-
-    private static Map<Long, List<User>> mockFollowingDb = new HashMap<>();
 
     @BeforeAll
     static void setUpStaticVariables() throws Exception {
@@ -88,7 +86,8 @@ public class UserServiceImplTest {
 
     @BeforeEach
     void setup() {
-        
+        Mockito.reset(userRepository);
+
         Mockito.when(userRepository.getByName(Mockito.anyString())).thenAnswer(a->{
             String userName = a.getArgument(0, String.class);
             return mockUserDbByName.get(userName);
@@ -136,38 +135,22 @@ public class UserServiceImplTest {
             return null;
         }).when(userRepository).updateSelective(Mockito.any());
 
-        Mockito.when(userFollowerRepository.getRecord(Mockito.any(), Mockito.any())).thenAnswer(a->{
-            Long userId = a.getArgument(0);
-            Long followerId = a.getArgument(1);
-            List<User> followers = mockFollowerDb.get(userId);
-            if(CollectionUtils.isEmpty(followers)){
-                return null;
-            }
-            return followers.stream()
-            .filter(f->f.getId() == followerId)
-            .map(f->{
-                UserFollower uf = new UserFollower();
-                uf.setUserId(userId);
-                uf.setFollowerId(f.getId());
-                return uf;
-            })
-            .findFirst().orElse(null);
-        });
+        Mockito.when(followerService.getFollowers(Mockito.any())).thenReturn(List.of(new SimpleUserModel()));
+        Mockito.when(followerService.getFollowings(Mockito.any())).thenReturn(List.of(new SimpleUserModel()));
 
-        Mockito.when(userFollowerRepository.addUserFollower(Mockito.any(), Mockito.any())).thenAnswer(a->{
-            Long userId = a.getArgument(0);
-            Long followerId = a.getArgument(1);
-            List<User> followers = mockFollowerDb.get(userId);
-            if(CollectionUtils.isEmpty(followers)){
-                followers = new ArrayList<>();
-                mockFollowerDb.put(userId, followers);
-            }
-            followers.add(mockDb.get(followerId));
-            UserFollower userFollower = new UserFollower();
-            userFollower.setUserId(userId);
-            userFollower.setFollowerId(followerId);
-            return userFollower;
-        });
+        Mockito.when(userCoordinateRepository.getNearbyUsers(Mockito.longThat(new GreaterOrEqual<Long>(0L)), Mockito.intThat(new GreaterOrEqual<Integer>(1))))
+            .thenAnswer(a -> {
+                List<NearbyUserDto> dtos = new ArrayList<>();
+                int size = a.getArgument(1);
+                for(Integer i = 0;i<size;i++) {
+                    NearbyUserDto dto = new NearbyUserDto();
+                    dto.setDistance(BigDecimal.valueOf(i+10));
+                    dto.setUserId(i.longValue());
+                    dto.setUserName("coordUser"+i);
+                    dtos.add(dto);
+                }
+                return dtos;
+            });
     }
 
     private Object getFromId(InvocationOnMock a) {
@@ -182,6 +165,8 @@ public class UserServiceImplTest {
         model.setName("user4");
         model.setDescription("create from unit test code");
         model.setPassword("654321");
+        model.setAddressLat(BigDecimal.valueOf(10.1));
+        model.setAddressLng(BigDecimal.valueOf(20.1));
         assertNotNull(userService.createUser(model));
 
     }
@@ -201,6 +186,13 @@ public class UserServiceImplTest {
 
         User userEntity = mockDb.get(user.getId());
         PasswordUtil.validate("654321", userEntity.getPassword());
+
+        UserDetailModel userWithFollwer = userService.getUserDetail(idSeed - 1, true, true);
+        assertNotNull(userWithFollwer);
+        assertNotNull(userWithFollwer.getFollowers());
+        assertTrue(!CollectionUtils.isEmpty(userWithFollwer.getFollowers()));
+        assertNotNull(userWithFollwer.getFollowing());
+        assertTrue(!CollectionUtils.isEmpty(userWithFollwer.getFollowing()));
     }
 
     @Test
@@ -251,38 +243,13 @@ public class UserServiceImplTest {
     }
 
     @Test
-    void testAddFollowers() {
-        assertNull(userService.addFollowers(-1L, 2L));
-
-        FollowerModel result = userService.addFollowers(1L, 2L);
-        assertNotNull(result);
-        assertEquals(1, result.getUserId());
-        assertEquals(2, result.getFollowerId());
-
-        // do again
-        FollowerModel newResult = userService.addFollowers(1L, 2L);
-        assertNotNull(newResult);
-        assertEquals(1, newResult.getUserId());
-        assertEquals(2, newResult.getFollowerId());
-    }
-
-    @Test
-    void testDeleteFollower() {
-
-    }
-
-    @Test
-    void testGetFollowers() {
-
-    }
-
-    @Test
-    void testGetFollowings() {
-
-    }
-
-    @Test
     void testGetNearbyUsers() {
 
+        assertNull(userService.getNearbyUsers(-1L));
+
+        List<SimpleUserModel> result = userService.getNearbyUsers(idSeed - 1);
+        assertNotNull(result);
+        assertEquals(10, result.size());
+        assertEquals(0L, result.get(0).getUserId());
     }
 }

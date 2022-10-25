@@ -10,14 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.craig.user.model.LoginModel;
 import com.craig.user.model.LoginResultModel;
-import com.craig.user.model.UserDetailModel;
 import com.craig.user.service.AuthService;
-import com.craig.user.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.media.Content;
 
 
 @RestController

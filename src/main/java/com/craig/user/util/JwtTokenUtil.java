@@ -7,8 +7,6 @@ import java.util.Map;
 import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
@@ -79,19 +77,19 @@ public class JwtTokenUtil {
         return false;
     }
 
-    /**
-     * get user info from token
-     *
-     * @param token token
-     * @return authentication
-     */
-    public Authentication getAuthentication(String token) {
-        Claims claims = getTokenBody(token);
-        String userName = claims.getSubject();
+    // /**
+    //  * get user info from token
+    //  *
+    //  * @param token token
+    //  * @return authentication
+    //  */
+    // public Authentication getAuthentication(String token) {
+    //     Claims claims = getTokenBody(token);
+    //     String userName = claims.getSubject();
 
-        return new UsernamePasswordAuthenticationToken(userName, token, null);
+    //     return new UsernamePasswordAuthenticationToken(userName, token, null);
 
-    }
+    // }
 
     private Claims getTokenBody(String token) {
         byte[] jwtSecretKey = DatatypeConverter.parseBase64Binary(secretKey);
@@ -100,5 +98,15 @@ public class JwtTokenUtil {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+    /**
+     * get user id from token
+     * @param token
+     * @return user id
+     */
+    public Long getUserId(String token) {
+        Claims claims = getTokenBody(token);
+        return claims.get("userId", Long.class);
     }
 }

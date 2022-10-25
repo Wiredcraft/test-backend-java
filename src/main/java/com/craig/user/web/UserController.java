@@ -27,6 +27,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
@@ -38,7 +39,8 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/{userId}")
-    @Operation(summary = "Get user detail", description = "get user detail with userId, get follow information with query param getFollower/getFollowing")
+    @Operation(summary = "Get user detail", security = {
+            @SecurityRequirement(name = "bearer-key") }, description = "get user detail with userId, get follow information with query param getFollower/getFollowing")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "get user successfuly"),
             @ApiResponse(responseCode = "404", description = "no user", content = @Content(examples = {})) })
@@ -54,7 +56,8 @@ public class UserController {
     }
 
     @GetMapping
-    @Operation(summary = "Get user list", description = "get user list with pagination")
+    @Operation(summary = "Get user list", security = {
+            @SecurityRequirement(name = "bearer-key") }, description = "get user list with pagination")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "get user successfuly"),
             @ApiResponse(responseCode = "204", description = "nothing found", content = @Content(examples = {})) })
@@ -67,7 +70,8 @@ public class UserController {
     }
 
     @PostMapping
-    @Operation(summary = "Create user", description = "create user")
+    @Operation(summary = "Create user", security = {
+            @SecurityRequirement(name = "bearer-key") }, description = "create user")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "user successfuly created"),
             @ApiResponse(responseCode = "204", description = "no user is created", content = @Content(examples = {})) })
@@ -80,7 +84,8 @@ public class UserController {
     }
 
     @PutMapping
-    @Operation(summary = "Update user", description = "update user, if id provided, then do updating, if id is null, then do inserting")
+    @Operation(summary = "Update user", security = {
+            @SecurityRequirement(name = "bearer-key") }, description = "update user, if id provided, then do updating, if id is null, then do inserting")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "user successfuly created"),
             @ApiResponse(responseCode = "200", description = "user successfuly updated"),
@@ -107,7 +112,8 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-    @Operation(summary = "Delete user", description = "logic delete user")
+    @Operation(summary = "Delete user", security = {
+            @SecurityRequirement(name = "bearer-key") }, description = "logic delete user")
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "no user to delete"),
             @ApiResponse(responseCode = "204", description = "delete successfuly") })
@@ -119,7 +125,8 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/nearby")
-    @Operation(summary = "Get nearby users", description = "logic delete user")
+    @Operation(summary = "Get nearby users", security = {
+            @SecurityRequirement(name = "bearer-key") }, description = "logic delete user")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "get nearby user successfuly"),
             @ApiResponse(responseCode = "404", description = "no nearby user", content = @Content(examples = {})) })

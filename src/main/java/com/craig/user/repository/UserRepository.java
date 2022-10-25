@@ -16,6 +16,7 @@ import com.craig.user.model.UserQueryModel;
 public class UserRepository extends ServiceImpl<UserMapper, User> {
     /**
      * get specific user
+     * 
      * @param userId
      * @return
      */
@@ -28,6 +29,7 @@ public class UserRepository extends ServiceImpl<UserMapper, User> {
 
     /**
      * using query object search the user (inclue pagination)
+     * 
      * @param query
      * @return
      */
@@ -46,6 +48,7 @@ public class UserRepository extends ServiceImpl<UserMapper, User> {
 
     /**
      * update user, only 4 fields can be updated
+     * 
      * @param user
      */
     public void update(User user) {
@@ -60,6 +63,7 @@ public class UserRepository extends ServiceImpl<UserMapper, User> {
 
     /**
      * delete user, set logic delete flag to true
+     * 
      * @param user
      */
     public void deleteUser(User user) {
@@ -67,5 +71,17 @@ public class UserRepository extends ServiceImpl<UserMapper, User> {
         updateWrapper.eq(User::getId, user.getId())
                 .set(User::getDeleted, true);
         this.baseMapper.update(null, updateWrapper);
+    }
+
+    /**
+     * get user by name
+     * @param userName
+     * @return
+     */
+    public User getByName(String userName) {
+        Wrapper<User> query = new QueryWrapper<User>().lambda()
+                .eq(User::getName, userName)
+                .eq(User::getDeleted, false);
+        return this.baseMapper.selectOne(query);
     }
 }

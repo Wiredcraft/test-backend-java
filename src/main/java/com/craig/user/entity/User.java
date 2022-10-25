@@ -48,5 +48,10 @@ public class User {
      * is deleted
      */
     private Boolean deleted;
+
+    /**
+     * salt + password in MD5
+     */
+    private String password;
     
 }

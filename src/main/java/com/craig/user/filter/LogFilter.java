@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.Ordered;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.WebUtils;
 
@@ -23,17 +22,12 @@ import com.craig.user.filter.wrap.CachedBodyHttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Component
 public class LogFilter extends OncePerRequestFilter implements Ordered {
 
     private static List<String> notAllowedMethod;
 
-    private static List<String> notAllowedUri;
-
     static {
         notAllowedMethod = List.of("OPTIONS", "HEAD");
-
-        notAllowedUri = List.of("/v3/api-docs", "/swagger-ui/index.html", "/favicon.ico");
     }
 
     @Override
@@ -76,7 +70,7 @@ public class LogFilter extends OncePerRequestFilter implements Ordered {
         if (notAllowedMethod.contains(request.getMethod().toUpperCase())) {
             return false;
         }
-        return !notAllowedUri.contains(request.getRequestURI());
+        return true;
     }
 
     private void logRequest(HttpServletRequest request) {

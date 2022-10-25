@@ -12,5 +12,5 @@ spring:
     name: user-service
 security:
   jwt:
-    secret: ${JWT_SECRET_KEY}
+    secret: ${JWT_SECRET_KEY:LWtFPCd6LWg7fnlib1FJJ1xTTVBlZ11NSQ==Yg==JnIoQ0IgTCZifS13J0YhJ2YvI3k=PzhdMUtpaHZpOXEieiBDKC4mbSQoRnA=OGdcR2xaWWdkTVdGRF5Qaw==}
     expiration: 86400

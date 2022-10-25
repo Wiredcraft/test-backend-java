@@ -21,6 +21,15 @@ public interface UserService {
     UserDetailModel getUserDetail(Long userId, Boolean getFollower, Boolean getFollowing);
 
     /**
+     * get user by username
+     * @param userName user name
+     * @param getFollower set true get followers, false doesn't get
+     * @param getFollowing set true get followings, false doesn't get
+     * @return user detail model
+     */
+    UserDetailModel getUserByName(String userName, Boolean getFollower, Boolean getFollowing);
+
+    /**
      * get user's following list
      * 
      * @param userId

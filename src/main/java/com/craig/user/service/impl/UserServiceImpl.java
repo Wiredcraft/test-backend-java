@@ -5,7 +5,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -24,6 +26,7 @@ import com.craig.user.repository.UserCoordinateRepository;
 import com.craig.user.repository.UserFollowerRepository;
 import com.craig.user.repository.UserRepository;
 import com.craig.user.service.UserService;
+import com.craig.user.util.PasswordUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -50,20 +53,35 @@ public class UserServiceImpl implements UserService {
             return null;
         }
 
+        return convertToUserDetailModel(user, getFollower, getFollowing);
+    }
+
+    private UserDetailModel convertToUserDetailModel(User user, Boolean getFollower, Boolean getFollowing) {
         UserDetailModel detailModel = new UserDetailModel();
         BeanUtils.copyProperties(user, detailModel);
 
         if (getFollower != null && getFollower) {
-            List<SimpleUserModel> followerModels = getFollowers(userId);
+            List<SimpleUserModel> followerModels = getFollowers(user.getId());
             detailModel.setFollowers(followerModels);
         }
 
         if (getFollowing != null && getFollowing) {
-            List<SimpleUserModel> followingModels = getFollowings(userId);
+            List<SimpleUserModel> followingModels = getFollowings(user.getId());
             detailModel.setFollowing(followingModels);
         }
 
         return detailModel;
+    }
+
+    @Override
+    public UserDetailModel getUserByName(String userName, Boolean getFollower, Boolean getFollowing) {
+        User user = userRepository.getByName(userName);
+        if (user == null) {
+            log.warn("get null user, uesrName:", userName);
+            return null;
+        }
+
+        return convertToUserDetailModel(user, getFollower, getFollowing);
     }
 
     @Override
@@ -116,20 +134,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserModel createUser(UserModel insertModel) {
+
+        User existUser = userRepository.getByName(insertModel.getName());
+        if (existUser != null) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
         User newUser = new User();
-        // todo:any duplicate check logic?
         newUser.setAddress(insertModel.getAddress());
         newUser.setDescription(insertModel.getDescription());
         newUser.setDob(insertModel.getDob());
         newUser.setName(insertModel.getName());
+        try {
+            newUser.setPassword(PasswordUtil.getEncryptedPwd(insertModel.getPassword()));
+        } catch (Exception e) {
+            log.error("build password failed", e);
+            throw new RuntimeException(e);
+        }
 
         User addedUser = userRepository.addUser(newUser);
 
-        insertModel.setId(addedUser.getId());
-        insertModel.setCreatedAt(addedUser.getCreatedAt());
-
-        if(insertModel.getAddressLat() != null && insertModel.getAddressLng() !=null){
-            userCoordinateRepository.addCoord(addedUser.getId(), insertModel.getAddressLng(), insertModel.getAddressLat());
+        if (insertModel.getAddressLat() != null && insertModel.getAddressLng() != null) {
+            userCoordinateRepository.addCoord(addedUser.getId(), insertModel.getAddressLng(),
+                    insertModel.getAddressLat());
         }
 
         return insertModel;
@@ -151,7 +177,8 @@ public class UserServiceImpl implements UserService {
         userRepository.update(user);
 
         if (updateModel.getAddressLng() != null && updateModel.getAddressLat() != null) {
-            userCoordinateRepository.addCoordOrUpdate(updateModel.getId(), updateModel.getAddressLng(), updateModel.getAddressLat());
+            userCoordinateRepository.addCoordOrUpdate(updateModel.getId(), updateModel.getAddressLng(),
+                    updateModel.getAddressLat());
         }
         return updateModel;
     }
@@ -202,16 +229,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<SimpleUserModel> getNearbyUsers(Long userId) {
         List<NearbyUserDto> coordinates = userCoordinateRepository.getNearbyUsers(userId, TOP_USER_LIST_COUNT);
-        if(CollectionUtils.isEmpty(coordinates)){
+        if (CollectionUtils.isEmpty(coordinates)) {
             return null;
         }
 
-        return coordinates.stream().map(c->{
+        return coordinates.stream().map(c -> {
             SimpleUserModel user = new SimpleUserModel();
             user.setUserId(c.getUserId());
             user.setUserName(c.getUserName());
             return user;
         }).collect(Collectors.toList());
     }
-
 }

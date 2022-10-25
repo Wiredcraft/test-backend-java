@@ -2,6 +2,7 @@ package com.craig.user.filter;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -17,18 +18,19 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.craig.user.repository.UserRepository;
+import com.craig.user.model.UserDetailModel;
+import com.craig.user.service.UserService;
 import com.craig.user.util.JwtTokenUtil;
 
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
 
     private final JwtTokenUtil jwtTokenUtil;
-    private final UserRepository userRepo;
+    private final UserService userService;
 
-    public JwtTokenFilter(JwtTokenUtil jwtTokenUtil, UserRepository userRepo) {
+    public JwtTokenFilter(JwtTokenUtil jwtTokenUtil, UserService userService) {
         this.jwtTokenUtil = jwtTokenUtil;
-        this.userRepo = userRepo;
+        this.userService = userService;
     }
 
     @Override
@@ -49,10 +51,11 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }
 
         // Get user identity and set it on the spring security context
-        UserDetails userDetails = userRepo
-                .findByUsername(jwtTokenUtil.getUsername(token))
+        UserDetailModel userDetails = Optional.of(
+            userService.getUserDetail(jwtTokenUtil.getUserId(token), false, false))
                 .orElse(null);
 
+        //for now there is no any authorization
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                 userDetails, null,
                 userDetails == null ? List.of() : userDetails.getAuthorities());

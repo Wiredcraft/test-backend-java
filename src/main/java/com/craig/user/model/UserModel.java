@@ -32,4 +32,7 @@ public class UserModel {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Schema(accessMode = AccessMode.READ_ONLY, example = "2022-10-23 18:53:44")
     private Date createdAt;
+
+    @Schema(accessMode = AccessMode.WRITE_ONLY)
+    private String password;
 }

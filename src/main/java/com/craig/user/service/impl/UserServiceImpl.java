@@ -174,7 +174,7 @@ public class UserServiceImpl implements UserService {
         user.setDob(updateModel.getDob());
         user.setName(updateModel.getName());
 
-        userRepository.update(user);
+        userRepository.updateSelective(user);
 
         if (updateModel.getAddressLng() != null && updateModel.getAddressLat() != null) {
             userCoordinateRepository.addCoordOrUpdate(updateModel.getId(), updateModel.getAddressLng(),

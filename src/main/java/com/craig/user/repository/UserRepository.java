@@ -1,5 +1,6 @@
 package com.craig.user.repository;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
@@ -47,17 +48,16 @@ public class UserRepository extends ServiceImpl<UserMapper, User> {
     }
 
     /**
-     * update user, only 4 fields can be updated
+     * update user, only 3 fields can be updated
      * 
      * @param user
      */
-    public void update(User user) {
+    public void updateSelective(User user) {
         LambdaUpdateWrapper<User> updateWrapper = new UpdateWrapper<User>().lambda();
         updateWrapper.eq(User::getId, user.getId())
-                .set(User::getName, user.getName())
-                .set(User::getAddress, user.getAddress())
-                .set(User::getDob, user.getDob())
-                .set(User::getDescription, user.getDescription());
+                .set(StringUtils.isNotBlank(user.getAddress()), User::getAddress, user.getAddress())
+                .set(user.getDob() != null, User::getDob, user.getDob())
+                .set(StringUtils.isNotBlank(user.getDescription()), User::getDescription, user.getDescription());
         this.baseMapper.update(null, updateWrapper);
     }
 

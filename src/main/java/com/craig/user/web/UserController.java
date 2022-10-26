@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.craig.user.model.PageResult;
 import com.craig.user.model.SimpleUserModel;
 import com.craig.user.model.UserDetailModel;
@@ -132,7 +133,7 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "no nearby user", content = @Content(examples = {})) })
     public ResponseEntity<List<SimpleUserModel>> getNearbyUser(@PathVariable("userId") Long userId) {
         List<SimpleUserModel> results = userService.getNearbyUsers(userId);
-        if (results == null) {
+        if (CollectionUtils.isEmpty(results)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
 

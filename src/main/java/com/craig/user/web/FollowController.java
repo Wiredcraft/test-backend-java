@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.craig.user.model.FollowerModel;
 import com.craig.user.model.SimpleUserModel;
 import com.craig.user.model.UserDetailModel;
@@ -42,7 +43,7 @@ public class FollowController {
             @ApiResponse(responseCode = "404", description = "no followers", content = @Content(examples = {})) })
     public ResponseEntity<List<SimpleUserModel>> getFollowers(@PathVariable("userId") Long userId) {
         List<SimpleUserModel> result = followerService.getFollowers(userId);
-        if (result == null) {
+        if (CollectionUtils.isEmpty(result)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
         }
 
@@ -80,7 +81,7 @@ public class FollowController {
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "follower record not exist", content = @Content(examples = {})),
             @ApiResponse(responseCode = "204", description = "delete successfuly", content = @Content(examples = {})) })
-    public ResponseEntity<FollowerModel> removeFollowers(@PathVariable("userId") Long userId) {
+    public ResponseEntity<Void> removeFollowers(@PathVariable("userId") Long userId) {
 
         UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) (SecurityContextHolder
                 .getContext().getAuthentication());
@@ -101,7 +102,7 @@ public class FollowController {
             @ApiResponse(responseCode = "404", description = "no followings", content = @Content(examples = {})) })
     public ResponseEntity<List<SimpleUserModel>> getFollowings(@PathVariable("userId") Long userId) {
         List<SimpleUserModel> result = followerService.getFollowings(userId);
-        if (result == null) {
+        if (CollectionUtils.isEmpty(result)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
         }
 

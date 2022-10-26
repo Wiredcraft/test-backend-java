@@ -1,73 +1,85 @@
 # Wiredcraft Back-end Developer Test
 
-Make sure you read the whole document carefully and follow the guidelines in it.
+## Requirements:
+- JDK >= 8
+- Mysql >=5.7, 8.0 is perfect
+- Maven
 
-## Context
+## Environment Set Up
+- create two environment variables
 
-Build a RESTful API that can `get/create/update/delete` user data from a persistence database
+| variable_name | desc | samle|
+|---------------|------|------|
+| DB_USERNAME   | user name for login db | root
+| DB_PASSWORD   | password for login db | 123456
 
-### User Model
+- Install/Run Mysql
+- Run DDL.sql
 
+By default, this sql has create a user called 'admin', which password is also 'admin'
 ```
-{
-  "id": "xxx",                  // user ID 
-  "name": "test",               // user name
-  "dob": "",                    // date of birth
-  "address": "",                // user address
-  "description": "",            // user description
-  "createdAt": ""               // user created date
-}
+INSERT INTO
+t_user(
+  name,
+  dob,
+  address,
+  description,
+  created_at,
+  updated_at,
+  deleted,
+  password
+)
+VALUES
+(
+  'admin',
+  NULL,
+  NULL,
+  'admin user',
+  '2022-10-25 15:05:25',
+  '2022-10-25 15:05:25',
+  0,
+  X'4341443231454343373142373633334341334246453031383832324632344331343345464641313530354630333046434346304533363935'
+);
 ```
+## API Documentation
+After start the application, visit http://localhost:8080/swagger-ui/index.html to get the API documentation
 
-## Requirements
+## Basic User Info
+The basic user info is stored in the the table t_user
+| column | desc |
+|---------------|------|
+| name   | user name    |
+| dob    | date of birth |
+| address | user address |
+| description | user description |
+| created_at  | record create time |
+| updated_at  | record update time |
+| deleted | logic delete flag, where deleted flag is 1|
+| password | user password, format: Salt + MD5(password_str) |
 
-### Functionality
+## Auth
+- This application use Http Bearer Authentication
+- Visit /auth/authenticate to get the JWT token
+- When visit other APIs, set token to the Authorization header. eg. Authorization: Bearer 123123
+- By default, the token expires after 24 hours. You can set the expiration in config security.jwt.expiration
 
-- The API should follow typical RESTful API design pattern.
-- The data should be saved in the DB.
-- Provide proper unit test.
-- Provide proper API document.
+## Geographic Support
+- User's geographic information is stored in t_user_coordinates
 
-### Tech stack
+| column | desc |
+|---------------|------|
+| user_id   | id in t_user    |
+| last_coord| user address position, using mysql point type |
+| log_time  | record time |
+- Using Mysql geographic data type
 
-- Use Java and any framework.
-- Use any DB.
+## Follower/Following 
+- The follower realtion is stored in t_user_follower
 
-### Bonus
-
-- Write clear documentation on how it's designed and how to run the code.
-- Write good in-code comments.
-- Write good commit messages.
-- An online demo is always welcome.
-
-### Advanced requirements
-
-*These are used for some further challenges. You can safely skip them if you are not asked to do any, but feel free to try out.*
-
-- Provide a complete user auth (authentication/authorization/etc.) strategy, such as OAuth. This should provide a way to allow end users to securely login, autenticate requests and only access their own information.
-- Provide a complete logging (when/how/etc.) strategy.
-- Imagine we have a new requirement right now that the user instances need to link to each other, i.e., a list of "followers/following" or "friends". Can you find out how you would design the model structure and what API you would build for querying or modifying it?
-- Related to the requirement above, suppose the address of user now includes a geographic coordinate(i.e., latitude and longitude), can you build an API that,
-  - given a user name
-  - return the nearby friends
-
-
-## What We Care About
-
-Feel free to use any open-source library as you see fit, but remember that we are evaluating your coding skills and problem solving skills.
-
-Here's what you should aim for:
-
-- Good use of current Java & API design best practices.
-- Good testing approach.
-- Extensible code.
-
-## FAQ
-
-> Where should I send back the result when I'm done?
-
-Fork this repo and send us a pull request when you think it's ready for review. You don't have to finish everything prior and you can continue to work on it. We don't have a deadline for the task.
-
-> What if I have a question?
-
-Feel free to make your own assumptions about the scope of this task but try to document those. You can also reach to us for questions.
+| column | desc |
+|---------------|------|
+| user_id   | id in t_user    |
+| follower_id | id in t_user, the user who follow the user_id record |
+| created_at | create time |
+| updated_at | update time |
+| deleted | logic delete flag |

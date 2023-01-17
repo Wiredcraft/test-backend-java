@@ -1,0 +1,15 @@
+db.createCollection("mongoGeoUser");
+
+db.getCollection("mongoGeoUser").createIndex({
+name: NumberInt("1")
+}, {
+name: "name_1",
+unique: true
+});
+
+db.getCollection("mongoGeoUser").createIndex({
+location: "2dsphere"
+}, {
+name: "location_2dsphere",
+2dsphereIndexVersion: NumberInt("3")
+});

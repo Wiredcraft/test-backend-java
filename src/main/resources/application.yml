@@ -1,0 +1,54 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: user-tiny
+  profiles:
+    active: dev
+#  main:
+#    allow-circular-references: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**/*.xml
+  global-config:
+    db-config:
+      id-type: auto
+  configuration:
+    auto-mapping-behavior: partial
+    map-underscore-to-camel-case: true
+
+jwt:
+  tokenHeader: Authorization #JWT stored request headers
+  secret: user-secret #JWT Indicates the key used for encryption and decryption
+  expiration: 604800 #JWT expiration time (60*60*24*7)
+  tokenHead: 'Bearer '  #JWT gets the start of the load
+
+redis:
+
+  key:
+
+
+  expire:
+    common: 86400 # 24小时
+
+secure:
+  ignored:
+    urls: #Whitelist of secure paths
+      - /swagger-ui/
+      - /swagger-resources/**
+      - /**/v2/api-docs
+      - /**/*.html
+      - /**/*.js
+      - /**/*.css
+      - /**/*.png
+      - /favicon.ico
+      - /actuator/**
+      - /druid/**
+      - /user/login
+      - /user/register
+      - /user/info
+      - /user/logout

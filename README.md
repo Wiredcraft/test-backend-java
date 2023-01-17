@@ -1,12 +1,10 @@
-# Wiredcraft Back-end Developer Test
+# My homework
 
-Make sure you read the whole document carefully and follow the guidelines in it.
 
-## Context
 
-Build a RESTful API that can `get/create/update/delete` user data from a persistence database
 
-### User Model
+
+### User Model 
 
 ```
 {
@@ -19,55 +17,108 @@ Build a RESTful API that can `get/create/update/delete` user data from a persist
 }
 ```
 
-## Requirements
+## Environment Requirements
 
-### Functionality
+- JDK 1.8
+- mysql 8.0 root/123 127.0.0.1:3306 database name : wiredcraft_user
+- mongoDB 6.0 mongodb://localhost:27017/   use for geo search
+- clone the code in Intellij IDEA ,  it will download library automatically  for you
 
-- The API should follow typical RESTful API design pattern.
-- The data should be saved in the DB.
-- Provide proper unit test.
-- Provide proper API document.
+## Initial database structure
+
+```
+/sql/user.sql for mysql
+/sql/mongoDB.json for mongoDB
+```
+
+
 
 ### Tech stack
 
-- Use Java and any framework.
-- Use any DB.
+| Framework              | Version | Description                                |
+| ---------------------- | ------- | ------------------------------------------ |
+| SpringBoot             | 2.7.0   | MVC framework                              |
+| SpringSecurity         | 5.7.1   | Authentication and authorization framework |
+| MyBatis                | 3.5.9   | ORM framework                              |
+| MyBatis-Plus           | 3.5.1   | MyBatis plus tool                          |
+| MyBatis-Plus Generator | 3.5.1   | ORM code generation tool                   |
+| Swagger-UI             | 3.0.0   | document generation tools                  |
+| Druid                  | 1.2.9   | database connection tools                  |
+| JWT                    | 0.9.1   | support jwt login                          |
+| Lombok                 | 1.18.24 | Simplified object encapsulation tool       |
 
-### Bonus
+### Run the project
 
-- Write clear documentation on how it's designed and how to run the code.
-- Write good in-code comments.
-- Write good commit messages.
-- An online demo is always welcome.
+If you have prepared the environment  and executed the sql script ， Just run the main function that starts class WiredCraftApplication
 
-### Advanced requirements
+### API Document
 
-*These are used for some further challenges. You can safely skip them if you are not asked to do any, but feel free to try out.*
+after you started the project,you can click http://localhost:8081/swagger-ui/#/ to read the API Document.
 
-- Provide a complete user auth (authentication/authorization/etc.) strategy, such as OAuth. This should provide a way to allow end users to securely login, autenticate requests and only access their own information.
-- Provide a complete logging (when/how/etc.) strategy.
-- Imagine we have a new requirement right now that the user instances need to link to each other, i.e., a list of "followers/following" or "friends". Can you find out how you would design the model structure and what API you would build for querying or modifying it?
-- Related to the requirement above, suppose the address of user now includes a geographic coordinate(i.e., latitude and longitude), can you build an API that,
-  - given a user name
-  - return the nearby friends
+  ![Image text](https://github.com/nashifanhua/test-backend-java/raw/master/img/api_Iist.png)
+
+## Guidline
+
+> SpringSecurity is used to implement authentication and authorization. Some interfaces require a token to access. The access process requires authentication and authorization interfaces as follows.
+
+- Access the Swagger-UI interface documentation： http://localhost:8081/swagger-ui/#/
+
+- Call registration interface  /user/regiser , rember your password 
+  ![Image text](https://github.com/nashifanhua/test-backend-java/raw/master/img/register.png)
+- Invoke the login interface to get the token   request body like that:
+  ![Image text](https://github.com/nashifanhua/test-backend-java/raw/master/img/login_for_token.png)
 
 
-## What We Care About
+- Click on the Authorize button in the upper right corner to input the token and then access the related interfaces.
 
-Feel free to use any open-source library as you see fit, but remember that we are evaluating your coding skills and problem solving skills.
+  ![Image text](https://github.com/nashifanhua/test-backend-java/raw/master/img/authorization.png)
+  ```
+  curl -X GET "http://localhost:8081/user/friend/list?pageNum=1&pageSize=5" -H "accept: */*" -H "Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ5dWFvIiwiY3JlYXRlZCI6MTY3Mzg4Mzc1MDY4MiwiZXhwIjoxNjc0NDg4NTUwfQ.zHyLRto4hxI7Ky9rZ6K0S3lSpW2rtzDvN7Kru0TlwoNAQWbssxOsD6ODJwbstdP6G9zTlH4bTF7qHNdnkJCqUg"
+  ```
 
-Here's what you should aim for:
 
-- Good use of current Java & API design best practices.
-- Good testing approach.
-- Extensible code.
 
-## FAQ
+### What have I implemented for the advanced requirements
 
-> Where should I send back the result when I'm done?
+- > Provide a complete user auth (authentication/authorization/etc.) strategy, such as OAuth. This should provide a way to allow end users to securely login, autenticate requests and only access their own information.
+  >
+  > I use jwt and springSecurtiy to complete the login function,  please follow the progress to register your account
+- > Imagine we have a new requirement right now that the user instances need to link to each other, i.e., a list of "followers/following" or "friends". Can you find out how you would design the model structure and what API you would build for querying or modifying it?
+  >
+  > 
+  >
+  >  I create two table(**follower** and **friend**) to complete theses feature ，let me explain my design
+  >
+  > If you follow somebody, I will create a record on **follower** table 
+  >
+  > If you want get followers ,just use sql (select * from follower where follower_id = your id)
+  >
+  > If you want get list who you are following  ,just use sql (select * from follower where user_id = your id)
+  >
+  > But if  we need to get the list of friend， it will gets complicated，we need use poor performance sql to query the follower table . So when somebody follow someone ，I will check whether they had followed each other  ，if they did， I will create two record in **friend** table ,then it will be easier to return their relationship.   Also ,if any one of them unfollowed his friend , I will delete the two record in **friend** table
+  >
+  >  - This design can reduce the burden of the database
 
-Fork this repo and send us a pull request when you think it's ready for review. You don't have to finish everything prior and you can continue to work on it. We don't have a deadline for the task.
 
-> What if I have a question?
 
-Feel free to make your own assumptions about the scope of this task but try to document those. You can also reach to us for questions.
+
+- > Related to the requirement above, suppose the address of user now includes a geographic coordinate(i.e., latitude and longitude), can you build an API that,
+  > - given a user name
+  > - return the nearby friends         
+  >
+  > I use mongoDB to implement this feature.It has a index type named 2dsphere.It is convenient for us to search by location.The implementation logic is as follows
+  >
+  > 1. there is url call .... you can report your location by using this interface 
+  > 2. get list of your friend (I have implemented in previous feature)
+  > 3. use a mongoD to find your closet friends
+
+
+## What else can I do
+
+- Use English to explain the demo running on my computer
+
+- Explains the extension of these features to large systems
+
+  
+
+

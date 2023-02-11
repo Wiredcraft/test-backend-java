@@ -15,3 +15,4 @@
 3. 添加logback-spring.xml
 4. 添加FriendsController描述如何维护关注和取消关注API等
 5. 在FriendsController添加如何获取附近的朋友API
+6. 添加QUICK_START.md，介绍项目启动及API描述

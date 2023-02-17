@@ -1,0 +1,32 @@
+server:
+  port: 8080
+
+spring:
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  shardingsphere:
+    props.sql.show: true
+    enabled: true
+    datasource:
+      names: ds0
+      ds0:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/user?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false&useTimezone=true&serverTimezone=Asia/Shanghai&connectTimeout=6000&socketTimeout=120000
+        username: root
+        password: 123456
+        initialSize: 8
+        minIdle: 8
+        maxActive: 8
+        maxWait: 3000
+        validationQuery: SELECT 1
+        testWhileIdle: true
+        testOnBorrow: true
+        testOnReturn: false
+        timeBetweenEvictionRunsMillis: 60000
+        minEvictableIdleTimeMillis: 3600000
+        poolPreparedStatements: false
+
+logging:
+  config: classpath:logback-spring.xml

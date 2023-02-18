@@ -30,7 +30,7 @@ class UserControllerTest {
     @BeforeAll
     static void init() {
         user = new User();
-        user.setName("zhangsan");
+        user.setName("zhangsan-" + System.currentTimeMillis());
         user.setDob(Date.valueOf("2010-10-20"));
         user.setAddress("shanghai");
         user.setDescription("An outgoing and studious programmer");

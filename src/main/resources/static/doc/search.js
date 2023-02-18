@@ -1,39 +1,62 @@
 let api = [];
 api.push({
-    alias: 'UserController',
+    alias: 'FollowController',
     order: '1',
-    link: 'user_api',
-    desc: 'user api',
+    link: 'user_relationship_api',
+    desc: 'User relationship api',
     list: []
 })
 api[0].list.push({
     order: '1',
-    desc: 'query user by id',
+    desc: 'query fans list by userId',
 });
 api[0].list.push({
     order: '2',
-    desc: 'query user list',
+    desc: 'query follower list by userId',
 });
 api[0].list.push({
     order: '3',
-    desc: 'create user',
+    desc: 'follow a userId',
 });
 api[0].list.push({
     order: '4',
+    desc: 'unfollow a userId',
+});
+api.push({
+    alias: 'UserController',
+    order: '2',
+    link: 'user_api',
+    desc: 'user api',
+    list: []
+})
+api[1].list.push({
+    order: '1',
+    desc: 'query user by id',
+});
+api[1].list.push({
+    order: '2',
+    desc: 'query user list',
+});
+api[1].list.push({
+    order: '3',
+    desc: 'create user',
+});
+api[1].list.push({
+    order: '4',
     desc: 'update user by userId',
 });
-api[0].list.push({
+api[1].list.push({
     order: '5',
     desc: 'delete user by userId',
 });
 api.push({
     alias: 'dict',
-    order: '2',
+    order: '3',
     link: 'dict_list',
     desc: '数据字典',
     list: []
 })
-api[1].list.push({
+api[2].list.push({
     order: '1',
     desc: 'response code enum',
 });

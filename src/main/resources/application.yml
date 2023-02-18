@@ -5,6 +5,16 @@ spring:
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
+  redis:
+    host: localhost
+    port: 6379
+    #password: 123456
+    database: 0
+    lettuce:
+      pool:
+        max-idle: 15
+        max-active: 30
+        min-idle: 8
   shardingsphere:
     props.sql.show: true
     enabled: true
@@ -27,6 +37,20 @@ spring:
         timeBetweenEvictionRunsMillis: 60000
         minEvictableIdleTimeMillis: 3600000
         poolPreparedStatements: false
+    sharding:
+      tables:
+        fan:
+          actual-data-nodes: ds0.fan_0$->{0..9}
+          table-strategy:
+            inline:
+              sharding-column: user_id
+              algorithm-expression: fan_0$->{user_id % 10}
+        follow:
+          actual-data-nodes: ds0.follow_0$->{0..9}
+          table-strategy:
+            inline:
+              sharding-column: user_id
+              algorithm-expression: follow_0$->{user_id % 10}
 
 logging:
   config: classpath:logback-spring.xml

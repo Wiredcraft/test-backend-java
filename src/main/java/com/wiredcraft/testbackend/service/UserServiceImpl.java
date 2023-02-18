@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,13 +27,26 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private CacheService cacheService;
+
     @Override
     public Result<User> getUserById(Long id) {
+        User user = cacheService.getUserByIdFromCache(id);
+        if (user != null) {
+            return Result.success(user);
+        }
         Optional<User> optional = userRepository.findById(id);
         if (optional.isPresent()) {
+            cacheService.addUserToCache(optional.get());
             return Result.success(optional.get());
         }
         return Result.success();
+    }
+
+    @Override
+    public List<User> getUserByIds(List<Long> ids) {
+        return userRepository.findAllById(ids);
     }
 
     @Override
@@ -49,6 +63,7 @@ public class UserServiceImpl implements UserService {
         user.setCreatedAt(new Date());
         user.setUpdatedAt(user.getCreatedAt());
         User res = userRepository.save(user);
+        cacheService.addUserToCache(res);
         return Result.success(res);
     }
 
@@ -66,6 +81,7 @@ public class UserServiceImpl implements UserService {
         user.setCreatedAt(optional.get().getCreatedAt());
         user.setUpdatedAt(new Date());
         User res = userRepository.save(user);
+        cacheService.addUserToCache(res);
         return Result.success(res);
     }
 
@@ -78,6 +94,7 @@ public class UserServiceImpl implements UserService {
             return Result.error("User does not exist, deletion failed!");
         }
         userRepository.deleteById(id);
+        cacheService.removeUserCache(id);
         return Result.success(Boolean.TRUE);
     }
 

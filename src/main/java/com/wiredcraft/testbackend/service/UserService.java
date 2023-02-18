@@ -5,6 +5,8 @@ import com.wiredcraft.testbackend.entity.Result;
 import com.wiredcraft.testbackend.entity.User;
 import com.wiredcraft.testbackend.entity.param.PageParam;
 
+import java.util.List;
+
 public interface UserService {
 
     /**
@@ -14,6 +16,14 @@ public interface UserService {
      * @return
      */
     Result<User> getUserById(Long id);
+
+    /**
+     * query user list by ids
+     *
+     * @param ids
+     * @return
+     */
+    List<User> getUserByIds(List<Long> ids);
 
     /**
      * query user list

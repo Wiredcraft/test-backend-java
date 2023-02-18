@@ -15,7 +15,7 @@ spring:
         driver-class-name: com.mysql.cj.jdbc.Driver
         url: jdbc:mysql://127.0.0.1:3306/user?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false&useTimezone=true&serverTimezone=Asia/Shanghai&connectTimeout=6000&socketTimeout=120000
         username: root
-        password: 123456
+        password: 666788
         initialSize: 8
         minIdle: 8
         maxActive: 8

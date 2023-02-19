@@ -4,6 +4,7 @@ import com.wiredcraft.testbackend.entity.PageResult;
 import com.wiredcraft.testbackend.entity.Result;
 import com.wiredcraft.testbackend.entity.User;
 import com.wiredcraft.testbackend.entity.param.PageParam;
+import com.wiredcraft.testbackend.entity.param.UserParam;
 
 import java.util.List;
 
@@ -34,6 +35,14 @@ public interface UserService {
     Result<PageResult<User>> getUserList(User user, PageParam pageParam);
 
     /**
+     * query user by userName
+     *
+     * @param userName
+     * @return
+     */
+    User getUserByName(String userName);
+
+    /**
      * create new user
      *
      * @param user
@@ -45,10 +54,10 @@ public interface UserService {
      * update user info
      *
      * @param id
-     * @param user
+     * @param userParam
      * @return
      */
-    Result<User> updateUser(Long id, User user);
+    Result<User> updateUser(Long id, UserParam userParam);
 
     /**
      * delete user by user id

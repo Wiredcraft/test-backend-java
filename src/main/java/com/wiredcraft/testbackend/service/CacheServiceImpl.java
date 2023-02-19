@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class CacheServiceImpl implements CacheService {
@@ -46,6 +47,40 @@ public class CacheServiceImpl implements CacheService {
             redisTemplate.opsForValue().set(key, JSON.toJSONString(user));
         } catch (Exception e) {
             LOGGER.error("addUserToCache catch exception, param={}", JSON.toJSONString(user), e);
+        }
+    }
+
+    @Override
+    public User getUserByNameFromCache(String userName) {
+        try {
+            String key = CacheKeyUtil.getUserNameKey(userName);
+            String value = (String) redisTemplate.opsForValue().get(key);
+            if (value != null && value.length() > 0) {
+                return JSON.parseObject(value, User.class);
+            }
+        } catch (Exception e) {
+            LOGGER.error("getUserByNameFromCache catch exception, userName={}", userName, e);
+        }
+        return null;
+    }
+
+    @Override
+    public void addUserNameToCache(User user) {
+        try {
+            String key = CacheKeyUtil.getUserNameKey(user.getName());
+            redisTemplate.opsForValue().set(key, JSON.toJSONString(user), 30, TimeUnit.MINUTES);
+        } catch (Exception e) {
+            LOGGER.error("addUserNameToCache catch exception, param={}", JSON.toJSONString(user), e);
+        }
+    }
+
+    @Override
+    public void removeUserNameCache(String userName) {
+        try {
+            String key = CacheKeyUtil.getUserNameKey(userName);
+            redisTemplate.delete(key);
+        } catch (Exception e) {
+            LOGGER.error("removeUserNameCache catch exception, userName={}", userName, e);
         }
     }
 

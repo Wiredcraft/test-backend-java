@@ -31,6 +31,7 @@ class UserControllerTest {
     static void init() {
         user = new User();
         user.setName("zhangsan-" + System.currentTimeMillis());
+        user.setPassword("password");
         user.setDob(Date.valueOf("2010-10-20"));
         user.setAddress("shanghai");
         user.setDescription("An outgoing and studious programmer");

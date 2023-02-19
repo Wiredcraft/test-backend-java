@@ -8,6 +8,11 @@ public enum CacheKeyEnum {
     KEY_USER_INFO("user:info:{0}", "store user info"),
 
     /**
+     * use string to store user name info
+     */
+    KEY_USER_NAME("user:name:{0}", "store user info"),
+
+    /**
      * use zset to store fans of a user
      */
     KEY_USER_FANS_IDS("user:fans:{0}", "store users id who follow you"),

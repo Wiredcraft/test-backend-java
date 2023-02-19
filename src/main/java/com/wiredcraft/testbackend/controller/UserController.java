@@ -59,7 +59,7 @@ public class UserController {
      */
     @PutMapping("update/{userId}")
     public Result<User> updateUser(@PathVariable("userId") Long userId, UserParam userParam) {
-        return userService.updateUser(userId, UserParam.convertToUser(userParam));
+        return userService.updateUser(userId, userParam);
     }
 
     /**

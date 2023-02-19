@@ -10,6 +10,12 @@ public interface CacheService {
 
     void addUserToCache(User user);
 
+    User getUserByNameFromCache(String userName);
+
+    void addUserNameToCache(User user);
+
+    void removeUserNameCache(String userName);
+
     void removeUserCache(Long userId);
 
     void addFanToCache(Long userId, Long... fanUserId);

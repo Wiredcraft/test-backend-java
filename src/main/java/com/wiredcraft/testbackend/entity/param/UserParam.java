@@ -21,6 +21,10 @@ public class UserParam {
     @NotNull(message = "name cannot be null")
     private String name;
 
+    @Length(min = 8, max = 20, message = "The length of password can not exceed 20")
+    @NotNull(message = "password cannot be null")
+    private String password;
+
     /**
      * date of birth
      */
@@ -57,6 +61,14 @@ public class UserParam {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Date getDob() {

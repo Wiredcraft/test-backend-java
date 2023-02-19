@@ -20,6 +20,9 @@ import java.util.Date;
 @Entity
 @Table(name = "user")
 public class User implements Serializable {
+
+    private static final long serialVersionUID = -7937566464700374974L;
+
     /**
      * user ID
      */
@@ -33,6 +36,10 @@ public class User implements Serializable {
     @Length(max = 50, message = "The length of name can not exceed 50")
     @NotNull(message = "name cannot be null")
     private String name;
+
+    @Length(min = 8, max = 100, message = "The length of password can not exceed 100")
+    @NotNull(message = "password cannot be null")
+    private String password;
 
     /**
      * date of birth
@@ -118,5 +125,13 @@ public class User implements Serializable {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

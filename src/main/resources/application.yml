@@ -54,3 +54,6 @@ spring:
 
 logging:
   config: classpath:logback-spring.xml
+
+jwt:
+  secret: wired.craft

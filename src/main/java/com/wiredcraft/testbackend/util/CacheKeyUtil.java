@@ -32,6 +32,13 @@ public class CacheKeyUtil {
     }
 
     /**
+     * user name key
+     */
+    public static final String getUserNameKey(String name) {
+        return MessageFormat.format(CacheKeyEnum.KEY_USER_NAME.getKey(), name);
+    }
+
+    /**
      * get fan ids key
      */
     public static final String getUserFanIdsKey(Long userId) {

@@ -15,6 +15,12 @@ public enum ResultsCode {
 
     UNAUTHORIZED(401, "Unauthorized"),
 
+    WRONG_NAME_PASS(402, "Wrong username or password"),
+
+    EXPIRED_TOKEN(403, "Expired token"),
+
+    ILLEGAL_FORMAT_TOKEN(404, "illegal format token"),
+
     SERVER_ERROR(500, "Server exception");
 
     private int code;

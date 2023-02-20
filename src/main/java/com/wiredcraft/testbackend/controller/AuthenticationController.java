@@ -2,11 +2,13 @@ package com.wiredcraft.testbackend.controller;
 
 import com.wiredcraft.testbackend.entity.JwtResponse;
 import com.wiredcraft.testbackend.entity.Result;
+import com.wiredcraft.testbackend.entity.ResultsCode;
 import com.wiredcraft.testbackend.entity.param.JwtRequest;
 import com.wiredcraft.testbackend.service.JwtUserDetailsService;
 import com.wiredcraft.testbackend.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
@@ -37,14 +39,20 @@ public class AuthenticationController {
      */
     @PostMapping("auth")
     public Result<?> createAuthenticationToken(@RequestBody @Valid JwtRequest request) {
-        String username = request.getUsername();
-        String password = request.getPassword();
-        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(username, password);
-        authenticationManager.authenticate(auth);
+        try {
+            String username = request.getUsername();
+            String password = request.getPassword();
+            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(username, password);
+            authenticationManager.authenticate(auth);
 
-        UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(username);
-        String token = jwtTokenUtil.generateToken(userDetails);
-        return Result.success(new JwtResponse(token));
+            UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(username);
+            String token = jwtTokenUtil.generateToken(userDetails);
+            return Result.success(new JwtResponse(token));
+        } catch (BadCredentialsException exception) {
+            return Result.error(ResultsCode.WRONG_NAME_PASS.getCode(), ResultsCode.WRONG_NAME_PASS.getMessage());
+        } catch (Exception exception) {
+            return Result.error(ResultsCode.UNAUTHORIZED.getCode(), exception.getMessage());
+        }
     }
 
 }

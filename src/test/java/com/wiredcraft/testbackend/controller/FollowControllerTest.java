@@ -13,6 +13,8 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.stream.Collectors;
+
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class FollowControllerTest {
@@ -36,6 +38,10 @@ class FollowControllerTest {
     void getFanById() {
         Result<PageResult<User>> result = followController.getFanById(targetUserId, new PageParam());
         Assertions.assertEquals(true, result.getData() != null && result.getData().getTotal() > 0);
+
+        Assertions.assertEquals(true, result.getData() != null
+                && result.getData().getData().stream().map(e -> e.getId())
+                .collect(Collectors.toSet()).contains(originalUserId));
     }
 
     @Test
@@ -43,6 +49,10 @@ class FollowControllerTest {
     void getFollowById() {
         Result<PageResult<User>> result = followController.getFollowById(originalUserId, new PageParam());
         Assertions.assertEquals(true, result.getData() != null && result.getData().getTotal() > 0);
+
+        Assertions.assertEquals(true, result.getData() != null
+                && result.getData().getData().stream().map(e -> e.getId())
+                .collect(Collectors.toSet()).contains(targetUserId));
     }
 
     @Test
@@ -50,5 +60,14 @@ class FollowControllerTest {
     void unfollow() {
         Result<Boolean> result = followController.unfollow(originalUserId, targetUserId);
         Assertions.assertEquals(ResultsCode.SUCCESS.getCode(), result.getCode());
+    }
+
+    @Test
+    @Order(5)
+    void getFollowById2() {
+        Result<PageResult<User>> result = followController.getFollowById(originalUserId, new PageParam());
+        Assertions.assertEquals(true, result.getData() != null
+                && (result.getData().getData() == null || !result.getData().getData().stream()
+                .map(e -> e.getId()).collect(Collectors.toSet()).contains(targetUserId)));
     }
 }

@@ -66,8 +66,7 @@ class UserControllerTest {
         BeanUtils.copyProperties(user, param);
         Result<User> result = userController.createUser(param);
         user = result.getData();
-        Assertions.assertEquals(true, result.getCode() == ResultsCode.SUCCESS.getCode()
-                && result.getData().getId() != null);
+        Assertions.assertEquals(true, result.getCode() == ResultsCode.SUCCESS.getCode() && result.getData().getId() != null && result.getData().getPassword().startsWith("$2a$10$"));
     }
 
     @Test
@@ -78,6 +77,7 @@ class UserControllerTest {
         BeanUtils.copyProperties(user, param);
         Result<User> result = userController.updateUser(user.getId(), param);
         Assertions.assertEquals(ResultsCode.SUCCESS.getCode(), result.getCode());
+        Assertions.assertEquals(true, result.getData().getPassword().startsWith("$2a$10$"));
 
         // test with non-existent id
         Result<User> result2 = userController.updateUser(-1L, param);

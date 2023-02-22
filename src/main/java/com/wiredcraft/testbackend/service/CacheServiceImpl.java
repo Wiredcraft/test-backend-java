@@ -128,7 +128,7 @@ public class CacheServiceImpl implements CacheService {
     public void removeFanFromCache(Long userId, Long fanUserId) {
         try {
             String key = CacheKeyUtil.getUserFanIdsKey(userId);
-            redisTemplate.opsForZSet().remove(key, fanUserId);
+            redisTemplate.opsForZSet().remove(key, fanUserId.toString());
         } catch (Exception e) {
             LOGGER.error("removeFanFromCache catch exception, userId={}, fanUserId={}", userId, fanUserId, e);
         }
@@ -138,7 +138,7 @@ public class CacheServiceImpl implements CacheService {
     public void removeFollowFromCache(Long userId, Long followUserId) {
         try {
             String key = CacheKeyUtil.getUserFollowIdsKey(userId);
-            redisTemplate.opsForZSet().remove(key, followUserId);
+            redisTemplate.opsForZSet().remove(key, followUserId.toString());
         } catch (Exception e) {
             LOGGER.error("removeFollowFromCache catch exception, userId={}, followUserId={}", userId, followUserId, e);
         }

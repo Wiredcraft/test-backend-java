@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wiredcraft.testbackend.entity.User;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.BeanUtils;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -30,6 +31,7 @@ public class UserParam {
      */
     @NotNull(message = "dob cannot be null")
     @JsonFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dob;
 
     /**

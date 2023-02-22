@@ -89,6 +89,7 @@ public class UserServiceImpl implements UserService {
 
         user.setCreatedAt(new Date());
         user.setUpdatedAt(user.getCreatedAt());
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         User res = userRepository.save(user);
         cacheService.addUserToCache(res);
         return Result.success(res);
@@ -103,6 +104,10 @@ public class UserServiceImpl implements UserService {
         Optional<User> optional = userRepository.findById(id);
         if (!optional.isPresent()) {
             return Result.error("User does not exist, update failed!");
+        }
+        User userByName = getUserByName(userParam.getName());
+        if (userByName != null && !id.equals(userByName.getId())) {
+            return Result.error(ResultsCode.BAD_REQUEST.getCode(), "User name cannot be repeated");
         }
 
         User oldUser = optional.get();

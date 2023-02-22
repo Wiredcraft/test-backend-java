@@ -48,9 +48,8 @@ public class FollowController {
     /**
      * unfollow a userId
      */
-    @DeleteMapping("unfollow/{originalUserId}/{targetUserId}")
-    public Result<Boolean> unfollow(@PathVariable("originalUserId") Long originalUserId,
-                                    @PathVariable("targetUserId") Long targetUserId) {
+    @DeleteMapping("unfollow")
+    public Result<Boolean> unfollow(Long originalUserId, Long targetUserId) {
         return followService.unfollow(originalUserId, targetUserId);
     }
 

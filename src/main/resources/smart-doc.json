@@ -1,0 +1,16 @@
+{
+  "serverUrl": "http://localhost:8080",
+  "allInOne": true,
+  "outPath": "src/main/resources/static/doc",
+  "allInOneDocFileName": "index.html",
+  "projectName": "testbackend api",
+  "coverOld": true,
+  "showAuthor":false,
+  "packageFilters": "com.wiredcraft.testbackend.controller.*",
+  "dataDictionaries": [{
+    "title": "response code enum",
+    "enumClassName": "com.wiredcraft.testbackend.entity.ResultsCode",
+    "codeField": "code",
+    "descField": "message"
+  }]
+}

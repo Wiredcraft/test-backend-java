@@ -22,7 +22,7 @@ public class FriendController {
      * @param userId
      * @return List<User>
      */
-    @GetMapping("/friend/{userId}")
+    @GetMapping(ApiConstants.GET_FOLLOWERS_URL)
     @Authorized
     public ResponseEntity<List<User>> getFollowers(@PathVariable int userId) {
         List<User> followers = friendService.getFollowers(userId);
@@ -36,9 +36,9 @@ public class FriendController {
      * @param followerId
      * @return
      */
-    @PostMapping("/friend/{userId}/follower/{followerId}")
+    @PostMapping(ApiConstants.ADD_FOLLOWERS_URL)
     @Authorized
-    public ResponseEntity<String> addFollower(@PathVariable int userId, @PathVariable int followerId) {
+    public ResponseEntity<String> addFollower(@RequestParam int userId, @RequestParam int followerId) {
         friendService.addFollower(userId,followerId);
         return ResponseEntity.ok("Follower added successfully.");
     }
@@ -49,9 +49,9 @@ public class FriendController {
      * @param followerId
      * @return
      */
-    @DeleteMapping("/friend/{userId}/followers/{followerId}")
+    @DeleteMapping(ApiConstants.REMOVE_FOLLOWERS_URL)
     @Authorized
-    public ResponseEntity<String> removeFollower(@PathVariable int userId, @PathVariable int followerId) {
+    public ResponseEntity<String> removeFollower(@RequestParam int userId, @RequestParam int followerId) {
         friendService.removeFollower(userId,followerId);
         return ResponseEntity.ok("Follower removed successfully.");
     }
@@ -61,7 +61,7 @@ public class FriendController {
      * @param userId
      * @return
      */
-    @GetMapping("/friend/{userId}/friends")
+    @GetMapping(ApiConstants.GET_FRIENDS_URL)
     @Authorized
     public ResponseEntity<List<User>> getFriends(@PathVariable int userId) {
         List<User> friends = friendService.getFriends(userId);
@@ -74,9 +74,9 @@ public class FriendController {
      * @param otherUserId
      * @return
      */
-    @GetMapping("/friend/{userId}/friends/common")
+    @GetMapping(ApiConstants.GET_COMMON_FRIENDS_URL)
     @Authorized
-    public ResponseEntity<List<User>> getCommonFriends(@PathVariable int userId, @RequestParam int otherUserId) {
+    public ResponseEntity<List<User>> getCommonFriends(@PathVariable int userId, @PathVariable int otherUserId) {
         List<User> commonFriends = friendService.getCommonFriends(userId,otherUserId);
         return ResponseEntity.ok(commonFriends);
     }
@@ -87,7 +87,7 @@ public class FriendController {
      * @param distance
      * @return
      */
-    @GetMapping("/friend/{userName}/distance/{disdance}")
+    @GetMapping(ApiConstants.GET_NEARBY_FRIENDS_URL)
     @Authorized
     public ResponseEntity<List<User>> getNearbyFriends(@PathVariable int userId,
                                                        @PathVariable double distance) {

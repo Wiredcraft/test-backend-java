@@ -1,7 +1,7 @@
 package com.test.demo.mapper;
 
-import com.test.demo.entity.User;
-import org.springframework.stereotype.Repository;
+import com.test.demo.entity.UserDo;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,16 +11,16 @@ import java.util.Optional;
  *
  * @author zhangrucheng on 2023/5/19
  */
-@Repository
+@Mapper
 public interface UserMapper {
 
     /**
      * Add user int.
      *
-     * @param user the user
+     * @param userDo the user
      * @return the int
      */
-    int addUser(User user);
+    int addUser(UserDo userDo);
 
     /**
      * Select user by name and password optional.
@@ -29,23 +29,32 @@ public interface UserMapper {
      * @param password the password
      * @return the optional
      */
-    Optional<User> selectUserByNameAndPassword(String name, String password);
+    Optional<UserDo> selectUserByNameAndPassword(String name, String password);
+
+
+    /**
+     * Select user by id optional.
+     *
+     * @param id the id
+     * @return the optional
+     */
+    Optional<UserDo> selectUserById(int id);
 
 
     /**
      * Select user by condition list.
      *
-     * @param user the user
+     * @param userDo the user
      * @return the list
      */
-    List<User> selectUserByCondition(User user);
+    List<UserDo> selectUserByCondition(UserDo userDo);
 
     /**
      * Update user.
      *
-     * @param user the user
+     * @param userDo the user
      */
-    void updateUser(User user);
+    void updateUser(UserDo userDo);
 
     /**
      * Delete user by id int.

@@ -1,7 +1,7 @@
 package com.test.demo.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
-import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -16,8 +16,8 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString
-public class User implements Serializable {
+@TableName("user")
+public class UserDo implements Serializable {
 
     @Column(name = "id")
     @Id
@@ -47,4 +47,19 @@ public class User implements Serializable {
 
     @Column(name = "update_time")
     private Date updateTime;
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("User{");
+        sb.append("id=").append(id);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", dob=").append(dob);
+        sb.append(", description='").append(description).append('\'');
+        sb.append(", longitude=").append(longitude);
+        sb.append(", latitude=").append(latitude);
+        sb.append(", createTime=").append(createTime);
+        sb.append(", updateTime=").append(updateTime);
+        sb.append('}');
+        return sb.toString();
+    }
 }

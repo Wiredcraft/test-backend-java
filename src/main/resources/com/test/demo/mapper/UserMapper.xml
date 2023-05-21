@@ -3,11 +3,11 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.test.demo.mapper.UserMapper">
-    <insert id="addUser" parameterType="com.test.demo.entity.User" useGeneratedKeys="true" keyProperty="id">
+    <insert id="addUser" parameterType="com.test.demo.entity.UserDo" useGeneratedKeys="true" keyProperty="id">
         insert into user(name, password, dob, description, longitude, latitude) values (#{name}, #{password}, #{dob},
         #{description}, #{longitude}, #{latitude})
     </insert>
-    <update id="updateUser" parameterType="com.test.demo.entity.User">
+    <update id="updateUser" parameterType="com.test.demo.entity.UserDo">
         update user
         <set>
             <if test="name != null">
@@ -34,7 +34,8 @@
     <delete id="deleteUserById">
         delete from user where id = #{id}
     </delete>
-    <select id="selectUserByCondition" resultType="com.test.demo.entity.User" parameterType="com.test.demo.entity.User">
+    <select id="selectUserByCondition" resultType="com.test.demo.entity.UserDo"
+            parameterType="com.test.demo.entity.UserDo">
         select *, date_format(create_time, '%Y-%m-%d %H:%i:%s') as createTime, date_format(update_time, '%Y-%m-%d %H:%i:%s') as updateTime from user
         <where>
             <if test="id != null">
@@ -60,7 +61,10 @@
             </if>
         </where>
     </select>
-    <select id="selectUserByNameAndPassword" resultType="com.test.demo.entity.User">
-        select *, date_format(create_time, '%Y-%m-%d %H:%i:%s') as createTime, date_format(update_time, '%Y-%m-%d %H:%i:%s') as updateTime from user where name = #{name} and password = #{password}
+    <select id="selectUserByNameAndPassword" resultType="com.test.demo.entity.UserDo">
+        select *, date_format(create_time, '%Y-%m-%d %H:%i:%s') as createTime, date_format(update_time, '%Y-%m-%d %H:%i:%s') as updateTime from userDo where name = #{name} and password = #{password}
+    </select>
+    <select id="selectUserById" resultType="com.test.demo.entity.UserDo">
+        select * from user where id = #{id}
     </select>
 </mapper>

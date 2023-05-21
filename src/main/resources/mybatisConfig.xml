@@ -3,22 +3,22 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+    <properties resource="application.yml"/>
     <environments default="dev">
         <environment id="dev">
             <transactionManager type="JDBC"/>
             <!--<dataSource type="POOLED">-->
             <dataSource type="com.test.demo.config.DruidDataSourceFactory">
-                <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
-                <property name="url"
-                          value="jdbc:mysql://localhost:3306/test?useSSL=false&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=Asia/Shanghai&amp;allowPublicKeyRetrieval=true"/>
-                <property name="username" value="ruczhang"/>
-                <property name="password" value="password"/>
+                <property name="driverClassName" value="${driver-class-name}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
                 <property name="initialSize" value="10"/>
                 <property name="maxActive" value="20"/>
             </dataSource>
         </environment>
     </environments>
     <mappers>
-        <mapper class="com.test.demo.mapper.UserMapper"/>
+        <mapper resource="com/test/demo/mapper/UserMapper.xml"/>
     </mappers>
 </configuration>

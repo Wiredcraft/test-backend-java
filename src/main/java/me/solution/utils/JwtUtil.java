@@ -19,8 +19,8 @@ import java.util.UUID;
  */
 public class JwtUtil {
 
-    public static final Long JWT_TTL = 60 * 60 * 1000L;// 60 * 60 *1000ms  一个小时
-    public static final String JWT_KEY = "nonce";
+    public static final Long JWT_TTL = 60 * 60 * 1000L;
+    public static final String JWT_KEY = "test";
 
     public static String getUUID() {
         String token = UUID.randomUUID().toString().replaceAll("-", "");
@@ -50,7 +50,7 @@ public class JwtUtil {
         return Jwts.builder()
                 .setId(uuid)
                 .setSubject(subject)
-                .setIssuer("cola")
+                .setIssuer(JWT_KEY)
                 .setIssuedAt(now)
                 .signWith(signatureAlgorithm, secretKey)
                 .setExpiration(expDate);

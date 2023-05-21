@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * login request model
+ * update profile request
  *
  * @author davincix
  * @since 2023/5/20 15:47
@@ -13,9 +13,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginReq {
+public class UpdateProfileReq {
 
-    private String name;
+    private String address;
 
-    private String passwd;
+    private String description;
 }

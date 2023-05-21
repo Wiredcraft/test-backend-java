@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 /**
- * login request model
+ * signup request model
  *
  * @author davincix
  * @since 2023/5/20 15:47
@@ -13,9 +15,24 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginReq {
+public class SignUpReq {
 
+    /**
+     * username
+     */
     private String name;
 
+    /**
+     * password for login
+     */
     private String passwd;
+
+    /**
+     * date of birth
+     */
+    private Date dob;
+
+    private String address;
+
+    private String description;
 }

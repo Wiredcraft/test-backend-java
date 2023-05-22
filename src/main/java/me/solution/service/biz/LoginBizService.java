@@ -24,7 +24,7 @@ import java.util.Optional;
  * @since 2023/5/20 15:42
  */
 @Service
-public class LoginService {
+public class LoginBizService {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired

@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import me.solution.model.domain.User;
 import me.solution.model.reqresp.UpdatePasswdReq;
 import me.solution.model.reqresp.UpdateProfileReq;
-import me.solution.service.biz.ProfileService;
+import me.solution.service.biz.ProfileBizService;
 import me.solution.utils.LoginUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,13 +21,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/user")
 public class MyProfileEndpoint {
     @Autowired
-    private ProfileService profileService;
+    private ProfileBizService profileBizService;
 
     @ApiOperation("get my profile")
     @GetMapping("/myProfile")
     public User myProfile() {
         Long userId = LoginUtils.getUserIdRequireNonNull();
-        User user = profileService.getProfileById(userId);
+        User user = profileBizService.getProfileById(userId);
         return user;
     }
 
@@ -35,20 +35,20 @@ public class MyProfileEndpoint {
     @PostMapping("/updateProfile")
     public void updateProfile(@RequestBody UpdateProfileReq req) {
         Long userId = LoginUtils.getUserIdRequireNonNull();
-        profileService.updateProfile(userId, req);
+        profileBizService.updateProfile(userId, req);
     }
 
     @ApiOperation("update my passwd")
     @PostMapping("/updatePasswd")
     public void updatePasswd(@RequestBody UpdatePasswdReq req) {
         Long userId = LoginUtils.getUserIdRequireNonNull();
-        profileService.updatePasswd(userId, req.getPasswd());
+        profileBizService.updatePasswd(userId, req.getPasswd());
     }
 
     @ApiOperation("delete my account")
     @PostMapping("/delAccount")
     public void delAccount() {
         Long userId = LoginUtils.getUserIdRequireNonNull();
-        profileService.delAccount(userId);
+        profileBizService.delAccount(userId);
     }
 }

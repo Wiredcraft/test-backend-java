@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import me.solution.annotations.NonToken;
 import me.solution.model.reqresp.LoginReq;
 import me.solution.model.reqresp.SignUpReq;
-import me.solution.service.biz.LoginService;
+import me.solution.service.biz.LoginBizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/user")
 public class LoginEndpoint {
     @Autowired
-    private LoginService loginService;
+    private LoginBizService loginBizService;
 
     /**
      * sign up user
@@ -36,7 +36,7 @@ public class LoginEndpoint {
     @ApiOperation("signup")
     @PostMapping("/signUp")
     public String signUp(@RequestBody SignUpReq req) {
-        loginService.signUp(req);
+        loginBizService.signUp(req);
         return null;
     }
 
@@ -50,7 +50,7 @@ public class LoginEndpoint {
     @ApiOperation("login")
     @PostMapping("/login")
     public String signIn(@RequestBody LoginReq req) {
-        String jwtToken = loginService.login(req);
+        String jwtToken = loginBizService.login(req);
         return jwtToken;
     }
 
@@ -62,6 +62,6 @@ public class LoginEndpoint {
     @ApiOperation("logout")
     @PostMapping("/logout")
     public void logout() {
-        loginService.logout();
+        loginBizService.logout();
     }
 }

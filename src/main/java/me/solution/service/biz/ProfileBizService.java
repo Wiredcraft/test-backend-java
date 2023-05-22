@@ -17,11 +17,11 @@ import org.springframework.stereotype.Service;
  * @since 2023/5/22 02:18
  */
 @Service
-public class ProfileService {
+public class ProfileBizService {
     @Autowired
     private UserService userService;
     @Autowired
-    private LoginService loginService;
+    private LoginBizService loginBizService;
     @Autowired
     private RedisCache redisCache;
     @Autowired
@@ -63,6 +63,6 @@ public class ProfileService {
 
     public void delAccount(Long userId) {
         userService.softDelById(userId);
-        loginService.logoutById(userId);
+        loginBizService.logoutById(userId);
     }
 }

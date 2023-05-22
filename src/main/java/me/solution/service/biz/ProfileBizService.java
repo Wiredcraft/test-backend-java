@@ -2,6 +2,7 @@ package me.solution.service.biz;
 
 import me.solution.model.domain.User;
 import me.solution.model.reqresp.UpdateProfileReq;
+import me.solution.model.reqresp.UserResp;
 import me.solution.model.transfer.LoginUser;
 import me.solution.service.UserService;
 import me.solution.utils.LoginUtils;
@@ -9,6 +10,8 @@ import me.solution.utils.component.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 /**
  * profile biz service
@@ -27,8 +30,17 @@ public class ProfileBizService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public User getProfileById(Long userId) {
-        return userService.getUserById(userId);
+    public UserResp getProfileById(Long userId) {
+        User user = userService.getUserById(userId);
+        return Optional.ofNullable(user)
+                .map(x -> UserResp.builder()
+                        .id(x.getId())
+                        .name(x.getName())
+                        .dob(x.getDob())
+                        .address(x.getAddress())
+                        .description(x.getDescription())
+                        .build())
+                .orElse(null);
     }
 
     public void updateProfile(Long userId, UpdateProfileReq req) {
@@ -51,6 +63,8 @@ public class ProfileBizService {
         if (user == null) {
             return;
         }
+
+        // TODO: 2023/5/22 email/sms check
 
         String encodedPasswd = passwordEncoder.encode(passwd);
         user.setPasswd(encodedPasswd);

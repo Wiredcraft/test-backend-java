@@ -2,10 +2,10 @@ package me.solution.endpoint;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import me.solution.model.domain.User;
 import me.solution.model.reqresp.ResultResp;
 import me.solution.model.reqresp.UpdatePasswdReq;
 import me.solution.model.reqresp.UpdateProfileReq;
+import me.solution.model.reqresp.UserResp;
 import me.solution.service.biz.ProfileBizService;
 import me.solution.utils.LoginUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,19 +17,19 @@ import org.springframework.web.bind.annotation.*;
  * @author davincix
  * @since 2023/5/22 02:16
  */
-@Api(tags = "my profile endpoint")
+@Api(tags = "profile endpoint")
 @RestController
 @RequestMapping("/user")
-public class MyProfileEndpoint {
+public class ProfileEndpoint {
     @Autowired
     private ProfileBizService profileBizService;
 
     @ApiOperation("get my profile")
     @GetMapping("/myProfile")
-    public ResultResp<User> myProfile() {
+    public ResultResp<UserResp> myProfile() {
         Long userId = LoginUtils.getUserIdRequireNonNull();
-        User user = profileBizService.getProfileById(userId);
-        return ResultResp.successData(user);
+        UserResp result = profileBizService.getProfileById(userId);
+        return ResultResp.successData(result);
     }
 
     @ApiOperation("update my profile")

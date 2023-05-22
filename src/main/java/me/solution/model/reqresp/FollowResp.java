@@ -3,34 +3,33 @@ package me.solution.model.reqresp;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 /**
- * signup request model
+ * user domain
  *
  * @author davincix
- * @since 2023/5/20 15:47
+ * @since 2023/5/20 17:59
  */
-@ApiModel("signup request")
+@ApiModel("follow response")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SignUpReq {
+@Builder
+public class FollowResp {
+
+    @ApiModelProperty(value = "user id")
+    private Long id;
 
     /**
      * username
      */
-    @ApiModelProperty(value = "login name", required = true, example = "demo")
+    @ApiModelProperty(value = "login name")
     private String name;
-
-    /**
-     * password for login
-     */
-    @ApiModelProperty(value = "login passwd", required = true, example = "1234")
-    private String passwd;
 
     /**
      * date of birth
@@ -38,9 +37,12 @@ public class SignUpReq {
     @ApiModelProperty(value = "date of birth")
     private Date dob;
 
-    @ApiModelProperty(value = "address", example = "shanghai")
+    @ApiModelProperty(value = "address")
     private String address;
 
-    @ApiModelProperty(value = "description", example = "muggle")
+    @ApiModelProperty(value = "desc")
     private String description;
+
+    @ApiModelProperty(value = "follow type", example = "FOLLOWING, FOLLOWER, FRIEND")
+    private String followType;
 }

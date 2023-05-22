@@ -94,20 +94,6 @@ public class ResultResp<T> {
         return create(code, msg);
     }
 
-//    public static <T> ResultResp<T> error(Exception e) {
-//        if (e == null) {
-//            return null;
-//        }
-//
-//        String code = ResultCodeEnum.INTERNAL_EXCEPTION.getCode();
-//        String msg = e.getMessage();
-//        if (e instanceof NullPointerException) {
-//            code = ResultCodeEnum.NULL_POINTER_EXCEPTION.getCode();
-//            msg = ResultCodeEnum.NULL_POINTER_EXCEPTION.getMsg();
-//        }
-//        return create(code, msg);
-//    }
-
     public static <T> ResultResp<T> error(BizException e) {
         if (e == null) {
             return null;

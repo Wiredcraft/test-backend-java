@@ -1,73 +1,182 @@
-# Wiredcraft Back-end Developer Test
+# how to design
 
-Make sure you read the whole document carefully and follow the guidelines in it.
+### functional design
 
-## Context
+###### auth (signup/login/auth/logout)
 
-Build a RESTful API that can `get/create/update/delete` user data from a persistence database
+    jwt token
 
-### User Model
+###### profile api (get/update/delete)
 
-```
-{
-  "id": "xxx",                  // user ID 
-  "name": "test",               // user name
-  "dob": "",                    // date of birth
-  "address": "",                // user address
-  "description": "",            // user description
-  "createdAt": ""               // user created date
-}
-```
+    api:
+        1. restful api, but for the understanding-cost of every api, abandon the http put/delete method, just get/post
+        2. api url style: camel case over snake case
+    storage: 
+        t_user (index and deleted flag)
 
-## Requirements
+###### follow/friend relations
 
-### Functionality
+    api
+        1. follow/unfollow
+        2. remove fans/block (now not available)
+    storage
+        1. considering the increasing number of users over time
+            maybe data sharding, create 2 redundant relational tables
+            maybe distributed transaction (like eventually consistency) to keep the consistency
+            maybe redis to improve the api performance(unavailable now)
+        2. t_following(my_id, following_id)
+           t_follower(my_id, follower_id)
 
-- The API should follow typical RESTful API design pattern.
-- The data should be saved in the DB.
-- Provide proper unit test.
-- Provide proper API document.
+###### nearby friends
 
-### Tech stack
+    api
+        given the username, list nearby friends
+    lib
+        using redis geo to do this
 
-- Use Java and any framework.
-- Use any DB.
+### non-functional design
 
-### Bonus
+    third party login like oauth2
 
-- Write clear documentation on how it's designed and how to run the code.
-- Write good in-code comments.
-- Write good commit messages.
-- An online demo is always welcome.
+### uncertain
 
-### Advanced requirements
+    1. docker deploy (if i have enough time)
+    2. front-end project
+    3. online demo (aliyun?)
+    4. https
 
-*These are used for some further challenges. You can safely skip them if you are not asked to do any, but feel free to try out.*
+### lib/framework decision
 
-- Provide a complete user auth (authentication/authorization/etc.) strategy, such as OAuth. This should provide a way to allow end users to securely login, autenticate requests and only access their own information.
-- Provide a complete logging (when/how/etc.) strategy.
-- Imagine we have a new requirement right now that the user instances need to link to each other, i.e., a list of "followers/following" or "friends". Can you find out how you would design the model structure and what API you would build for querying or modifying it?
-- Related to the requirement above, suppose the address of user now includes a geographic coordinate(i.e., latitude and longitude), can you build an API that,
-  - given a user name
-  - return the nearby friends
+    1. framework: spring/spring-mvc/spring-boot/spring-security
+    2. db: mysql (with innodb engine)
+    3. orm: mybatis-plus
+    4. redis
+        for auth-token
+        for geohash
 
+# how to run
 
-## What We Care About
+### env preparation
 
-Feel free to use any open-source library as you see fit, but remember that we are evaluating your coding skills and problem solving skills.
+    jdk 1.8+
 
-Here's what you should aim for:
+###### mysql
 
-- Good use of current Java & API design best practices.
-- Good testing approach.
-- Extensible code.
+    start mysql
+    run the script.ddl.sql
 
-## FAQ
+###### redis
 
-> Where should I send back the result when I'm done?
+    start redis
 
-Fork this repo and send us a pull request when you think it's ready for review. You don't have to finish everything prior and you can continue to work on it. We don't have a deadline for the task.
+###### app
 
-> What if I have a question?
+    mysql: change user/passowrd in application.yml
+    redis: change user/password in application.yml
+    run the java spring boot app
 
-Feel free to make your own assumptions about the scope of this task but try to document those. You can also reach to us for questions.
+### api flow
+
+###### login api
+
+1. signup to get token (for front-end project, it may store in localstorage, the user will auto login)
+    - curl
+   ````
+   curl -X POST "http://localhost:8080/user/signUp" -H "accept: */*" -H "Content-Type: application/json" -d "{ \"address\": \"shanghai\", \"description\": \"muggle\", \"name\": \"demo1\", \"passwd\": 123}" 
+   ````
+    - resp: the data is response token
+   ````json
+   {"code": "0", "message": "success", "data": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5YmIzMmM4Y2RiZGU0YzRiOGE4YWQ5Zjg3ZmNjNDc2YSIsInN1YiI6IjUiLCJpc3MiOiJ0ZXN0IiwiaWF0IjoxNjg0NzUwMDE5LCJleHAiOjE2ODQ3NTM2MTl9.txCeKEsgO9Vz0GUjSVeTxXrQe-vrEiFq6VY8VjNfJKs"}
+   ````
+
+2. login with name/password to get token
+    - curl
+   ```
+   curl -X POST "http://localhost:8080/user/login" -H "accept: */*" -H "Content-Type: application/json" -d "{ \"name\": \"demo1\", \"passwd\": 123}"
+   ```
+    - resp: the data is response token
+   ````json
+   {"code": "0", "message": "success", "data": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI1N2VkYTI5YWU0Mzk0MTFjYTZkNzM3YmQzMjEwOWY0MSIsInN1YiI6IjUiLCJpc3MiOiJ0ZXN0IiwiaWF0IjoxNjg0NzUwOTUyLCJleHAiOjE2ODQ3NTQ1NTJ9.CYolQrGnzWunah-2kQiqeDAmqVsZvvfn-dDYXDZ6Dwk"}
+   ````
+
+3. logout with token
+    - curl
+   ```
+   curl -X POST "http://localhost:8080/user/logout" -H "accept: */*" -H "token: eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI1N2VkYTI5YWU0Mzk0MTFjYTZkNzM3YmQzMjEwOWY0MSIsInN1YiI6IjUiLCJpc3MiOiJ0ZXN0IiwiaWF0IjoxNjg0NzUwOTUyLCJleHAiOjE2ODQ3NTQ1NTJ9.CYolQrGnzWunah-2kQiqeDAmqVsZvvfn-dDYXDZ6Dwk"
+   ```
+    - resp
+   ```
+   { "code": "0", "message": "success", "data": null }
+   ```
+
+###### profile api
+
+1. get profile with token
+    - curl
+   ```
+   curl -X GET "http://localhost:8080/user/myProfile" -H "accept: */*" -H "token: eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJlZWYyZjE5ZWU0Njk0YjBmYTZkZTVlYjk3Mzg5MGEzZiIsInN1YiI6IjUiLCJpc3MiOiJ0ZXN0IiwiaWF0IjoxNjg0NzUxMjU4LCJleHAiOjE2ODQ3NTQ4NTh9.odUmj-_gO1LVu-nMbek6F1Ga1FjA-RZM2LA6ayzH21A"
+   ```
+    - resp
+   ```
+   { "code": "0", "message": "success", "data": { "id": 5, "name": "demo1", "dob": null, "address": "shanghai", "description": "muggle", "createdAt": null } }
+   ```
+2. update profile with token
+    - curl
+   ```
+   curl -X POST "http://localhost:8080/user/updateProfile" -H "accept: */*" -H "token: eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJlZWYyZjE5ZWU0Njk0YjBmYTZkZTVlYjk3Mzg5MGEzZiIsInN1YiI6IjUiLCJpc3MiOiJ0ZXN0IiwiaWF0IjoxNjg0NzUxMjU4LCJleHAiOjE2ODQ3NTQ4NTh9.odUmj-_gO1LVu-nMbek6F1Ga1FjA-RZM2LA6ayzH21A" -H "Content-Type: application/json" -d "{ \"address\": \"shanghai\", \"description\": \"new muggle\"}"
+   ```
+    - resp
+   ```
+   { "code": "0", "message": "success", "data": null }
+   ```
+3. update password with token
+    - curl
+   ```
+   curl -X POST "http://localhost:8080/user/updatePasswd" -H "accept: */*" -H "token: eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJlZWYyZjE5ZWU0Njk0YjBmYTZkZTVlYjk3Mzg5MGEzZiIsInN1YiI6IjUiLCJpc3MiOiJ0ZXN0IiwiaWF0IjoxNjg0NzUxMjU4LCJleHAiOjE2ODQ3NTQ4NTh9.odUmj-_gO1LVu-nMbek6F1Ga1FjA-RZM2LA6ayzH21A" -H "Content-Type: application/json" -d "{ \"passwd\": \"123new\"}"
+   ```
+    - resp
+   ```
+   { "code": "0", "message": "success", "data": null }
+   ```
+4. del account
+    - curl
+   ```
+   curl -X POST "http://localhost:8080/user/delAccount" -H "accept: */*" -H "token: eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJlZWYyZjE5ZWU0Njk0YjBmYTZkZTVlYjk3Mzg5MGEzZiIsInN1YiI6IjUiLCJpc3MiOiJ0ZXN0IiwiaWF0IjoxNjg0NzUxMjU4LCJleHAiOjE2ODQ3NTQ4NTh9.odUmj-_gO1LVu-nMbek6F1Ga1FjA-RZM2LA6ayzH21A"
+   ```
+    - resp
+   ```
+   { "code": "0", "message": "success", "data": null }
+   ```
+
+###### follow api
+
+1. add following with token
+    - curl
+   ```
+   curl -X POST "http://localhost:8080/follow/addFollowing?userId=6" -H "accept: */*" -H "token: eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyMWM3NTYzYzI4MjQ0ZTdmOTkxMzk0YTUyYWExMDM1NiIsInN1YiI6IjEiLCJpc3MiOiJ0ZXN0IiwiaWF0IjoxNjg0NzUxODQyLCJleHAiOjE2ODQ3NTU0NDJ9.Biw29hryvbKUdu2dUhS6zD3_ils4t2VrgTERDuA5_i8"
+   ```
+    - resp
+   ```
+   { "code": "0", "message": "success", "data": null }
+   ```
+2. remove following with token
+    - curl
+   ```
+   curl -X POST "http://localhost:8080/follow/delFollowing?userId=6" -H "accept: */*" -H "token: eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyMWM3NTYzYzI4MjQ0ZTdmOTkxMzk0YTUyYWExMDM1NiIsInN1YiI6IjEiLCJpc3MiOiJ0ZXN0IiwiaWF0IjoxNjg0NzUxODQyLCJleHAiOjE2ODQ3NTU0NDJ9.Biw29hryvbKUdu2dUhS6zD3_ils4t2VrgTERDuA5_i8"
+   ```
+    - resp
+   ```
+   { "code": "0", "message": "success", "data": null }
+   ```
+3. list followings with token(not available now)
+4. list followers with token(not available now)
+5. block follower (not available)
+
+###### nearby friend api
+
+list nearby friends with geo-hash(not available)
+
+### api doc
+
+    http://127.0.0.1/swagger-ui.html
+    

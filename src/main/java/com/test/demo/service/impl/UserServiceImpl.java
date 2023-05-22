@@ -5,7 +5,6 @@ import com.test.demo.mapper.UserMapper;
 import com.test.demo.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -49,11 +48,14 @@ public class UserServiceImpl implements UserService {
         userMapper.deleteUserById(id);
     }
 
-    @Override
-    public Optional<UserDo> getUserByNameAndPassword(String name, String password) {
+    public UserDo getUserByName(String name) {
         log.info("query user with name [{}]", name);
-        password = passwordEncoder.encode(password);
-        return userMapper.selectUserByNameAndPassword(name, password);
+        List<UserDo> userDoList = userMapper.selectUserByName(name);
+        if (userDoList != null && !userDoList.isEmpty()) {
+            return userDoList.get(0);
+        } else {
+            return null;
+        }
     }
 
     @Override

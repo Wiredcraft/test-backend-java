@@ -25,11 +25,10 @@ public interface UserMapper {
     /**
      * Select user by name and password optional.
      *
-     * @param name     the name
-     * @param password the password
+     * @param name the name
      * @return the optional
      */
-    Optional<UserDo> selectUserByNameAndPassword(String name, String password);
+    List<UserDo> selectUserByName(String name);
 
 
     /**

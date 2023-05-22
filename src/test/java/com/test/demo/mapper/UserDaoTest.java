@@ -10,6 +10,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,6 +28,8 @@ import java.util.Optional;
 public class UserDaoTest {
 
     private SqlSession sqlSession;
+
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Before
     public void init() {
@@ -51,16 +55,32 @@ public class UserDaoTest {
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
         for (int i = 0; i < 10; i++) {
             UserDo userDo = new UserDo();
-            userDo.setName("test" + i);
+            userDo.setName("aaa" + i);
             Calendar calendar = Calendar.getInstance();
             calendar.set(1990, 6, 6);
             userDo.setDob(calendar.getTime());
             userDo.setDescription("this is first guy " + i);
-            userDo.setPassword("testpassword" + i);
+            userDo.setPassword(passwordEncoder.encode("password" + i));
             userDo.setLatitude(new Double(123.12));
             userDo.setLongitude(new Double(445.23));
             userMapper.addUser(userDo);
             System.out.println(userDo.getId());
+        }
+    }
+
+    @Test
+    public void testUpdateDOB() throws ParseException {
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        UserDo userDo = new UserDo();
+        userDo.setId(6);
+        userDo.setDob(new SimpleDateFormat("yyyy-mm-dd").parse("1970-05-09"));
+        userMapper.updateUser(userDo);
+        System.out.println(userDo);
+        UserDo expected = new UserDo();
+        expected.setId(6);
+        List<UserDo> userDos = userMapper.selectUserByCondition(expected);
+        for (UserDo test : userDos) {
+            System.out.println(test);
         }
     }
 
@@ -87,16 +107,9 @@ public class UserDaoTest {
         userDo.setName("rucheng");
         List<UserDo> userDos = userMapper.selectUserByCondition(userDo);
         for (UserDo test : userDos) {
+            System.out.println(test);
             Assert.assertEquals("rucheng", test.getName());
         }
-    }
-
-    @Test
-    public void testQueryByNameAndPassword() {
-        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-        Optional<UserDo> user = userMapper.selectUserByNameAndPassword("updated_name", "testpassword");
-        UserDo userDo1 = user.get();
-        System.out.println(userDo1);
     }
 
     @Test

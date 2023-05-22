@@ -1,11 +1,19 @@
 CREATE DATABASE IF NOT EXISTS test_db
     DEFAULT CHARACTER SET utf8;
 
+CREATE TABLE IF NOT EXISTS `persistent_logins` (
+`username` VARCHAR (64) NOT NULL,
+`series` VARCHAR (64) NOT NULL,
+`token` VARCHAR (64) NOT NULL,
+`last_used` TIMESTAMP NOT NULL,
+PRIMARY KEY (`series`)
+) ENGINE = INNODB DEFAULT CHARSET = utf8;
+
 CREATE TABLE IF NOT EXISTS `user`
 (
     `id`          int(6)  UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     `name`        varchar(50) NOT NULL COMMENT 'user name',
-    `password`    varchar(50) NOT NULL COMMENT 'user password',
+    `password`    varchar(100) NOT NULL COMMENT 'user password',
     `dob`         DATE NULL COMMENT 'date of birth',
     `address`     varchar(50) NULL COMMENT 'user address',
     `description` varchar(100)  NULL COMMENT 'user description',

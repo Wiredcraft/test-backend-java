@@ -1,6 +1,7 @@
 package com.test.demo.service;
 
 import com.test.demo.entity.UserDo;
+import org.apache.ibatis.javassist.NotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,10 +39,9 @@ public interface UserService {
      * Gets user by name and password.
      *
      * @param name     the name
-     * @param password the password
-     * @return the user by name and password
+     * @return the user by name
      */
-    Optional<UserDo> getUserByNameAndPassword(String name, String password);
+    UserDo getUserByName(String name);
 
     /**
      * Gets user by id.

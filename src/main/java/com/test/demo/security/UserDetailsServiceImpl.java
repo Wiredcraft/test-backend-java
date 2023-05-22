@@ -33,11 +33,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         userDo.setName(username);
         List<UserDo> userDos = userMapper.selectUserByCondition(userDo);
 
-        if (userDos.isEmpty()) {
+        if (userDos == null || userDos.isEmpty()) {
             throw new UsernameNotFoundException("User name doesn't exist!");
         }
         userDo = userDos.get(0);
 
-        return new User(username, userDo.getPassword(), AuthorityUtils.commaSeparatedStringToAuthorityList("vip"));
+        return new User(username, userDo.getPassword(), AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_USER"));
     }
 }

@@ -28,6 +28,17 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final MyUserDetailService passwordUserDetailService;
     private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+    private UserAuthenticationEntryPoint userAuthenticationEntryPoint;
+    private UserAccessDeniedHandler userAccessDeniedHandler;
+
+    private static final String[] AUTH_WHITELIST = {
+            "/swagger-resources/**",
+            "/swagger-ui.html",
+            "/v2/api-docs",
+            "/webjars/**",
+            "/healthcheck/ping",
+            "/user/login", "/user/signUp"
+    };
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -58,8 +69,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/user/login", "/user/signUp").anonymous()
-                .anyRequest().authenticated();
+                .antMatchers(AUTH_WHITELIST).permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(userAuthenticationEntryPoint)
+                .accessDeniedHandler(userAccessDeniedHandler);
 
         http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }

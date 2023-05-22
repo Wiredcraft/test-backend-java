@@ -3,6 +3,7 @@ package me.solution.endpoint;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import me.solution.model.domain.User;
+import me.solution.model.reqresp.ResultResp;
 import me.solution.service.biz.FollowBizService;
 import me.solution.utils.LoginUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,27 +27,27 @@ public class FollowEndpoint {
 
     @ApiOperation("addFollowing")
     @PostMapping("/addFollowing")
-    public String addFollowing(@RequestParam("userId") Long userId) {
+    public ResultResp<Void> addFollowing(@RequestParam("userId") Long userId) {
         Long myUserId = LoginUtils.getUserIdRequireNonNull();
         followBizService.addFollowing(myUserId, userId);
 
-        return null;
+        return ResultResp.success();
     }
 
-    @ApiOperation("unFollowing")
-    @PostMapping("/unFollowing")
-    public String unFollowing(@RequestParam("userId") Long userId) {
+    @ApiOperation("delFollowing")
+    @PostMapping("/delFollowing")
+    public ResultResp<Void> unFollowing(@RequestParam("userId") Long userId) {
         Long myUserId = LoginUtils.getUserIdRequireNonNull();
         followBizService.unFollowing(myUserId, userId);
 
-        return null;
+        return ResultResp.success();
     }
 
     @ApiOperation("list my following")
     @GetMapping("/listMyFollowings")
-    public List<User> listMyFollowings() {
+    public ResultResp<List<User>> listMyFollowings() {
         // TODO: 2023/5/22
-        return Collections.emptyList();
+        return ResultResp.successData(Collections.emptyList());
     }
 
     @ApiOperation("list my followers")

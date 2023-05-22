@@ -1,6 +1,7 @@
 package me.solution.filter;
 
 import io.jsonwebtoken.Claims;
+import me.solution.constants.AuthConstant;
 import me.solution.model.transfer.LoginUser;
 import me.solution.utils.JwtUtil;
 import me.solution.utils.component.RedisUtil;
@@ -31,7 +32,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = request.getHeader("token");
+        String token = request.getHeader(AuthConstant.TOKEN_HEADER);
         // if no token, let go
         if (!StringUtils.hasText(token)) {
             filterChain.doFilter(request, response);

@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import me.solution.annotations.NonToken;
 import me.solution.model.reqresp.LoginReq;
+import me.solution.model.reqresp.ResultResp;
 import me.solution.model.reqresp.SignUpReq;
 import me.solution.service.biz.LoginBizService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,15 +30,14 @@ public class LoginEndpoint {
      * sign up user
      *
      * @param req
-     * @return
+     * @return token
      */
-
     @NonToken
     @ApiOperation("signup")
     @PostMapping("/signUp")
-    public String signUp(@RequestBody SignUpReq req) {
-        loginBizService.signUp(req);
-        return null;
+    public ResultResp<String> signUp(@RequestBody SignUpReq req) {
+        String token = loginBizService.signUp(req);
+        return ResultResp.successData(token);
     }
 
     /**
@@ -49,9 +49,9 @@ public class LoginEndpoint {
     @NonToken
     @ApiOperation("login")
     @PostMapping("/login")
-    public String signIn(@RequestBody LoginReq req) {
-        String jwtToken = loginBizService.login(req);
-        return jwtToken;
+    public ResultResp<String> signIn(@RequestBody LoginReq req) {
+        String jwtToken = loginBizService.login(req.getName(), req.getPasswd());
+        return ResultResp.successData(jwtToken);
     }
 
     /**
@@ -61,7 +61,8 @@ public class LoginEndpoint {
      */
     @ApiOperation("logout")
     @PostMapping("/logout")
-    public void logout() {
+    public ResultResp<Void> logout() {
         loginBizService.logout();
+        return ResultResp.success();
     }
 }

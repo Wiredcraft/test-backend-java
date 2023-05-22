@@ -3,6 +3,7 @@ package me.solution.endpoint;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import me.solution.model.domain.User;
+import me.solution.model.reqresp.ResultResp;
 import me.solution.model.reqresp.UpdatePasswdReq;
 import me.solution.model.reqresp.UpdateProfileReq;
 import me.solution.service.biz.ProfileBizService;
@@ -25,30 +26,36 @@ public class MyProfileEndpoint {
 
     @ApiOperation("get my profile")
     @GetMapping("/myProfile")
-    public User myProfile() {
+    public ResultResp<User> myProfile() {
         Long userId = LoginUtils.getUserIdRequireNonNull();
         User user = profileBizService.getProfileById(userId);
-        return user;
+        return ResultResp.successData(user);
     }
 
     @ApiOperation("update my profile")
     @PostMapping("/updateProfile")
-    public void updateProfile(@RequestBody UpdateProfileReq req) {
+    public ResultResp<Void> updateProfile(@RequestBody UpdateProfileReq req) {
         Long userId = LoginUtils.getUserIdRequireNonNull();
         profileBizService.updateProfile(userId, req);
+
+        return ResultResp.success();
     }
 
     @ApiOperation("update my passwd")
     @PostMapping("/updatePasswd")
-    public void updatePasswd(@RequestBody UpdatePasswdReq req) {
+    public ResultResp<Void> updatePasswd(@RequestBody UpdatePasswdReq req) {
         Long userId = LoginUtils.getUserIdRequireNonNull();
         profileBizService.updatePasswd(userId, req.getPasswd());
+
+        return ResultResp.success();
     }
 
     @ApiOperation("delete my account")
     @PostMapping("/delAccount")
-    public void delAccount() {
+    public ResultResp<Void> delAccount() {
         Long userId = LoginUtils.getUserIdRequireNonNull();
         profileBizService.delAccount(userId);
+
+        return ResultResp.success();
     }
 }

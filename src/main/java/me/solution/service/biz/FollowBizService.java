@@ -10,9 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
-
 /**
  * follow biz service
  * the amount following/follower relation may be very large
@@ -70,10 +67,5 @@ public class FollowBizService {
 
         followingService.delFollowing(followingDeleter);
         followerService.delFollower(followerDeleter);
-    }
-
-    public List<User> listNearbyFriends(String name) {
-        // TODO: 2023/5/22 redis geo-hash
-        return Collections.emptyList();
     }
 }

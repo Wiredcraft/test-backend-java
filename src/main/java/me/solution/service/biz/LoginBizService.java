@@ -1,7 +1,9 @@
 package me.solution.service.biz;
 
+import me.solution.enums.ResultCodeEnum;
+import me.solution.exception.BizChecker;
+import me.solution.exception.BizException;
 import me.solution.model.domain.User;
-import me.solution.model.reqresp.LoginReq;
 import me.solution.model.reqresp.SignUpReq;
 import me.solution.model.transfer.LoginUser;
 import me.solution.service.UserService;
@@ -11,10 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -34,26 +38,41 @@ public class LoginBizService {
     @Autowired
     private RedisUtil redisUtil;
 
-    public void signUp(SignUpReq req) {
-        String encodedPasswd = passwordEncoder.encode(req.getPasswd());
+    public String signUp(SignUpReq req) {
+        String name = req.getName();
+        String passwd = req.getPasswd();
+        String encodedPasswd = passwordEncoder.encode(passwd);
+
+        User existUser = userService.getUserByName(name, false);
+        Optional.ofNullable(existUser)
+                .ifPresent(x -> {
+                    BizChecker.checkUserNameTaken(Objects.equals(x.getName(), name));
+                });
 
         User saver = User.builder()
-                .name(req.getName())
+                .name(name)
                 .passwd(encodedPasswd)
                 .dob(req.getDob())
                 .address(req.getAddress())
                 .description(req.getDescription())
                 .build();
         userService.saveUser(saver);
+
+        return login(name, passwd);
     }
 
-    public String login(LoginReq req) {
+    public String login(String name, String passwd) {
         // invoke ProviderManager to check
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(req.getName(), req.getPasswd());
-        Authentication authenticate = authenticationManager.authenticate(authenticationToken);
+                new UsernamePasswordAuthenticationToken(name, passwd);
+        Authentication authenticate;
+        try {
+            authenticate = authenticationManager.authenticate(authenticationToken);
+        } catch (AuthenticationException e) {
+            throw new BizException(ResultCodeEnum.INCORRECT_NAME_OR_PASSWD);
+        }
         Optional.ofNullable(authenticate)
-                .orElseThrow(() -> new RuntimeException("用户名或密码错误"));
+                .orElseThrow(() -> new BizException(ResultCodeEnum.INCORRECT_NAME_OR_PASSWD));
 
         // generate jwt token, store the token to redis
         LoginUser loginUser = (LoginUser) authenticate.getPrincipal();

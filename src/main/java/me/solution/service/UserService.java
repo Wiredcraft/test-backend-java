@@ -51,7 +51,7 @@ public class UserService {
         wrapper.eq(User::getId, userId);
         wrapper.set(User::getDeleteFlag, UserDeleteFlag.DELETED.getValue());
         // the username is collected
-        wrapper.set(User::getName, user.getName() + userId);
+        wrapper.set(User::getName, user.getName() + "_" + userId);
 
         userMapper.update(null, wrapper);
     }

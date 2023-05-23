@@ -7,7 +7,7 @@ import me.solution.model.reqresp.UpdatePasswdReq;
 import me.solution.model.reqresp.UpdateProfileReq;
 import me.solution.model.reqresp.UserResp;
 import me.solution.service.biz.ProfileBizService;
-import me.solution.common.utils.LoginUtil;
+import me.solution.security.utils.LoginUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

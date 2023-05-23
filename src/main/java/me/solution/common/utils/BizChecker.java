@@ -1,5 +1,6 @@
-package me.solution.common.annotations.exception;
+package me.solution.common.utils;
 
+import me.solution.common.exception.BizException;
 import me.solution.common.enums.ResultCodeEnum;
 import org.jetbrains.annotations.Contract;
 

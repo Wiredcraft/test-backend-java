@@ -1,7 +1,7 @@
 package me.solution.service.auth;
 
 import me.solution.model.domain.User;
-import me.solution.model.transfer.LoginUser;
+import me.solution.security.model.LoginUser;
 import me.solution.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

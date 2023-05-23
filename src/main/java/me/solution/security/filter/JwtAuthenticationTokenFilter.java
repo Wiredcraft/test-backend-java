@@ -1,9 +1,9 @@
-package me.solution.common.filter;
+package me.solution.security.filter;
 
 import io.jsonwebtoken.Claims;
 import me.solution.common.constants.AuthConstant;
-import me.solution.model.transfer.LoginUser;
-import me.solution.common.utils.JwtUtil;
+import me.solution.security.model.LoginUser;
+import me.solution.security.utils.JwtUtil;
 import me.solution.common.utils.component.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

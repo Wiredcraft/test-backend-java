@@ -1,4 +1,4 @@
-package me.solution.common.config;
+package me.solution.security;
 
 import lombok.SneakyThrows;
 import me.solution.common.enums.ResultCodeEnum;

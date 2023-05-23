@@ -2,7 +2,7 @@ package me.solution.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import me.solution.common.enums.UserDeleteFlag;
+import me.solution.model.domain.UserDeleteFlag;
 import me.solution.mapper.UserMapper;
 import me.solution.model.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;

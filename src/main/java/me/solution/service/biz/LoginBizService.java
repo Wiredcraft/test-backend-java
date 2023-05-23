@@ -1,13 +1,13 @@
 package me.solution.service.biz;
 
 import me.solution.common.enums.ResultCodeEnum;
-import me.solution.common.annotations.exception.BizChecker;
-import me.solution.common.annotations.exception.BizException;
+import me.solution.common.utils.BizChecker;
+import me.solution.common.exception.BizException;
 import me.solution.model.domain.User;
 import me.solution.model.reqresp.SignUpReq;
-import me.solution.model.transfer.LoginUser;
+import me.solution.security.model.LoginUser;
 import me.solution.service.UserService;
-import me.solution.common.utils.JwtUtil;
+import me.solution.security.utils.JwtUtil;
 import me.solution.common.utils.component.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;

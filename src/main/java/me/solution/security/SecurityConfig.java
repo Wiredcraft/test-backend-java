@@ -1,7 +1,7 @@
-package me.solution.common.config;
+package me.solution.security;
 
 import lombok.AllArgsConstructor;
-import me.solution.common.filter.JwtAuthenticationTokenFilter;
+import me.solution.security.filter.JwtAuthenticationTokenFilter;
 import me.solution.service.auth.MyUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

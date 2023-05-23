@@ -1,4 +1,4 @@
-package me.solution.common.enums;
+package me.solution.model.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

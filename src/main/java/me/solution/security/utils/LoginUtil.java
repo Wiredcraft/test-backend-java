@@ -1,7 +1,7 @@
-package me.solution.common.utils;
+package me.solution.security.utils;
 
 import lombok.extern.slf4j.Slf4j;
-import me.solution.model.transfer.LoginUser;
+import me.solution.security.model.LoginUser;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**

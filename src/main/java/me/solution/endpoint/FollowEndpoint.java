@@ -6,7 +6,7 @@ import me.solution.model.domain.User;
 import me.solution.model.reqresp.FollowResp;
 import me.solution.model.reqresp.ResultResp;
 import me.solution.service.biz.FollowBizService;
-import me.solution.common.utils.LoginUtil;
+import me.solution.security.utils.LoginUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

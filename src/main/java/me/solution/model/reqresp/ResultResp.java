@@ -3,7 +3,7 @@ package me.solution.model.reqresp;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import me.solution.common.annotations.exception.BizException;
+import me.solution.common.exception.BizException;
 import me.solution.common.enums.ResultCodeEnum;
 import org.springframework.util.StringUtils;
 

@@ -1,4 +1,4 @@
-package me.solution.common.config;
+package me.solution.security;
 
 import me.solution.common.enums.ResultCodeEnum;
 import me.solution.common.utils.WebUtil;

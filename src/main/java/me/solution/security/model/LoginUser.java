@@ -1,4 +1,4 @@
-package me.solution.model.transfer;
+package me.solution.security.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package me.solution.common.annotations.exception;
+package me.solution.common.exception;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

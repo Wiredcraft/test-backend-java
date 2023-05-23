@@ -2,7 +2,7 @@ package me.solution.common.aspect;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import me.solution.common.annotations.exception.BizException;
+import me.solution.common.exception.BizException;
 import me.solution.common.enums.ResultCodeEnum;
 import me.solution.model.reqresp.ResultResp;
 import org.springframework.stereotype.Component;

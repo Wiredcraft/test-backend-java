@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.demo.mapper.UserMapper">
+    <insert id="addUser" parameterType="com.test.demo.entity.UserDo" useGeneratedKeys="true" keyProperty="id">
+        insert into user(name, password, dob, description, longitude, latitude) values (#{name}, #{password}, #{dob},
+        #{description}, #{longitude}, #{latitude})
+    </insert>
+    <update id="updateUser" parameterType="com.test.demo.entity.UserDo">
+        update user
+        <set>
+            <if test="name != null">
+                , name = #{name}
+            </if>
+            <if test="password != null">
+                , password = #{password}
+            </if>
+            <if test="dob != null">
+                , dob = #{dob}
+            </if>
+            <if test="longitude != null">
+                , longitude = #{longitude}
+            </if>
+            <if test="latitude != null">
+                , latitude = #{latitude}
+            </if>
+            <if test="createTime != null">
+                , create_time = #{createTime}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="deleteUserById">
+        delete from user where id = #{id}
+    </delete>
+    <select id="selectUserByCondition" resultType="com.test.demo.entity.UserDo"
+            parameterType="com.test.demo.entity.UserDo">
+        select *, date_format(create_time, '%Y-%m-%d %H:%i:%s') as createTime, date_format(update_time, '%Y-%m-%d %H:%i:%s') as updateTime from user
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="name != null">
+                and name = #{name}
+            </if>
+            <if test="password != null">
+                and password = #{password}
+            </if>
+            <if test="dob != null">
+                and dob = #{dob}
+            </if>
+            <if test="longitude != null">
+                and longitude = #{longitude}
+            </if>
+            <if test="latitude != null">
+                and latitude = #{latitude}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+        </where>
+    </select>
+    <select id="selectUserByName" resultType="com.test.demo.entity.UserDo">
+        select *, date_format(create_time, '%Y-%m-%d %H:%i:%s') as createTime, date_format(update_time, '%Y-%m-%d %H:%i:%s') as updateTime from user where name = #{name}
+    </select>
+    <select id="selectUserById" resultType="com.test.demo.entity.UserDo">
+        select * from user where id = #{id}
+    </select>
+</mapper>

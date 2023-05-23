@@ -2,9 +2,11 @@ package me.solution.security.filter;
 
 import io.jsonwebtoken.Claims;
 import me.solution.common.constants.AuthConstant;
+import me.solution.common.enums.ResultCodeEnum;
+import me.solution.common.exception.BizException;
 import me.solution.security.model.LoginUser;
 import me.solution.security.utils.JwtUtil;
-import me.solution.common.utils.component.RedisUtil;
+import me.solution.service.LoginCacheService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,7 +30,7 @@ import java.util.Optional;
 @Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     @Autowired
-    private RedisUtil redisUtil;
+    private LoginCacheService loginCacheService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -46,12 +48,11 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             userId = claims.getSubject();
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("illegal token");
+            throw new BizException(ResultCodeEnum.UNAUTHORIZED);
         }
 
         // get user from redis
-        String redisKey = "login:" + userId;
-        LoginUser loginUser = (LoginUser) redisUtil.get(redisKey);
+        LoginUser loginUser = loginCacheService.getLoginUserByUserId(userId);
         Optional.ofNullable(loginUser)
                 .orElseThrow(() -> new RuntimeException("please login"));
 

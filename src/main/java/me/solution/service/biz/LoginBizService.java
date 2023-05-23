@@ -6,9 +6,9 @@ import me.solution.common.exception.BizException;
 import me.solution.model.domain.User;
 import me.solution.model.reqresp.SignUpReq;
 import me.solution.security.model.LoginUser;
+import me.solution.service.LoginCacheService;
 import me.solution.service.UserService;
 import me.solution.security.utils.JwtUtil;
-import me.solution.common.utils.component.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,7 +36,7 @@ public class LoginBizService {
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
-    private RedisUtil redisUtil;
+    private LoginCacheService loginCacheService;
 
     public String signUp(SignUpReq req) {
         String name = req.getName();
@@ -76,9 +76,12 @@ public class LoginBizService {
 
         // generate jwt token, store the token to redis
         LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
-        String userId = loginUser.getUser().getId().toString();
-        String jwt = JwtUtil.createJWT(userId);
-        redisUtil.set("login:" + userId, loginUser);
+        Long userId = loginUser.getUser().getId();
+        String userIdStr = userId.toString();
+        String jwt = JwtUtil.createJWT(userIdStr);
+
+        // set login cache
+        loginCacheService.setLoginCache(userId, loginUser);
 
         return jwt;
     }
@@ -91,6 +94,6 @@ public class LoginBizService {
     }
 
     public void logoutById(Long userId) {
-        redisUtil.del("login:" + userId);
+        loginCacheService.delLoginCache(userId);
     }
 }

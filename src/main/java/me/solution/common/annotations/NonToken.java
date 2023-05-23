@@ -1,4 +1,4 @@
-package me.solution.annotations;
+package me.solution.common.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import me.solution.common.enums.UserDeleteFlag;
 
 import java.util.Date;
 
@@ -46,7 +47,7 @@ public class User {
     private String description;
 
     /**
-     * {@link me.solution.enums.UserDeleteFlag}
+     * {@link UserDeleteFlag}
      */
     private Integer deleteFlag;
 

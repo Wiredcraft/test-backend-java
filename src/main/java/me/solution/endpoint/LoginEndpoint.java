@@ -2,7 +2,7 @@ package me.solution.endpoint;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import me.solution.annotations.NonToken;
+import me.solution.common.annotations.NonToken;
 import me.solution.model.reqresp.LoginReq;
 import me.solution.model.reqresp.ResultResp;
 import me.solution.model.reqresp.SignUpReq;
@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 /**
  * login/logout endpoint
@@ -35,7 +37,7 @@ public class LoginEndpoint {
     @NonToken
     @ApiOperation("signup")
     @PostMapping("/signUp")
-    public ResultResp<String> signUp(@RequestBody SignUpReq req) {
+    public ResultResp<String> signUp(@RequestBody @Valid SignUpReq req) {
         String token = loginBizService.signUp(req);
         return ResultResp.successData(token);
     }
@@ -49,7 +51,7 @@ public class LoginEndpoint {
     @NonToken
     @ApiOperation("login")
     @PostMapping("/login")
-    public ResultResp<String> signIn(@RequestBody LoginReq req) {
+    public ResultResp<String> signIn(@RequestBody @Valid LoginReq req) {
         String jwtToken = loginBizService.login(req.getName(), req.getPasswd());
         return ResultResp.successData(jwtToken);
     }

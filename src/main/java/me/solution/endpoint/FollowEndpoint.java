@@ -6,7 +6,7 @@ import me.solution.model.domain.User;
 import me.solution.model.reqresp.FollowResp;
 import me.solution.model.reqresp.ResultResp;
 import me.solution.service.biz.FollowBizService;
-import me.solution.utils.LoginUtils;
+import me.solution.common.utils.LoginUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +29,7 @@ public class FollowEndpoint {
     @ApiOperation("addFollowing")
     @PostMapping("/addFollowing")
     public ResultResp<Void> addFollowing(@RequestParam("userId") Long userId) {
-        Long myUserId = LoginUtils.getUserIdRequireNonNull();
+        Long myUserId = LoginUtil.getUserIdRequireNonNull();
         followBizService.addFollowing(myUserId, userId);
 
         return ResultResp.success();
@@ -38,7 +38,7 @@ public class FollowEndpoint {
     @ApiOperation("delFollowing")
     @PostMapping("/delFollowing")
     public ResultResp<Void> delFollowing(@RequestParam("userId") Long userId) {
-        Long myUserId = LoginUtils.getUserIdRequireNonNull();
+        Long myUserId = LoginUtil.getUserIdRequireNonNull();
         followBizService.unFollowing(myUserId, userId);
 
         return ResultResp.success();

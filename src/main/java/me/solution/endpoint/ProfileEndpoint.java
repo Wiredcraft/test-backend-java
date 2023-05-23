@@ -7,9 +7,11 @@ import me.solution.model.reqresp.UpdatePasswdReq;
 import me.solution.model.reqresp.UpdateProfileReq;
 import me.solution.model.reqresp.UserResp;
 import me.solution.service.biz.ProfileBizService;
-import me.solution.utils.LoginUtils;
+import me.solution.common.utils.LoginUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 /**
  * endpoint for my profile
@@ -27,7 +29,7 @@ public class ProfileEndpoint {
     @ApiOperation("get my profile")
     @GetMapping("/myProfile")
     public ResultResp<UserResp> myProfile() {
-        Long userId = LoginUtils.getUserIdRequireNonNull();
+        Long userId = LoginUtil.getUserIdRequireNonNull();
         UserResp result = profileBizService.getProfileById(userId);
         return ResultResp.successData(result);
     }
@@ -35,7 +37,7 @@ public class ProfileEndpoint {
     @ApiOperation("update my profile")
     @PostMapping("/updateProfile")
     public ResultResp<Void> updateProfile(@RequestBody UpdateProfileReq req) {
-        Long userId = LoginUtils.getUserIdRequireNonNull();
+        Long userId = LoginUtil.getUserIdRequireNonNull();
         profileBizService.updateProfile(userId, req);
 
         return ResultResp.success();
@@ -43,8 +45,8 @@ public class ProfileEndpoint {
 
     @ApiOperation("update my passwd")
     @PostMapping("/updatePasswd")
-    public ResultResp<Void> updatePasswd(@RequestBody UpdatePasswdReq req) {
-        Long userId = LoginUtils.getUserIdRequireNonNull();
+    public ResultResp<Void> updatePasswd(@RequestBody @Valid UpdatePasswdReq req) {
+        Long userId = LoginUtil.getUserIdRequireNonNull();
         profileBizService.updatePasswd(userId, req.getPasswd());
 
         return ResultResp.success();
@@ -53,7 +55,7 @@ public class ProfileEndpoint {
     @ApiOperation("delete my account")
     @PostMapping("/delAccount")
     public ResultResp<Void> delAccount() {
-        Long userId = LoginUtils.getUserIdRequireNonNull();
+        Long userId = LoginUtil.getUserIdRequireNonNull();
         profileBizService.delAccount(userId);
 
         return ResultResp.success();

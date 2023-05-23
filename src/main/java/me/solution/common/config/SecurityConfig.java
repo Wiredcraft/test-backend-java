@@ -1,8 +1,9 @@
-package me.solution.config;
+package me.solution.common.config;
 
 import lombok.AllArgsConstructor;
-import me.solution.filter.JwtAuthenticationTokenFilter;
+import me.solution.common.filter.JwtAuthenticationTokenFilter;
 import me.solution.service.auth.MyUserDetailService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,9 +27,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private final MyUserDetailService passwordUserDetailService;
+    @Autowired
+    private MyUserDetailService passwordUserDetailService;
+    @Autowired
     private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+    @Autowired
     private UserAuthenticationEntryPoint userAuthenticationEntryPoint;
+    @Autowired
     private UserAccessDeniedHandler userAccessDeniedHandler;
 
     private static final String[] AUTH_WHITELIST = {

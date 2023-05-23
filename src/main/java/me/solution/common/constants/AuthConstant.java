@@ -1,4 +1,4 @@
-package me.solution.constants;
+package me.solution.common.constants;
 
 /**
  * constants for auth

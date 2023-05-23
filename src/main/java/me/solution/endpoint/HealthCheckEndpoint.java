@@ -1,6 +1,6 @@
 package me.solution.endpoint;
 
-import me.solution.annotations.NonToken;
+import me.solution.common.annotations.NonToken;
 import me.solution.model.reqresp.ResultResp;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

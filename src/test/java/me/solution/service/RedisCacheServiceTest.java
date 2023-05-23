@@ -1,12 +1,12 @@
 package me.solution.service;
 
-import me.solution.utils.component.RedisCache;
+import me.solution.common.utils.component.RedisCache;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 /**
- * test for #{@link me.solution.utils.component.RedisCache}
+ * test for #{@link RedisCache}
  *
  * @author davincix
  * @since 2023/5/20 19:08

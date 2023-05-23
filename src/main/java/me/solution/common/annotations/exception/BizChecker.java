@@ -1,6 +1,6 @@
-package me.solution.exception;
+package me.solution.common.annotations.exception;
 
-import me.solution.enums.ResultCodeEnum;
+import me.solution.common.enums.ResultCodeEnum;
 import org.jetbrains.annotations.Contract;
 
 /**

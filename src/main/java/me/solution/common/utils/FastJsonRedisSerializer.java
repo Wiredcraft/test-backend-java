@@ -1,4 +1,4 @@
-package me.solution.utils;
+package me.solution.common.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.parser.ParserConfig;

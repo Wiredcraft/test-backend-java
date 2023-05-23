@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
+
 /**
  * login request model
  *
@@ -19,8 +21,10 @@ import lombok.NoArgsConstructor;
 public class LoginReq {
 
     @ApiModelProperty(value = "login name", required = true, example = "demo")
+    @NotEmpty(message = "the name is empty")
     private String name;
 
     @ApiModelProperty(value = "login passwd", required = true, example = "1234")
+    @NotEmpty(message = "the passwd is empty")
     private String passwd;
 }

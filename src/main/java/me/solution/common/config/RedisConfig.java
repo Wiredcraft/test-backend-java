@@ -1,6 +1,6 @@
-package me.solution.config;
+package me.solution.common.config;
 
-import me.solution.utils.FastJsonRedisSerializer;
+import me.solution.common.utils.FastJsonRedisSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

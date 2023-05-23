@@ -1,4 +1,4 @@
-package me.solution.utils;
+package me.solution.common.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;

@@ -1,4 +1,4 @@
-package me.solution.utils.component;
+package me.solution.common.utils.component;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundSetOperations;

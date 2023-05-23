@@ -1,9 +1,9 @@
-package me.solution.config;
+package me.solution.common.config;
 
 import com.google.common.base.Predicate;
 import io.swagger.annotations.ApiOperation;
-import me.solution.annotations.NonToken;
-import me.solution.constants.AuthConstant;
+import me.solution.common.annotations.NonToken;
+import me.solution.common.constants.AuthConstant;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;

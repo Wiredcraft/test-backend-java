@@ -3,8 +3,8 @@ package me.solution.model.reqresp;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import me.solution.enums.ResultCodeEnum;
-import me.solution.exception.BizException;
+import me.solution.common.annotations.exception.BizException;
+import me.solution.common.enums.ResultCodeEnum;
 import org.springframework.util.StringUtils;
 
 /**
@@ -72,6 +72,10 @@ public class ResultResp<T> {
         return errorData(message, null);
     }
 
+    public static <T> ResultResp<T> error(ResultCodeEnum resultCodeEnum) {
+        return create(resultCodeEnum.getCode(), resultCodeEnum.getMsg());
+    }
+
     public static <T> ResultResp<T> error() {
         return errorMessage(null);
     }
@@ -87,10 +91,6 @@ public class ResultResp<T> {
 
         String code = ResultCodeEnum.INTERNAL_EXCEPTION.getCode();
         String msg = e.getMessage();
-        if (e instanceof NullPointerException) {
-            code = ResultCodeEnum.NULL_POINTER_EXCEPTION.getCode();
-            msg = ResultCodeEnum.NULL_POINTER_EXCEPTION.getMsg();
-        }
         return create(code, msg);
     }
 

@@ -1,8 +1,8 @@
-package me.solution.exception;
+package me.solution.common.annotations.exception;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import me.solution.enums.ResultCodeEnum;
+import me.solution.common.enums.ResultCodeEnum;
 
 /**
  * @author davincix

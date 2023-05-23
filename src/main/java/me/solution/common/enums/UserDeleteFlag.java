@@ -1,4 +1,4 @@
-package me.solution.enums;
+package me.solution.common.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

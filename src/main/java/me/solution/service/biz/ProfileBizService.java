@@ -1,12 +1,13 @@
 package me.solution.service.biz;
 
+import me.solution.common.converter.UserConverter;
 import me.solution.model.domain.User;
 import me.solution.model.reqresp.UpdateProfileReq;
 import me.solution.model.reqresp.UserResp;
 import me.solution.model.transfer.LoginUser;
 import me.solution.service.UserService;
-import me.solution.utils.LoginUtils;
-import me.solution.utils.component.RedisCache;
+import me.solution.common.utils.LoginUtil;
+import me.solution.common.utils.component.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,17 +30,13 @@ public class ProfileBizService {
     private RedisCache redisCache;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private UserConverter userConverter;
 
     public UserResp getProfileById(Long userId) {
         User user = userService.getUserById(userId);
         return Optional.ofNullable(user)
-                .map(x -> UserResp.builder()
-                        .id(x.getId())
-                        .name(x.getName())
-                        .dob(x.getDob())
-                        .address(x.getAddress())
-                        .description(x.getDescription())
-                        .build())
+                .map(userConverter::model2Resp)
                 .orElse(null);
     }
 
@@ -53,7 +50,7 @@ public class ProfileBizService {
         user.setDescription(req.getDescription());
         userService.updateByUserId(user);
 
-        LoginUser loginUser = LoginUtils.getLoginUserRequireNonNull();
+        LoginUser loginUser = LoginUtil.getLoginUserRequireNonNull();
         loginUser.setUser(user);
         redisCache.setCacheObject("login:" + userId, loginUser);
     }
@@ -70,7 +67,7 @@ public class ProfileBizService {
         user.setPasswd(encodedPasswd);
         userService.updateByUserId(user);
 
-        LoginUser loginUser = LoginUtils.getLoginUserRequireNonNull();
+        LoginUser loginUser = LoginUtil.getLoginUserRequireNonNull();
         loginUser.setUser(user);
         redisCache.setCacheObject("login:" + userId, loginUser);
     }

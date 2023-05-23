@@ -1,4 +1,4 @@
-package me.solution.enums;
+package me.solution.common.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,9 +19,11 @@ public enum ResultCodeEnum {
     NULL_POINTER_EXCEPTION("1", "null pointer exception"),
     INTERNAL_EXCEPTION("500", "internal exception"),
 
-    ILLEGAL_TOKEN("-1000", "illegal token"),
-    INCORRECT_NAME_OR_PASSWD("-1001", "incorrect name or passwd"),
-    USER_NAME_TAKEN("-1002", "the name is taken"),
+    UNAUTHORIZED("-1000", "unauthorized"),
+    FORBIDDEN("-1001", "insufficient privileges"),
+    INCORRECT_NAME_OR_PASSWD("-1002", "incorrect name or passwd"),
+    USER_NAME_TAKEN("-1003", "the name is taken"),
+    ILLEGAL_PARAM("-1004", "illegal param"),
     ;
 
     private final String code;

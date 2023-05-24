@@ -59,21 +59,22 @@
 ### env preparation
 
     jdk 1.8+
+    docker and docker-compose 
 
-###### mysql
+###### 1. run mysql/redis in docker
 
-    start mysql
-    run the script.ddl.sql
+```shell
+cd ./docker
+docker compose up -d
+```
 
-###### redis
+###### 2. app
 
-    start redis
+    run the java spring boot app (application.yml)
 
-###### app
+### 3. access api doc
 
-    mysql: change user/passowrd in application.yml
-    redis: change user/password in application.yml
-    run the java spring boot app
+    http://127.0.0.1/swagger-ui.html
 
 ### api flow
 
@@ -168,15 +169,19 @@
    ```
    { "code": "0", "message": "success", "data": null }
    ```
-3. list followings with token(not available now)
+3. list followings with token
+    - curl
+   ```
+   curl -X GET "http://localhost:8080/follow/listMyFollowings" -H "accept: */*" -H "token: eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJkN2ZiZDA4NTg2MjA0NmY4OWFkZmQwMDcwMDJlZjYyMiIsInN1YiI6IjUiLCJpc3MiOiJ0ZXN0IiwiaWF0IjoxNjg0OTI3OTc0LCJleHAiOjE2ODQ5MzE1NzR9.77uzfUigLrTFBrxfnGass9NVvPIoRzk0S5yiFUz7fJ4"
+   ```
+    - resp
+   ```json
+   { "code": "0", "message": "success", "data": [ { "id": 9, "name": "demo1115", "dob": "2023-05-24T08:57:22.000+00:00", "address": "shanghai", "description": "muggle", "beingFriend": false }, { "id": 8, "name": "demo1114", "dob": "2023-05-24T08:57:22.000+00:00", "address": "shanghai", "description": "muggle", "beingFriend": false }, { "id": 7, "name": "demo1113", "dob": "2023-05-24T08:57:22.000+00:00", "address": "shanghai", "description": "muggle", "beingFriend": false }, { "id": 6, "name": "demo1112", "dob": "2023-05-24T08:57:22.000+00:00", "address": "shanghai", "description": "muggle", "beingFriend": false } ] } 
+   ```
+
 4. list followers with token(not available now)
 5. block follower (not available)
 
 ###### nearby friend api
 
 list nearby friends with geo-hash(not available)
-
-### api doc
-
-    http://127.0.0.1/swagger-ui.html
-    

@@ -1,5 +1,6 @@
 package me.solution.service.biz;
 
+import me.solution.common.converter.UserConverter;
 import me.solution.common.enums.ResultCodeEnum;
 import me.solution.common.utils.BizChecker;
 import me.solution.common.exception.BizException;
@@ -37,25 +38,22 @@ public class LoginBizService {
     private AuthenticationManager authenticationManager;
     @Autowired
     private LoginCacheService loginCacheService;
+    @Autowired
+    private UserConverter userConverter;
 
     public String signUp(SignUpReq req) {
         String name = req.getName();
         String passwd = req.getPasswd();
         String encodedPasswd = passwordEncoder.encode(passwd);
 
-        User existUser = userService.getUserByName(name, false);
+        User existUser = userService.getUserByName(name, true);
         Optional.ofNullable(existUser)
                 .ifPresent(x -> {
                     BizChecker.checkUserNameTaken(Objects.equals(x.getName(), name));
                 });
 
-        User saver = User.builder()
-                .name(name)
-                .passwd(encodedPasswd)
-                .dob(req.getDob())
-                .address(req.getAddress())
-                .description(req.getDescription())
-                .build();
+        User saver = userConverter.req2Model(req);
+        saver.setPasswd(encodedPasswd);
         userService.saveUser(saver);
 
         return login(name, passwd);
@@ -77,8 +75,7 @@ public class LoginBizService {
         // generate jwt token, store the token to redis
         LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
         Long userId = loginUser.getUser().getId();
-        String userIdStr = userId.toString();
-        String jwt = JwtUtil.createJWT(userIdStr);
+        String jwt = JwtUtil.createJWT(userId.toString());
 
         // set login cache
         loginCacheService.setLoginCache(userId, loginUser);

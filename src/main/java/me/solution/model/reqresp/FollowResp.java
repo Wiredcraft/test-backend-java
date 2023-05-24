@@ -43,6 +43,6 @@ public class FollowResp {
     @ApiModelProperty(value = "desc")
     private String description;
 
-    @ApiModelProperty(value = "follow type", example = "FOLLOWING, FOLLOWER, FRIEND")
-    private String followType;
+    @ApiModelProperty(value = "being friend")
+    private Boolean beingFriend;
 }

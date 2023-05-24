@@ -7,8 +7,12 @@ import me.solution.mapper.UserMapper;
 import me.solution.model.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * user service to access user
@@ -21,18 +25,21 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
-    public User getUserByName(String username, boolean excludeDeleted) {
+    public User getUserByName(String username, boolean includeDeleted) {
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(User::getName, username);
-        if (excludeDeleted) {
+        if (!includeDeleted) {
             wrapper.eq(User::getDeleteFlag, UserDeleteFlag.NORMAL.getValue());
         }
         return userMapper.selectOne(wrapper);
     }
 
-    public User getUserById(Long id) {
+    public User getUserById(Long id, boolean includeDeleted) {
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(User::getId, id);
+        if (!includeDeleted) {
+            wrapper.eq(User::getDeleteFlag, UserDeleteFlag.NORMAL.getValue());
+        }
         return userMapper.selectOne(wrapper);
     }
 
@@ -42,7 +49,7 @@ public class UserService {
     }
 
     public void softDelById(Long userId) {
-        User user = getUserById(userId);
+        User user = getUserById(userId, false);
         if (user == null) {
             return;
         }
@@ -74,5 +81,19 @@ public class UserService {
                     userMapper.update(null, wrapper);
 
                 });
+    }
+
+    public List<User> listByIds(Set<Long> followingIds, boolean includeDeleted) {
+        if (CollectionUtils.isEmpty(followingIds)) {
+            return Collections.emptyList();
+        }
+
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        wrapper.in(User::getId, followingIds);
+        if (!includeDeleted) {
+            wrapper.eq(User::getDeleteFlag, UserDeleteFlag.NORMAL.getValue());
+        }
+
+        return userMapper.selectList(wrapper);
     }
 }

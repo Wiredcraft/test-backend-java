@@ -6,6 +6,7 @@ import me.solution.model.domain.Following;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -35,5 +36,14 @@ public class FollowingService {
         wrapper.eq(Following::getFollowerId, followerId);
         wrapper.eq(Following::getFollowingId, followingId);
         followingMapper.delete(wrapper);
+    }
+
+    public List<Following> listFollowings(Long followerId, int defaultFollowListCnt) {
+        LambdaQueryWrapper<Following> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Following::getFollowerId, followerId)
+                .orderByDesc(Following::getCreatedAt)
+                .last("limit " + defaultFollowListCnt);
+
+        return followingMapper.selectList(wrapper);
     }
 }

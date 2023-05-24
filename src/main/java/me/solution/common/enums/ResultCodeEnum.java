@@ -22,8 +22,9 @@ public enum ResultCodeEnum {
     UNAUTHORIZED("-1000", "unauthorized"),
     FORBIDDEN("-1001", "insufficient privileges"),
     INCORRECT_NAME_OR_PASSWD("-1002", "incorrect name or passwd"),
-    USER_NAME_TAKEN("-1003", "the name is taken"),
-    ILLEGAL_PARAM("-1004", "illegal param"),
+    USER_NOT_EXIST("-1003", "user not exist"),
+    USER_NAME_TAKEN("-1004", "the name is taken"),
+    ILLEGAL_PARAM("-1005", "illegal param"),
     ;
 
     private final String code;

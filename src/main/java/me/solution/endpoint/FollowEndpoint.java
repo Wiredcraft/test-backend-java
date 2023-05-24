@@ -2,11 +2,10 @@ package me.solution.endpoint;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import me.solution.model.domain.User;
 import me.solution.model.reqresp.FollowResp;
 import me.solution.model.reqresp.ResultResp;
-import me.solution.service.biz.FollowBizService;
 import me.solution.security.utils.LoginUtil;
+import me.solution.service.biz.FollowBizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,14 +46,15 @@ public class FollowEndpoint {
     @ApiOperation("list my following")
     @GetMapping("/listMyFollowings")
     public ResultResp<List<FollowResp>> listMyFollowings() {
-        // TODO: 2023/5/22 following/follower/both flag
-        return ResultResp.successData(Collections.emptyList());
+        Long myUserId = LoginUtil.getUserIdRequireNonNull();
+        List<FollowResp> result = followBizService.listFollowings(myUserId);
+        return ResultResp.successData(result);
     }
 
     @ApiOperation("list my followers")
     @GetMapping("/listMyFollowers")
-    public List<User> listMyFollowers() {
-        // TODO: 2023/5/22 following/follower/both flag
-        return Collections.emptyList();
+    public ResultResp<List<FollowResp>> listMyFollowers() {
+        // TODO: 2023/5/24
+        return ResultResp.successData(Collections.emptyList());
     }
 }

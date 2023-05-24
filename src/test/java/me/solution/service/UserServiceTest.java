@@ -42,7 +42,7 @@ public class UserServiceTest {
     @Test
     public void testSoftDelUser() {
         userService.softDelById(1L);
-        User user = userService.getUserById(1L);
+        User user = userService.getUserById(1L, false);
         Optional.ofNullable(user)
                 .ifPresent(System.out::println);
     }

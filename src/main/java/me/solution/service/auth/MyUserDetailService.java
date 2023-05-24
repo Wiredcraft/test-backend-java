@@ -26,7 +26,7 @@ public class MyUserDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // get user by username
         // if user not exist, throw an exception
-        User user = userService.getUserByName(username, true);
+        User user = userService.getUserByName(username, false);
         Optional.ofNullable(user)
                 .orElseThrow(() -> new RuntimeException("用户名或密码错误"));
 

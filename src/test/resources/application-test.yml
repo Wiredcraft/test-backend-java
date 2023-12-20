@@ -1,0 +1,16 @@
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27018
+      username: appuser
+      password: appuser
+      authentication-database: appdb
+      database: appdb
+      auto-index-creation: true
+
+de:
+  flapdoodle:
+    mongodb:
+      embedded:
+        version: 4.4.19
